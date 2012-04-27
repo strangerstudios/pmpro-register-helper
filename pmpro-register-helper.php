@@ -12,7 +12,7 @@ Author URI: http://www.strangerstudios.com
 	This shortcode will show a signup form. It will only show user account fields.
 	If the level is not free, the user will have to enter the billing information on the checkout page.	
 */
-function pmpro_signup_shortcode($atts, $content=null, $code="")
+function pmprorh_signup_shortcode($atts, $content=null, $code="")
 {
 	// $atts    ::= array of attributes
 	// $content ::= text within enclosing form of shortcode element
@@ -93,4 +93,62 @@ function pmpro_signup_shortcode($atts, $content=null, $code="")
 	ob_end_clean();
 	return $temp_content;
 }
-add_shortcode("pmpro_signup", "pmpro_signup_shortcode");
+add_shortcode("pmpro_signup", "pmprorh_signup_shortcode");
+
+/*
+	This code can be used to restrict level signups by email address.
+*/
+//text area for emails on edit level page
+function pmprorh_pmpro_membership_level_after_other_settings()
+{
+	$level = $_REQUEST['edit'];	
+	$restrict_emails = pmpro_getOption("level_" . $level . "_restrict_emails");
+	?>
+	<h3 class="topborder">Restrict by Email</h3>
+	<p>To restrict signups to specific email addresses, enter those email addresses below, one per line. If blank, signups will not be restricted.</p>
+	<textarea rows="10" cols="80" name="restrict_emails" id="restrict_emails"><?php echo str_replace("\"", "&quot;", stripslashes($restrict_emails))?></textarea>
+	<?php
+}
+add_action("pmpro_membership_level_after_other_settings", "pmprorh_pmpro_membership_level_after_other_settings");
+
+//update the emails on save
+function pmprorh_pmpro_save_membership_level($saveid)
+{
+	$restrict_emails = $_REQUEST['restrict_emails'];
+	pmpro_setOption("level_" . $saveid . "_restrict_emails", $restrict_emails);
+}
+add_action("pmpro_save_membership_level", "pmprorh_pmpro_save_membership_level");
+
+//check emails when registering
+function pmprorh_pmpro_registration_checks($okay)
+{
+	global $current_user;
+	
+	//only check if we're okay so far and there is an email to check
+	if($okay && (!empty($_REQUEST['bemail']) || !empty($current_user->user_email)))
+	{
+		//are we restricting emails for this level
+		global $pmpro_level;
+		$restrict_emails = pmpro_getOption("level_" . $pmpro_level->id . "_restrict_emails");		
+		if(!empty($restrict_emails))
+		{
+			$restrict_emails = str_replace(array(";", ",", " "), "\n", $restrict_emails);
+			if(!empty($current_user->user_email))
+				$needle = $current_user->user_email;
+			else
+				$needle = $_REQUEST['bemail'];
+			$haystack = explode("\n", $restrict_emails);
+			array_walk($haystack, create_function('&$val', '$val = trim($val);')); 			
+			if(!in_array($needle, $haystack))
+			{
+				global $pmpro_msg, $pmpro_msgt;
+				$pmpro_msg = "This membership level is restricted to certain users only. Make sure you've entered your email address correctly.";
+				$pmpro_msgt = "pmpro_error";
+				$okay = false;
+			}
+		}
+	}
+	
+	return $okay;
+}
+add_filter("pmpro_registration_checks", "pmprorh_pmpro_registration_checks");

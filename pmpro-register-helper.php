@@ -177,22 +177,173 @@ add_action("pmpro_checkout_before_submit_button", "pmprorh_pmpro_checkout_before
 /*
 	Update the fields at checkout.
 */
+function pmprorh_pmpro_after_checkout($user_id)
+{
+	global $pmprorh_registration_fields;	
+	
+	//any fields?
+	if(!empty($pmprorh_registration_fields))
+	{
+		//cycle through groups
+		foreach($pmprorh_registration_fields as $where => $fields)
+		{			
+			//cycle through fields
+			foreach($fields as $field)
+			{
+				//where are we getting the value from?
+				if(isset($_REQUEST[$field->name]))
+				{
+					//request
+					$value = $_REQUEST[$field->name];
+				}
+				elseif(isset($_SESSION['firstname']))
+				{
+					//session
+					$value = $_SESSION[$field->name];
+					
+					//unset
+					unset($_SESSION[$field->name]);
+				}
+				
+				//update user meta
+				if(isset($value))	
+					update_user_meta($user_id, $field->name, $value);
+			}			
+		}
+	}			
+}
+add_action('pmpro_after_checkout', 'pmprorh_pmpro_after_checkout');
 
 /*
 	Require required fields.
 */
+//require the fields
+function pmprorh_rf_pmpro_registration_checks($okay)
+{
+	global $pmpro_msg, $pmpro_msgt, $current_user;
+	
+	//if there is an earlier error, just return that
+	if(!$okay)
+		return $okay;
+	
+	//array to store fields that were required and missed
+	$required = array();
+	
+	//any fields?
+	if(!empty($pmprorh_registration_fields))
+	{
+		//cycle through groups
+		foreach($pmprorh_registration_fields as $where => $fields)
+		{			
+			//cycle through fields
+			foreach($fields as $field)
+			{
+				$value = $_REQUEST[$field->name];	
+			 
+				if(!empty($field->required) && empty($value))
+				{
+					$required[] = $field->name;		
+				}
+			}
+		}
+	}
+	
+	if(!empty($required))
+	{
+		if(count($required) > 1)
+			$pmpro_msg = "The " . implode(", ", $required) . " field is required.";
+		else
+			$pmpro_msg = "The " . implode(", ", $required) . " fields are required.";
+		$pmpro_msgt = "pmpro_error";
+		return false;
+	}
+	
+	//all good
+	return true;
+}
+add_filter("pmpro_registration_checks", "pmprorh_rf_pmpro_registration_checks");
 
 /*
 	Sessions vars for PayPal Express
 */
+function pmpmrorh_rf_pmpro_paypalexpress_session_vars()
+{
+	global $pmprorh_registration_fields;
+	
+	//save our added fields in session while the user goes off to PayPal	
+	if(!empty($pmprorh_registration_fields))
+	{
+		//cycle through groups
+		foreach($pmprorh_registration_fields as $where => $fields)
+		{			
+			//cycle through fields
+			foreach($fields as $field)
+			{
+				if(isset($_REQUEST[$field->name]))
+					$_SESSION[$field->name] = $_REQUEST[$field->name];
+			}
+		}
+	}
+}
+add_action("pmpro_paypalexpress_session_vars", "pmprorh_rf_pmpro_paypalexpress_session_vars");
 
 /*
 	Show profile fields.
 */
+function pmprorh_rf_show_extra_profile_fields($user)
+{
+	global $pmprorh_registration_fields;
+
+	//show each field
+	if(!empty($pmprorh_registration_fields))
+	{
+		?>
+		<h3>Extra profile information</h3>
+		<table class="form-table">
+		<?php
+		//cycle through groups
+		foreach($pmprorh_registration_fields as $where => $fields)
+		{			
+			//cycle through fields
+			foreach($fields as $field)
+			{
+				$field->displayInProfile($user->ID);
+			}
+		}
+		?>
+		</table>
+		<?php
+	}	
+}
+add_action( 'show_user_profile', 'pmprorh_rf_show_extra_profile_fields' );
+add_action( 'edit_user_profile', 'pmprorh_rf_show_extra_profile_fields' );
 
 /*
 	Save profile fields.
 */
+function pmprorh_rf_save_extra_profile_fields( $user_id ) 
+{
+
+	if ( !current_user_can( 'edit_user', $user_id ) )
+		return false;
+
+	//save our added fields in session while the user goes off to PayPal	
+	if(!empty($pmprorh_registration_fields))
+	{
+		//cycle through groups
+		foreach($pmprorh_registration_fields as $where => $fields)
+		{			
+			//cycle through fields
+			foreach($fields as $field)
+			{
+				if(isset($_POST[$field->name]))
+					update_usermeta($user_id, $field->name, $_POST[$field->name]);
+			}
+		}
+	}
+}
+add_action( 'personal_options_update', 'pmprorh_rf_save_extra_profile_fields' );
+add_action( 'edit_user_profile_update', 'pmprorh_rf_save_extra_profile_fields' );
 
 /*
 	This shortcode will show a signup form. It will only show user account fields.

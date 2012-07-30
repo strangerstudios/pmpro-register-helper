@@ -125,4 +125,20 @@
 			</div>	
 			<?php
 		}
+		
+		function displayInProfile($user_id)
+		{
+			$value = get_user_meta($user_id, $this->name, true);
+				
+			?>
+			<tr>
+				<th><label for="<?php echo esc_attr($this->name);?>"><?php echo $this->label;?></label></th>
+				<td>
+					<?php 						
+						$this->display($value); 
+					?>	
+				</td>
+			</tr>			
+			<?php
+		}		
 	}

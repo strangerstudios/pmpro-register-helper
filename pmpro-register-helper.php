@@ -294,21 +294,20 @@ function pmprorh_rf_show_extra_profile_fields($user)
 {
 	global $pmprorh_registration_fields;
 
-	//show each field
-	if(!empty($pmprorh_registration_fields))
+	//which fields are marked for the profile	
+	$profile_fields = pmprorh_getProfileFields($user->ID);
+	
+	//show the fields
+	if(!empty($profile_fields))
 	{
 		?>
 		<h3>Extra profile information</h3>
 		<table class="form-table">
 		<?php
 		//cycle through groups
-		foreach($pmprorh_registration_fields as $where => $fields)
+		foreach($profile_fields as $field)
 		{			
-			//cycle through fields
-			foreach($fields as $field)
-			{
-				$field->displayInProfile($user->ID);
-			}
+			$field->displayInProfile($user->ID);			
 		}
 		?>
 		</table>
@@ -317,6 +316,33 @@ function pmprorh_rf_show_extra_profile_fields($user)
 }
 add_action( 'show_user_profile', 'pmprorh_rf_show_extra_profile_fields' );
 add_action( 'edit_user_profile', 'pmprorh_rf_show_extra_profile_fields' );
+
+function pmprorh_getProfileFields($user_id)
+{
+	$profile_fields = array();
+	if(!empty($pmprorh_registration_fields))
+	{
+		//cycle through groups
+		foreach($pmprorh_registration_fields as $where => $fields)
+		{			
+			//cycle through fields
+			foreach($fields as $field)
+			{
+				if($field->profile == "admins" || $field->profile == "admin")
+				{
+					if(current_user_can("edit_user", $user_id))
+						$profile_fields[] = $field;
+				}
+				elseif(!empty($field->profile))
+				{
+					$profile_fields[] = $field;
+				}
+			}
+		}
+	}
+	
+	return $profile_fields;
+}
 
 /*
 	Save profile fields.
@@ -327,18 +353,16 @@ function pmprorh_rf_save_extra_profile_fields( $user_id )
 	if ( !current_user_can( 'edit_user', $user_id ) )
 		return false;
 
+	$profile_fields = pmprorh_getProfileFields($user_id);
+		
 	//save our added fields in session while the user goes off to PayPal	
-	if(!empty($pmprorh_registration_fields))
-	{
-		//cycle through groups
-		foreach($pmprorh_registration_fields as $where => $fields)
-		{			
-			//cycle through fields
-			foreach($fields as $field)
-			{
-				if(isset($_POST[$field->name]))
-					update_usermeta($user_id, $field->name, $_POST[$field->name]);
-			}
+	if(!empty($profile_fields))
+	{		
+		//cycle through fields
+		foreach($profile_fields as $field)
+		{
+			if(isset($_POST[$field->name]))
+				update_usermeta($user_id, $field->name, $_POST[$field->name]);
 		}
 	}
 }

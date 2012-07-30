@@ -39,7 +39,7 @@ function pmprorh_signup_shortcode($atts, $content=null, $code="")
 		<?php if(!empty($current_user->ID)) { ?>
 			<p>You are logged in as <?php echo $current_user->user_login; ?>.</p>
 		<?php } else { ?>
-		<form class="pmpro_form" action="<?php echo pmpro_url("checkout"); ?>" method="pot">
+		<form class="pmpro_form" action="<?php echo pmpro_url("checkout"); ?>" method="post">
 			<?php
 				if($intro)
 				{

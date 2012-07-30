@@ -9,6 +9,192 @@ Author URI: http://www.strangerstudios.com
 */
 
 /*
+	We want to add registration fields to the checkout page. Should go something like this:		
+*/
+
+//PMProRH_Field class
+/*
+	Some examples of creating fields with the class.
+	
+	//company field is required and editable by admins and users in the profile page
+	$text = new PMProRH_Field("company", "text", array("size"=>40, "class"=>"company", "profile"=>true, "required"=>true));
+	
+	//referral id is not required and only editable by admins. Includes an updated label.
+	$referral = new PMProRH_Field("referral", "text", array("label"=>"Referral Code", "profile"=>"admins"));
+	
+	//dropdown, includes a blank option
+	$dropdown = new PMProRH_Field("gender", "select", array("options"=>array("" => "", "male"=>"Male", "female"=>"Female")));
+	
+	//textarea
+	$history = new PMProRH_Field("history", "textarea", array("rows"=>10, "label"=>"Tell us a little about your history."));
+	
+	//hidden
+	$secret = new PMProRH_Field("secret", "hidden", array("value"=>"this is the secret"));
+*/
+require_once(dirname(__FILE__) . "/classes/class.field.php");
+
+//global to store extra registration fields
+global $pmprorh_registration_fields;
+$pmprorh_registration_fields = array();
+
+/*
+$text = new PMProRH_Field("company", "text", array("size"=>40, "class"=>"company", "profile"=>true, "required"=>true));
+pmprorh_add_registration_field("after_billing_fields", $text);
+*/
+
+/*
+	Add a field to the PMProRH regisration fields global
+	
+	$where refers to various hooks in the PMPro checkout page and can be:
+	- after_username
+	- after_password
+	- after_email
+	- after_captcha
+	- checkout_boxes
+	- after_billing_fields
+	- before_submit_button
+	- just_profile (make sure you set the profile attr of the field to true or admins)
+*/
+function pmprorh_add_registration_field($where, $field)
+{
+	global $pmprorh_registration_fields;
+	if(empty($pmprorh_registration_fields[$where]))
+		$pmprorh_registration_fields[$where] = array($field);
+	else	
+		$pmprorh_registration_fields[$where][] = $field;
+		
+	return true;
+}
+
+/*
+	Cycle through extra fields. Show them at checkout.			
+*/
+//after_username
+function pmprorh_pmpro_checkout_after_username()
+{
+	global $pmprorh_registration_fields;	
+	
+	if(!empty($pmprorh_registration_fields["after_username"]))
+	{
+		foreach($pmprorh_registration_fields["after_username"] as $field)
+		{			
+			$field->displayAtCheckout();		
+		}
+	}
+}
+add_action("pmpro_checkout_after_username", "pmprorh_pmpro_checkout_after_username");
+
+//after_password
+function pmprorh_pmpro_checkout_after_password()
+{
+	global $pmprorh_registration_fields;	
+	
+	if(!empty($pmprorh_registration_fields["after_password"]))
+	{
+		foreach($pmprorh_registration_fields["after_password"] as $field)
+		{			
+			$field->displayAtCheckout();		
+		}
+	}
+}
+add_action("pmpro_checkout_after_password", "pmprorh_pmpro_checkout_after_password");
+
+//after_email
+function pmprorh_pmpro_checkout_after_email()
+{
+	global $pmprorh_registration_fields;	
+	
+	if(!empty($pmprorh_registration_fields["after_email"]))
+	{
+		foreach($pmprorh_registration_fields["after_email"] as $field)
+		{			
+			$field->displayAtCheckout();		
+		}
+	}
+}
+add_action("pmpro_checkout_after_email", "pmprorh_pmpro_checkout_after_email");
+
+//after captcha
+function pmprorh_pmpro_checkout_after_captcha()
+{
+	global $pmprorh_registration_fields;	
+	
+	if(!empty($pmprorh_registration_fields["after_captcha"]))
+	{
+		foreach($pmprorh_registration_fields["after_captcha"] as $field)
+		{			
+			$field->displayAtCheckout();		
+		}
+	}
+}
+add_action("pmpro_checkout_after_captcha", "pmprorh_pmpro_checkout_after_captcha");
+
+//checkout boxes
+function pmprorh_pmpro_checkout_boxes()
+{
+	global $pmprorh_registration_fields;	
+	
+	if(!empty($pmprorh_registration_fields["checkout_boxes"]))
+	{
+		foreach($pmprorh_registration_fields["checkout_boxes"] as $field)
+		{			
+			$field->displayAtCheckout();		
+		}
+	}
+}
+add_action("pmpro_checkout_boxes", "pmprorh_pmpro_checkout_boxes");
+
+//after_billing_fields
+function pmprorh_pmpro_checkout_after_billing_fields()
+{
+	global $pmprorh_registration_fields;	
+		
+	if(!empty($pmprorh_registration_fields["after_billing_fields"]))
+	{
+		foreach($pmprorh_registration_fields["after_billing_fields"] as $field)
+		{			
+			$field->displayAtCheckout();		
+		}
+	}
+}
+add_action("pmpro_checkout_after_billing_fields", "pmprorh_pmpro_checkout_after_billing_fields");
+
+//before submit button
+function pmprorh_pmpro_checkout_before_submit_button()
+{
+	global $pmprorh_registration_fields;	
+	
+	if(!empty($pmprorh_registration_fields["before_submit_button"]))
+	{
+		foreach($pmprorh_registration_fields["before_submit_button"] as $field)
+		{			
+			$field->displayAtCheckout();		
+		}
+	}
+}
+add_action("pmpro_checkout_before_submit_button", "pmprorh_pmpro_checkout_before_submit_button");
+
+/*
+	Update the fields at checkout.
+*/
+
+/*
+	Require required fields.
+*/
+
+/*
+	Sessions vars for PayPal Express
+*/
+
+/*
+	Show profile fields.
+*/
+
+/*
+	Save profile fields.
+*/
+
+/*
 	This shortcode will show a signup form. It will only show user account fields.
 	If the level is not free, the user will have to enter the billing information on the checkout page.	
 */

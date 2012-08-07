@@ -3,7 +3,7 @@
 Plugin Name: PMPro Register Helper
 Plugin URI: http://www.paidmembershipspro.com/pmpro-register-helper/
 Description: Shortcodes and other functions to help customize your registration forms.
-Version: .1
+Version: .2
 Author: Stranger Studios
 Author URI: http://www.strangerstudios.com
 */
@@ -34,8 +34,9 @@ Author URI: http://www.strangerstudios.com
 require_once(dirname(__FILE__) . "/classes/class.field.php");
 
 //global to store extra registration fields
-global $pmprorh_registration_fields;
+global $pmprorh_registration_fields, $pmprorh_checkout_boxes_label;
 $pmprorh_registration_fields = array();
+$pmprorh_checkout_boxes_label = "More Information";
 
 /*
 $text = new PMProRH_Field("company", "text", array("size"=>40, "class"=>"company", "profile"=>true, "required"=>true));
@@ -77,8 +78,9 @@ function pmprorh_pmpro_checkout_after_username()
 	if(!empty($pmprorh_registration_fields["after_username"]))
 	{
 		foreach($pmprorh_registration_fields["after_username"] as $field)
-		{			
-			$field->displayAtCheckout();		
+		{						
+			if(pmprorh_checkFieldForLevel($field))
+				$field->displayAtCheckout();		
 		}
 	}
 }
@@ -93,7 +95,8 @@ function pmprorh_pmpro_checkout_after_password()
 	{
 		foreach($pmprorh_registration_fields["after_password"] as $field)
 		{			
-			$field->displayAtCheckout();		
+			if(pmprorh_checkFieldForLevel($field))
+				$field->displayAtCheckout();		
 		}
 	}
 }
@@ -108,7 +111,8 @@ function pmprorh_pmpro_checkout_after_email()
 	{
 		foreach($pmprorh_registration_fields["after_email"] as $field)
 		{			
-			$field->displayAtCheckout();		
+			if(pmprorh_checkFieldForLevel($field))
+				$field->displayAtCheckout();		
 		}
 	}
 }
@@ -123,7 +127,8 @@ function pmprorh_pmpro_checkout_after_captcha()
 	{
 		foreach($pmprorh_registration_fields["after_captcha"] as $field)
 		{			
-			$field->displayAtCheckout();		
+			if(pmprorh_checkFieldForLevel($field))
+				$field->displayAtCheckout();		
 		}
 	}
 }
@@ -132,14 +137,32 @@ add_action("pmpro_checkout_after_captcha", "pmprorh_pmpro_checkout_after_captcha
 //checkout boxes
 function pmprorh_pmpro_checkout_boxes()
 {
-	global $pmprorh_registration_fields;	
+	global $pmprorh_registration_fields, $pmprorh_checkout_boxes_label;	
 	
 	if(!empty($pmprorh_registration_fields["checkout_boxes"]))
 	{
-		foreach($pmprorh_registration_fields["checkout_boxes"] as $field)
-		{			
-			$field->displayAtCheckout();		
-		}
+		?>
+		<table class="pmpro_checkout" width="100%" cellpadding="0" cellspacing="0" border="0">
+		<thead>
+			<tr>
+				<th>
+					<?php echo $pmprorh_checkout_boxes_label;?>
+				</th>						
+			</tr>
+		</thead>
+		<tbody>  
+			<tr><td>
+			<?php
+			foreach($pmprorh_registration_fields["checkout_boxes"] as $field)
+			{			
+				if(pmprorh_checkFieldForLevel($field))
+					$field->displayAtCheckout();		
+			}
+			?>
+			</td></tr>
+		</tbody>
+		</table>
+		<?php
 	}
 }
 add_action("pmpro_checkout_boxes", "pmprorh_pmpro_checkout_boxes");
@@ -153,7 +176,8 @@ function pmprorh_pmpro_checkout_after_billing_fields()
 	{
 		foreach($pmprorh_registration_fields["after_billing_fields"] as $field)
 		{			
-			$field->displayAtCheckout();		
+			if(pmprorh_checkFieldForLevel($field))
+				$field->displayAtCheckout();		
 		}
 	}
 }
@@ -168,7 +192,8 @@ function pmprorh_pmpro_checkout_before_submit_button()
 	{
 		foreach($pmprorh_registration_fields["before_submit_button"] as $field)
 		{			
-			$field->displayAtCheckout();		
+			if(pmprorh_checkFieldForLevel($field))
+				$field->displayAtCheckout();		
 		}
 	}
 }
@@ -190,13 +215,16 @@ function pmprorh_pmpro_after_checkout($user_id)
 			//cycle through fields
 			foreach($fields as $field)
 			{
+				if(!pmprorh_checkFieldForLevel($field))
+					continue;
+				
 				//where are we getting the value from?
 				if(isset($_REQUEST[$field->name]))
 				{
 					//request
 					$value = $_REQUEST[$field->name];
 				}
-				elseif(isset($_SESSION['firstname']))
+				elseif(isset($_SESSION[$field->name]))
 				{
 					//session
 					$value = $_SESSION[$field->name];
@@ -238,6 +266,10 @@ function pmprorh_rf_pmpro_registration_checks($okay)
 			//cycle through fields
 			foreach($fields as $field)
 			{
+				//if the field is not for this level, skip it
+				if(!pmprorh_checkFieldForLevel($field))
+					continue;
+					
 				$value = $_REQUEST[$field->name];	
 			 
 				if(!empty($field->required) && empty($value))
@@ -279,6 +311,9 @@ function pmpmrorh_rf_pmpro_paypalexpress_session_vars()
 			//cycle through fields
 			foreach($fields as $field)
 			{
+				if(!pmprorh_checkFieldForLevel($field))
+					continue;
+					
 				if(isset($_REQUEST[$field->name]))
 					$_SESSION[$field->name] = $_REQUEST[$field->name];
 			}
@@ -295,7 +330,7 @@ function pmprorh_rf_show_extra_profile_fields($user)
 	global $pmprorh_registration_fields;
 
 	//which fields are marked for the profile	
-	$profile_fields = pmprorh_getProfileFields($user->ID);
+	$profile_fields = pmprorh_getProfileFields($user->ID);			
 	
 	//show the fields
 	if(!empty($profile_fields))
@@ -319,6 +354,8 @@ add_action( 'edit_user_profile', 'pmprorh_rf_show_extra_profile_fields' );
 
 function pmprorh_getProfileFields($user_id)
 {
+	global $pmprorh_registration_fields;
+	
 	$profile_fields = array();
 	if(!empty($pmprorh_registration_fields))
 	{
@@ -327,8 +364,11 @@ function pmprorh_getProfileFields($user_id)
 		{			
 			//cycle through fields
 			foreach($fields as $field)
-			{
-				if($field->profile == "admins" || $field->profile == "admin")
+			{				
+				if(!pmprorh_checkFieldForLevel($field, "profile", $user_id))
+					continue;				
+				
+				if(!empty($field->profile) && ($field->profile == "admins" || $field->profile == "admin"))
 				{
 					if(current_user_can("edit_user", $user_id))
 						$profile_fields[] = $field;
@@ -513,3 +553,83 @@ function pmprorh_pmpro_registration_checks($okay)
 	return $okay;
 }
 add_filter("pmpro_registration_checks", "pmprorh_pmpro_registration_checks");
+
+function pmprorh_checkFieldForLevel($field, $scope = "default", $args = NULL)
+{
+	if(!empty($field->levels))
+	{
+		if($scope == "profile")
+		{
+			//expecting the args to be the user id
+			if(pmpro_hasMembershipLevel($field->levels, $args))
+				return true;
+			else
+				return false;
+		}
+		else
+		{
+			//check against $_REQUEST
+			if(!empty($_REQUEST['level']))
+			{
+				if(in_array($_REQUEST['level'], $field->levels))
+					return true;
+				else
+					return false;
+			}
+			else
+				return false;
+		}
+	}
+	
+	return true;
+}
+
+/*
+	Slim signup form conversion.
+*/
+function pmprorh_email_passed($level)
+{		
+	global $wpdb, $pmpro_msg, $pmpro_msgt;
+	
+	//confirm email
+	if(!empty($_GET['bemail']))
+	{
+		//make sure the email is available
+		$oldemail = $wpdb->get_var("SELECT ID FROM $wpdb->users WHERE user_email = '" . $wpdb->escape($_REQUEST['bemail']) . "' LIMIT 1");
+		if(!$oldemail)
+		{			
+			//confirm email
+			global $bemail, $bconfirmemail;
+			$bemail = str_replace(" ", "+", $_REQUEST['bemail']);
+			$bconfirmemail = $bemail;
+			$_REQUEST['bconfirmemail'] = $_REQUEST['bemail'];
+
+			//make sure bemail is still set later
+			add_action("pmpro_checkout_after_password", "pmproh_pmpro_checkout_after_password");
+			
+			//don't show the confirm email
+			add_filter("pmpro_checkout_confirm_email", "pmproh_pmpro_checkout_confirm_email");
+		}
+		else
+		{
+			//email is in use
+			wp_redirect(home_url("/login/?redirect_to=" . pmpro_url("checkout", "?level=" . $_REQUEST['level'])));
+			exit;
+		}
+	}	
+
+	return $level;	
+}
+add_action("init", "pmprorh_email_passed");
+
+//prepopulate email address if passed (setup via pmprorh_email_passed)
+function pmproh_pmpro_checkout_after_password()
+{
+	global $bemail;
+	$bemail = str_replace(" ", "+", $_REQUEST['bemail']);	
+}
+//don't confirm email (setup via pmprorh_email_passed)
+function pmproh_pmpro_checkout_confirm_email($show)
+{
+	return false;
+}

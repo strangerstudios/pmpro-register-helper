@@ -85,9 +85,12 @@
 				if(!empty($this->class))
 					$r .= 'class="' . $this->class . '" ';
 				$r .= '>\n';
-				foreach($this->options as $value => $option)
+				foreach($this->options as $ovalue => $option)
 				{
-					$r .= '<option value="' . esc_attr($value) . '">' . $option . '</option>\n';
+					$r .= '<option value="' . esc_attr($ovalue) . '" ';
+					if(!empty($ovalue) && $ovalue == $value)
+						$r .= 'selected="selected" ';
+					$r .= '>' . $option . '</option>\n';
 				}
 				$r .= '</select>';
 			}
@@ -112,9 +115,13 @@
 
 		function displayAtCheckout()
 		{
+			global $current_user;
+			
 			//value passed yet?
 			if(isset($_REQUEST[$this->name]))
 				$value = $_REQUEST[$this->name];
+			elseif(!empty($current_user->ID))
+				$value = get_user_meta($current_user->ID, $this->name, true);
 			else
 				$value = "";
 				

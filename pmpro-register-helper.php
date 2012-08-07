@@ -3,7 +3,7 @@
 Plugin Name: PMPro Register Helper
 Plugin URI: http://www.paidmembershipspro.com/pmpro-register-helper/
 Description: Shortcodes and other functions to help customize your registration forms.
-Version: .2
+Version: .2.1
 Author: Stranger Studios
 Author URI: http://www.strangerstudios.com
 */
@@ -235,7 +235,13 @@ function pmprorh_pmpro_after_checkout($user_id)
 				
 				//update user meta
 				if(isset($value))	
-					update_user_meta($user_id, $field->name, $value);
+				{
+					//callback?
+					if(!empty($field->save_function))
+						call_user_func($field->save_function, $user_id, $field->name, $value);
+					else
+						update_user_meta($user_id, $field->name, $value);
+				}
 			}			
 		}
 	}			
@@ -402,7 +408,13 @@ function pmprorh_rf_save_extra_profile_fields( $user_id )
 		foreach($profile_fields as $field)
 		{
 			if(isset($_POST[$field->name]))
-				update_usermeta($user_id, $field->name, $_POST[$field->name]);
+			{
+				//callback?
+				if(!empty($field->save_function))
+					call_user_func($field->save_function, $user_id, $field->name, $_POST[$field->name]);
+				else
+					update_user_meta($user_id, $field->name, $_POST[$field->name]);				
+			}
 		}
 	}
 }

@@ -128,7 +128,10 @@
 			?>
 			<div>
 				<label for="<?php echo esc_attr($this->name);?>"><?php echo $this->label;?></label>
-				<?php $this->display($value); ?>				
+				<?php $this->display($value); ?>	
+				<?php if(!empty($this->hint)) { ?>
+					<div class="leftmar"><small class="lite"><?php echo $this->hint;?></small></div>
+				<?php } ?>
 			</div>	
 			<?php
 		}

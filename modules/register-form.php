@@ -205,8 +205,8 @@ function pmprorh_register_form_shortcode($atts, $content=null, $code="")
 </form>
 
 <p id="nav">
-<a href="http://www.relationalcapitalgroup.com/wp-login.php">Log in</a> |
-<a href="http://www.relationalcapitalgroup.com/wp-login.php?action=lostpassword" title="Password Lost and Found">Lost your password?</a>
+<a href="<?php echo home_url("wp-login.php");?>">Log in</a> |
+<a href="<?php echo home_url("/wp-login.php?action=lostpassword");?>" title="Password Lost and Found">Lost your password?</a>
 </p>
 
 <p class="top1em required">* Required Field</p>

@@ -3,14 +3,20 @@
 Plugin Name: PMPro Register Helper
 Plugin URI: http://www.paidmembershipspro.com/pmpro-register-helper/
 Description: Shortcodes and other functions to help customize your registration forms.
-Version: .2.1
+Version: .2.2
 Author: Stranger Studios
 Author URI: http://www.strangerstudios.com
 */
+//options - just defaults for now, will be in settings eventually
+global $pmprorh_options;
+//$pmprorh_options["register_redirect_url"] = home_url("/tools/rq/");
+//$pmprorh_options["use_email_for_login"] = true;
 
+//Register Form Module
 /*
-	We want to add registration fields to the checkout page. Should go something like this:		
+	If you don't have Paid Memberships Pro installed, you can use the custom registration form included with this plugin by using the [pmprorh_register_form] shortcode.
 */
+require_once(dirname(__FILE__) . "/modules/register-form.php");
 
 //PMProRH_Field class
 /*
@@ -63,9 +69,91 @@ function pmprorh_add_registration_field($where, $field)
 		$pmprorh_registration_fields[$where] = array($field);
 	else	
 		$pmprorh_registration_fields[$where][] = $field;
-		
 	return true;
 }
+
+/*
+	Load CSS, JS files
+*/
+function pmprorh_scripts()
+{
+	if(!is_admin())
+	{
+		if(!defined("PMPRO_VERSION"))
+		{
+			//load some styles that we need from PMPro
+			wp_enqueue_style("pmprorh_pmpro", plugins_url('css/pmpro.css',__FILE__ ));
+		}
+	}
+}
+add_action("init", "pmprorh_scripts");
+
+/*
+	Cycle through extra fields. Show them at checkout.			
+*/
+//default register_form (if PMPro is not installed)
+function pmprorh_default_register_form()
+{
+	global $pmprorh_registration_fields;	
+	
+	if(!empty($pmprorh_registration_fields["register_form"]))
+	{
+		foreach($pmprorh_registration_fields["register_form"] as $field)
+		{					
+			if(pmprorh_checkFieldForLevel($field))
+				$field->displayAtCheckout();		
+		}
+	}
+}
+add_action("register_form", "pmprorh_default_register_form");
+
+//pmprorh register_form after_email
+function pmprorh_register_form_after_email()
+{
+	global $pmprorh_registration_fields;	
+	
+	if(!empty($pmprorh_registration_fields["pmprorh_after_email"]))
+	{		
+		foreach($pmprorh_registration_fields["pmprorh_after_email"] as $field)
+		{			
+			if(pmprorh_checkFieldForLevel($field))
+				$field->displayAtCheckout();		
+		}
+	}
+}
+add_action("pmprorh_after_email", "pmprorh_register_form_after_email");
+
+//pmprorh register_form after_password
+function pmprorh_register_form_after_password()
+{
+	global $pmprorh_registration_fields;	
+	
+	if(!empty($pmprorh_registration_fields["pmprorh_after_passwprd"]))
+	{
+		foreach($pmprorh_registration_fields["pmprorh_after_password"] as $field)
+		{			
+			if(pmprorh_checkFieldForLevel($field))
+				$field->displayAtCheckout();		
+		}
+	}
+}
+add_action("pmprorh_after_password", "pmprorh_register_form_after_password");
+
+//pmprorh register_form after_email
+function pmprorh_register_form()
+{
+	global $pmprorh_registration_fields;	
+	
+	if(!empty($pmprorh_registration_fields["pmprorh_register_form"]))
+	{
+		foreach($pmprorh_registration_fields["pmprorh_register_form"] as $field)
+		{			
+			if(pmprorh_checkFieldForLevel($field))
+				$field->displayAtCheckout();		
+		}
+	}
+}
+add_action("pmprorh_register_form", "pmprorh_register_form");
 
 /*
 	Cycle through extra fields. Show them at checkout.			

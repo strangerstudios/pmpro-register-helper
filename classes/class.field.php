@@ -110,6 +110,8 @@
 				$r = "Unknown type for field <strong>" . $this->name . "</strong>.";
 			}
 			
+			if(!empty($this->required) && !empty($showrequired))
+				$r .= '<span class="required">* Required</span>';
 			return $r;
 		}	
 
@@ -126,7 +128,7 @@
 				$value = "";
 				
 			?>
-			<div>
+			<div <?php if(!empty($this->divclass)) echo 'class="' . $this->divclass . '"';?>>
 				<label for="<?php echo esc_attr($this->name);?>"><?php echo $this->label;?></label>
 				<?php $this->display($value); ?>	
 				<?php if(!empty($this->hint)) { ?>

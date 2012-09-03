@@ -3,7 +3,7 @@ Contributors: strangerstudios
 Tags: users, user meta, meta, memberships, registration
 Requires at least: 3.0
 Tested up to: 3.4.1
-Stable tag: .2.1
+Stable tag: .2.2
 
 Add extra fields to your checkout page. Works with Paid Memberships Pro.
 
@@ -43,6 +43,12 @@ $secret = new PMProRH_Field("secret", "hidden", array("value"=>"this is the secr
 Please post it in the issues section of GitHub and we'll fix it as soon as we can. Thanks for helping. https://github.com/strangerstudios/pmpro-register-helper/issues
 
 == Changelog ==
+= .2.2 =
+* Added the register-form.php module as a stand alone registration form. (For use without PMPro)
+* Added the "divclass" property to fields, which will add a class to the wrapping div around the fields.
+* Added a span * required to required fields.
+* Added a $pmprorh_options global. Will be putting these into a settings/options page eventually.
+
 = .2.1 =
 * Started tracking changes.
 * Added save_function as a parameter to the add field function. This function will be called with the parameters ($user_id, $field_name, $value) when the field is saved after checkout or in the profile.

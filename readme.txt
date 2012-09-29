@@ -19,8 +19,23 @@ Add a sign up form to a post/widget/page using a shortcode:
 
 [pmpro_signup level="3" short="1" intro="0" button="Signup Now"]
 
-Use functions like the following to add fields to your check out page.
+Adding a field to your checkout page requires two steps: (1) create a field object, (2) call pmprorh_add_registration_field() to add the field to the checkout page.
 
+e.g.
+$text = new PMProRH_Field("company", "text", array("size"=>40, "class"=>"company", "profile"=>true, "required"=>true));
+pmprorh_add_registration_field("after_billing_fields", $text);
+
+The first parameter of the pmprorh_add_registration_field designates where the field will show up. Here are the current options:
+- after_username
+- after_password
+- after_email
+- after_captcha
+- checkout_boxes
+- after_billing_fields
+- before_submit_button
+- just_profile (make sure you set the profile attr of the field to true or admins)
+
+Here are some examples of fields:
 //company field is required and editable by admins and users in the profile page
 $text = new PMProRH_Field("company", "text", array("size"=>40, "class"=>"company", "profile"=>true, "required"=>true));
 	
@@ -35,6 +50,15 @@ $history = new PMProRH_Field("history", "textarea", array("rows"=>10, "label"=>"
 	
 //hidden
 $secret = new PMProRH_Field("secret", "hidden", array("value"=>"this is the secret"));
+
+In can be helpful to store the fields in an array use a loop to add the fields. e.g.
+
+$fields = array()
+$fields[] = new PMProRH_Field("company", "text", array("size"=>40, "class"=>"company", "profile"=>true, "required"=>true));
+$fields[] = new PMProRH_Field("referral", "text", array("label"=>"Referral Code", "profile"=>"admins"));
+$fields[] = new PMProRH_Field("gender", "select", array("options"=>array("" => "", "male"=>"Male", "female"=>"Female")));
+foreach($fields as $field)
+	pmprorh_add_registration_field("checkbox_boxes", $field);
 
 == Frequently Asked Questions ==
 

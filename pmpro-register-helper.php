@@ -428,7 +428,7 @@ function pmprorh_rf_show_extra_profile_fields($user)
 	
 	//show the fields
 	if(!empty($profile_fields))
-	{
+	{	
 		?>
 		<h3>Extra profile information</h3>
 		<table class="form-table">

@@ -72,6 +72,7 @@ Please post it in the issues section of GitHub and we'll fix it as soon as we ca
 * Added the "divclass" property to fields, which will add a class to the wrapping div around the fields.
 * Added a span * required to required fields.
 * Added a $pmprorh_options global. Will be putting these into a settings/options page eventually.
+* Updated pmprorh_getProfileFields to check for manage_options instead of edit_user for "admin" setting.
 
 = .2.1 =
 * Started tracking changes.

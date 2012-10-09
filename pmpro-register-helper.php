@@ -462,7 +462,7 @@ function pmprorh_getProfileFields($user_id)
 				if(!pmprorh_checkFieldForLevel($field, "profile", $user_id))
 					continue;				
 				
-				if(!empty($field->profile) && ($field->profile == "admins" || $field->profile == "admin"))
+				if(!empty($field->profile) && ($field->profile === "admins" || $field->profile === "admin"))
 				{
 					if(current_user_can("manage_options", $user_id))
 						$profile_fields[] = $field;

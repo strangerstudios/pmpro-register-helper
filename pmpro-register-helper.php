@@ -464,7 +464,7 @@ function pmprorh_getProfileFields($user_id)
 				
 				if(!empty($field->profile) && ($field->profile == "admins" || $field->profile == "admin"))
 				{
-					if(current_user_can("edit_user", $user_id))
+					if(current_user_can("manage_options", $user_id))
 						$profile_fields[] = $field;
 				}
 				elseif(!empty($field->profile))

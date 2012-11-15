@@ -110,7 +110,7 @@
 				$r = "Unknown type for field <strong>" . $this->name . "</strong>.";
 			}
 			
-			if(!empty($this->required) && !empty($showrequired))
+			if(!empty($this->required) && !empty($this->showrequired))
 				$r .= '<span class="required">* Required</span>';
 			return $r;
 		}	

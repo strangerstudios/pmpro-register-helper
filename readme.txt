@@ -71,6 +71,7 @@ Please post it in the issues section of GitHub and we'll fix it as soon as we ca
 * Fixed typo in pmprorh_rf_pmpro_paypalexpress_session_vars function that was keeping session vars from being saved (important for PayPal Express)
 * Updated displayAtCheckout method of the fields class to check for a value in a session var if non is set in the $_REQUEST array.
 * Fixed typo in readme example
+* Fixed the check for the "showrequired" parameter, which when set on a field adds "* required" to the field display.
 
 = .2.2 =
 * Added the register-form.php module as a stand alone registration form. (For use without PMPro)

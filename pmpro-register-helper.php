@@ -3,7 +3,7 @@
 Plugin Name: PMPro Register Helper
 Plugin URI: http://www.paidmembershipspro.com/pmpro-register-helper/
 Description: Shortcodes and other functions to help customize your registration forms.
-Version: .2.2
+Version: .2.3
 Author: Stranger Studios
 Author URI: http://www.strangerstudios.com
 */
@@ -392,7 +392,7 @@ add_filter("pmpro_registration_checks", "pmprorh_rf_pmpro_registration_checks");
 /*
 	Sessions vars for PayPal Express
 */
-function pmpmrorh_rf_pmpro_paypalexpress_session_vars()
+function pmprorh_rf_pmpro_paypalexpress_session_vars()
 {
 	global $pmprorh_registration_fields;
 	

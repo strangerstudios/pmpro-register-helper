@@ -3,7 +3,7 @@ Contributors: strangerstudios
 Tags: users, user meta, meta, memberships, registration
 Requires at least: 3.0
 Tested up to: 3.4.1
-Stable tag: .2.2
+Stable tag: .2.3
 
 Add extra fields to your checkout page. Works with Paid Memberships Pro.
 
@@ -58,7 +58,7 @@ $fields[] = new PMProRH_Field("company", "text", array("size"=>40, "class"=>"com
 $fields[] = new PMProRH_Field("referral", "text", array("label"=>"Referral Code", "profile"=>"admins"));
 $fields[] = new PMProRH_Field("gender", "select", array("options"=>array("" => "", "male"=>"Male", "female"=>"Female")));
 foreach($fields as $field)
-	pmprorh_add_registration_field("checkbox_boxes", $field);
+	pmprorh_add_registration_field("checkout_boxes", $field);
 
 == Frequently Asked Questions ==
 
@@ -67,6 +67,11 @@ foreach($fields as $field)
 Please post it in the issues section of GitHub and we'll fix it as soon as we can. Thanks for helping. https://github.com/strangerstudios/pmpro-register-helper/issues
 
 == Changelog ==
+= .2.3 =
+* Fixed typo in pmprorh_rf_pmpro_paypalexpress_session_vars function that was keeping session vars from being saved (important for PayPal Express)
+* Updated displayAtCheckout method of the fields class to check for a value in a session var if non is set in the $_REQUEST array.
+* Fixed typo in readme example
+
 = .2.2 =
 * Added the register-form.php module as a stand alone registration form. (For use without PMPro)
 * Added the "divclass" property to fields, which will add a class to the wrapping div around the fields.

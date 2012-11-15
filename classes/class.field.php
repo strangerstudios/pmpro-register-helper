@@ -122,8 +122,10 @@
 			//value passed yet?
 			if(isset($_REQUEST[$this->name]))
 				$value = $_REQUEST[$this->name];
+			elseif(isset($_SESSION[$this->name]))
+				$value = $_SESSION[$this->name];
 			elseif(!empty($current_user->ID))
-				$value = get_user_meta($current_user->ID, $this->name, true);
+				$value = get_user_meta($current_user->ID, $this->name, true);			
 			else
 				$value = "";
 				

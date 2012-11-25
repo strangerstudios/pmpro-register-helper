@@ -25,9 +25,12 @@
 			$this->attr = $attr;
 			
 			//add attributes as properties of this class
-			foreach($attr as $key=>$value)
+			if(!empty($attr))
 			{
-				$this->$key = $value;
+				foreach($attr as $key=>$value)
+				{
+					$this->$key = $value;
+				}
 			}
 			
 			//make sure we have an id

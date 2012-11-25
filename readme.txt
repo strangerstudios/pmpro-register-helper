@@ -3,7 +3,7 @@ Contributors: strangerstudios
 Tags: users, user meta, meta, memberships, registration
 Requires at least: 3.0
 Tested up to: 3.4.1
-Stable tag: .2.3
+Stable tag: .3
 
 Add extra fields to your checkout page. Works with Paid Memberships Pro.
 
@@ -19,7 +19,7 @@ Add a sign up form to a post/widget/page using a shortcode:
 
 [pmpro_signup level="3" short="1" intro="0" button="Signup Now"]
 
-Adding a field to your checkout page requires two steps: (1) create a field object, (2) call pmprorh_add_registration_field() to add the field to the checkout page.
+Adding a field to your checkout page requires two steps: (1) create a field object, (2) call pmprorh_add_registration_field() to add the field to the checkout page. Optionally, you can create your own "checkout_box" or fieldset to the checkout page using pmprorh_add_checkout_box().
 
 e.g.
 $text = new PMProRH_Field("company", "text", array("size"=>40, "class"=>"company", "profile"=>true, "required"=>true));
@@ -60,6 +60,20 @@ $fields[] = new PMProRH_Field("gender", "select", array("options"=>array("" => "
 foreach($fields as $field)
 	pmprorh_add_registration_field("checkout_boxes", $field);
 
+Adding a checkout box.
+
+pmprorh_add_checkout_box("personal", "Personal Information");	//order parameter defaults to one more than the last checkout box
+pmprorh_add_checkout_box("business", "Business Information");
+
+Then add fields to these boxes.
+$field = new PMProRH_Field("gender", "select", array("options"=>array("" => "", "male"=>"Male", "female"=>"Female")));
+pmprorh_add_registration_field("personal", $field);
+
+$field = PMProRH_Field("company", "text", array("size"=>40, "class"=>"company", "profile"=>true, "required"=>true));
+pmprorh_add_registration_field("business", $field);
+
+Note that the "checkout_boxes" location is now just the first checkout_box in the list with order = 0.
+	
 == Frequently Asked Questions ==
 
 = I found a bug in the plugin. =
@@ -67,6 +81,9 @@ foreach($fields as $field)
 Please post it in the issues section of GitHub and we'll fix it as soon as we can. Thanks for helping. https://github.com/strangerstudios/pmpro-register-helper/issues
 
 == Changelog ==
+= .3 =
+* Added pmprorh_add_checkout_box($name, $label = NULL, $order = NULL) which will add a new section to the checkout page that you can then use in as the $where parameter in pmprorh_add_registration_field(). Updated instructions.
+
 = .2.3 =
 * Fixed typo in pmprorh_rf_pmpro_paypalexpress_session_vars function that was keeping session vars from being saved (important for PayPal Express)
 * Updated displayAtCheckout method of the fields class to check for a value in a session var if non is set in the $_REQUEST array.

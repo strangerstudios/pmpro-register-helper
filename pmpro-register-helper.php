@@ -40,9 +40,13 @@ require_once(dirname(__FILE__) . "/modules/register-form.php");
 require_once(dirname(__FILE__) . "/classes/class.field.php");
 
 //global to store extra registration fields
-global $pmprorh_registration_fields, $pmprorh_checkout_boxes_label;
+global $pmprorh_registration_fields, $pmprorh_checkout_boxes;
 $pmprorh_registration_fields = array();
-$pmprorh_checkout_boxes_label = "More Information";
+$cb = new stdClass();
+$cb->name = "checkout_boxes";
+$cb->label = "More Information";
+$cb->order = 0;
+$pmprorh_checkout_boxes = array("checkout_boxes" => $cb);
 
 /*
 $text = new PMProRH_Field("company", "text", array("size"=>40, "class"=>"company", "profile"=>true, "required"=>true));
@@ -70,6 +74,46 @@ function pmprorh_add_registration_field($where, $field)
 	else	
 		$pmprorh_registration_fields[$where][] = $field;
 	return true;
+}
+
+/*
+	Add a new checkout box to the checkout_boxes section. You can then use this as the $where parameter to pmprorh_add_registration_field.
+	
+	Name must contain no spaces or special characters.
+*/
+function pmprorh_add_checkout_box($name, $label = NULL, $order = NULL)
+{
+	global $pmprorh_checkout_boxes;
+	
+	$temp = new stdClass();
+	$temp->name = $name;
+	$temp->label = $label;
+	$temp->order = $order;
+	
+	//defaults
+	if(empty($temp->label))
+		$temp->label = ucwords($temp->name);
+	if(!isset($order))
+	{
+		$lastbox = pmprorh_end($pmprorh_checkout_boxes);
+		$temp->order = $lastbox->order + 1;
+	}
+	
+	$pmprorh_checkout_boxes[$name] = $temp;
+	usort($pmprorh_checkout_boxes, "pmprorh_sortByOrder");
+	
+	return true;
+}
+
+//from: http://www.php.net/manual/en/function.end.php#107733
+function pmprorh_end($array) { return end($array); }
+
+function pmprorh_sortByOrder($a, $b)
+{
+	if ($a->order == $b->order) {
+        return 0;
+    }
+    return ($a->order < $b->order) ? -1 : 1;
 }
 
 /*
@@ -225,32 +269,35 @@ add_action("pmpro_checkout_after_captcha", "pmprorh_pmpro_checkout_after_captcha
 //checkout boxes
 function pmprorh_pmpro_checkout_boxes()
 {
-	global $pmprorh_registration_fields, $pmprorh_checkout_boxes_label;	
+	global $pmprorh_registration_fields, $pmprorh_checkout_boxes;	
 	
-	if(!empty($pmprorh_registration_fields["checkout_boxes"]))
+	foreach($pmprorh_checkout_boxes as $cb)
 	{
-		?>
-		<table class="pmpro_checkout" width="100%" cellpadding="0" cellspacing="0" border="0">
-		<thead>
-			<tr>
-				<th>
-					<?php echo $pmprorh_checkout_boxes_label;?>
-				</th>						
-			</tr>
-		</thead>
-		<tbody>  
-			<tr><td>
-			<?php
-			foreach($pmprorh_registration_fields["checkout_boxes"] as $field)
-			{			
-				if(pmprorh_checkFieldForLevel($field))
-					$field->displayAtCheckout();		
-			}
+		if(!empty($pmprorh_registration_fields[$cb->name]))
+		{
 			?>
-			</td></tr>
-		</tbody>
-		</table>
-		<?php
+			<table class="pmpro_checkout" width="100%" cellpadding="0" cellspacing="0" border="0">
+			<thead>
+				<tr>
+					<th>
+						<?php echo $cb->label;?>
+					</th>						
+				</tr>
+			</thead>
+			<tbody>  
+				<tr><td>
+				<?php
+				foreach($pmprorh_registration_fields[$cb->name] as $field)
+				{			
+					if(pmprorh_checkFieldForLevel($field))
+						$field->displayAtCheckout();		
+				}
+				?>
+				</td></tr>
+			</tbody>
+			</table>
+			<?php
+		}
 	}
 }
 add_action("pmpro_checkout_boxes", "pmprorh_pmpro_checkout_boxes");

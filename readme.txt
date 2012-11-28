@@ -63,7 +63,7 @@ foreach($fields as $field)
 Adding a checkout box.
 
 pmprorh_add_checkout_box("personal", "Personal Information");	//order parameter defaults to one more than the last checkout box
-pmprorh_add_checkout_box("business", "Business Information");
+pmprorh_add_checkout_box("business", "Business Information", "Fields below are optional but will help us in verifying your account.");
 
 Then add fields to these boxes.
 $field = new PMProRH_Field("gender", "select", array("options"=>array("" => "", "male"=>"Male", "female"=>"Female")));
@@ -82,7 +82,7 @@ Please post it in the issues section of GitHub and we'll fix it as soon as we ca
 
 == Changelog ==
 = .3 =
-* Added pmprorh_add_checkout_box($name, $label = NULL, $order = NULL) which will add a new section to the checkout page that you can then use in as the $where parameter in pmprorh_add_registration_field(). Updated instructions.
+* Added pmprorh_add_checkout_box($name, $label = NULL, $description = NULL, $order = NULL) which will add a new section and optional description to the checkout page that you can then use in as the $where parameter in pmprorh_add_registration_field(). Updated instructions.
 
 = .2.3 =
 * Fixed typo in pmprorh_rf_pmpro_paypalexpress_session_vars function that was keeping session vars from being saved (important for PayPal Express)

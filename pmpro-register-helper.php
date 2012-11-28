@@ -81,7 +81,7 @@ function pmprorh_add_registration_field($where, $field)
 	
 	Name must contain no spaces or special characters.
 */
-function pmprorh_add_checkout_box($name, $label = NULL, $description = NULL, $order = NULL)
+function pmprorh_add_checkout_box($name, $label = NULL, $description = "", $order = NULL)
 {
 	global $pmprorh_checkout_boxes;
 	
@@ -287,7 +287,7 @@ function pmprorh_pmpro_checkout_boxes()
 			</thead>
 			<tbody>  
 				<tr><td>
-				<?php if($cb->description) {  ?><div class="pmpro_checkout_decription"><?php echo $cb->description; ?></div><?php } ?>
+				<?php if(!empty($cb->description)) {  ?><div class="pmpro_checkout_decription"><?php echo $cb->description; ?></div><?php } ?>
 				<?php
 				foreach($pmprorh_registration_fields[$cb->name] as $field)
 				{			

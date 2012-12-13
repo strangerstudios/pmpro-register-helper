@@ -348,12 +348,15 @@ function pmprorh_pmpro_after_checkout($user_id)
 	{
 		//cycle through groups
 		foreach($pmprorh_registration_fields as $where => $fields)
-		{			
+		{						
 			//cycle through fields
 			foreach($fields as $field)
 			{
 				if(!pmprorh_checkFieldForLevel($field))
 					continue;
+				
+				//assume no value
+				$value = NULL;
 				
 				//where are we getting the value from?
 				if(isset($_REQUEST[$field->name]))
@@ -368,8 +371,8 @@ function pmprorh_pmpro_after_checkout($user_id)
 					
 					//unset
 					unset($_SESSION[$field->name]);
-				}
-				
+				}	
+												
 				//update user meta
 				if(isset($value))	
 				{
@@ -384,6 +387,7 @@ function pmprorh_pmpro_after_checkout($user_id)
 	}			
 }
 add_action('pmpro_after_checkout', 'pmprorh_pmpro_after_checkout');
+add_action('pmpro_before_send_to_paypal_standard', 'pmprorh_pmpro_after_checkout');	//for paypal standard we need to do this just before sending the user to paypal
 
 /*
 	Require required fields.

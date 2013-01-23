@@ -36,7 +36,13 @@
 			//make sure we have an id
 			if(empty($this->id))
 				$this->id = $this->name;
-				
+			
+			//fix class
+			if(empty($this->class))
+				$this->class = "input";
+			else
+				$this->class .= " input";			
+			
 			//default fields						
 			if($this->type == "text")
 			{

@@ -3,7 +3,7 @@ Contributors: strangerstudios
 Tags: users, user meta, meta, memberships, registration
 Requires at least: 3.0
 Tested up to: 3.4.1
-Stable tag: .3
+Stable tag: .4
 
 Add extra fields to your checkout page. Works with Paid Memberships Pro.
 
@@ -45,11 +45,17 @@ $referral = new PMProRH_Field("referral", "text", array("label"=>"Referral Code"
 //dropdown, includes a blank option
 $dropdown = new PMProRH_Field("gender", "select", array("options"=>array("" => "", "male"=>"Male", "female"=>"Female")));
 	
+//select2 dropdown
+$select2 = new PMProRH_Field("category", "select2", array("profile"=>"only", "required"=>true, "options"=>array("cat1"=>"Category 1", "cat2"=>"Category 2", "cat3"=>"Category 3"), "select2options"=>"maximumSelectionSize: 2"));  
+	
 //textarea
 $history = new PMProRH_Field("history", "textarea", array("rows"=>10, "label"=>"Tell us a little about your history."));
 	
 //hidden
 $secret = new PMProRH_Field("secret", "hidden", array("value"=>"this is the secret"));
+
+//any html
+$html = new PMProRH_Field("htmlsection", "html", array("html"=>"<p>You can put any HTML here, and it will be <strong>added</strong> to your form.</p>"));
 
 In can be helpful to store the fields in an array use a loop to add the fields. e.g.
 
@@ -81,6 +87,9 @@ Note that the "checkout_boxes" location is now just the first checkout_box in th
 Please post it in the issues section of GitHub and we'll fix it as soon as we can. Thanks for helping. https://github.com/strangerstudios/pmpro-register-helper/issues
 
 == Changelog ==
+= .4 =
+* Added the select2 and html options types.
+
 = .3.1 =
 * Now setting $value to NULL while looping through fields in pmprorh_pmpro_after_checkout. This will keep user meta values from bleeding into other meta keys.
 * PMPro 1.5.7.1 Added the pmpro_before_send_to_paypal_standard hook. This is executed at checkout before calling the sendToPayPal method on the order. The register helper plugin has been updated to update user meta fields during this hook in addition to the pmpro_after_checkout hook. (Because for PayPal Standard, when pmpro_after_checkout is called, the $_SESSION vars are unavailable to it. So other plugins relying on the pmpro_after_checkout hook may have issues with PayPal Standard.)

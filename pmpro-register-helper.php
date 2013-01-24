@@ -3,7 +3,7 @@
 Plugin Name: PMPro Register Helper
 Plugin URI: http://www.paidmembershipspro.com/pmpro-register-helper/
 Description: Shortcodes and other functions to help customize your registration forms.
-Version: .3
+Version: .4
 Author: Stranger Studios
 Author URI: http://www.strangerstudios.com
 */
@@ -786,3 +786,14 @@ function pmproh_pmpro_checkout_confirm_email($show)
 {
 	return false;
 }
+
+/*
+	Enqueue Select2 JS
+*/
+function pmprorh_enqueue_select2()
+{
+	//should check for cases when this is needed instead of always including.
+	wp_enqueue_style('select2', plugins_url('css/select2.css', __FILE__), '', '3.1', 'screen');
+	wp_enqueue_script('select2', plugins_url('js/select2.js', __FILE__), array( 'jquery' ), '3.1' );
+}
+add_action("init", "pmprorh_enqueue_select2");

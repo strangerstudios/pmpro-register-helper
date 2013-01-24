@@ -49,10 +49,20 @@
 				if(empty($this->size))
 					$this->size = 30;
 			}
-			elseif($this->type == "select")
+			elseif($this->type == "select" || $type == "multiselect" || $type == "select2")
 			{
 				if(empty($this->options))
 					$this->options = array("", "- choose one -");
+				
+				//is a non associative array is passed, set values to labels
+				$repair_non_associative_options = apply_filters("pmprorh_repair_non_associative_options", true);			
+				if($repair_non_associative_options && !$this->is_assoc($this->options))
+				{
+					$newoptions = array();
+					foreach($this->options as $option)
+						$newoptions[$option] = $option;
+					$this->options = $newoptions;
+				}				
 			}
 			elseif($this->type == "textarea")
 			{
@@ -103,6 +113,31 @@
 				}
 				$r .= '</select>';
 			}
+			elseif($this->type == "select2")
+			{
+				//value must be an array
+				if(!is_array($value))
+					$value = array($value);
+					
+				//build multi select
+				$r = '<select id="' . $this->id . '" name="' . $this->name . '[]" multiple="multiple" placeholder="Choose one or more." ';
+				if(!empty($this->class))
+					$r .= 'class="' . $this->class . '" ';
+				$r .= '>';
+				foreach($this->options as $ovalue => $option)
+				{
+					$r .= '<option value="' . esc_attr($ovalue) . '" ';
+					if(!empty($ovalue) && in_array($ovalue, $value))
+						$r .= 'selected="selected" ';
+					$r .= '>' . $option . '</option>';
+				}
+				$r .= '</select>';
+				
+				if(!empty($this->select2options))
+					$r .= '<script>jQuery("#' . $this->id . '").select2({' . $this->select2options . '});</script>';
+				else
+					$r .= '<script>jQuery("#' . $this->id . '").select2();</script>';
+			}
 			elseif($this->type == "textarea")
 			{
 				$r = '<textarea id="' . $this->id . '" name="' . $this->name . '" rows="' . $this->rows . '" cols="' . $this->cols . '" ';
@@ -113,6 +148,11 @@
 			elseif($this->type == "hidden")
 			{
 				$r = '<input type="hidden" id="' . $this->id . '" name="' . $this->name . '" value="' . esc_attr($value) . '" />';						
+			}
+			elseif($this->type == "html")
+			{
+				//arbitrary html/etc
+				$r = $this->html;
 			}
 			else
 			{

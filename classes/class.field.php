@@ -204,4 +204,9 @@
 			</tr>			
 			<?php
 		}		
+		
+		//from: http://stackoverflow.com/questions/173400/php-arrays-a-good-way-to-check-if-an-array-is-associative-or-numeric/4254008#4254008
+		function is_assoc($array) {			
+			return (bool)count(array_filter(array_keys($array), 'is_string'));
+		}
 	}

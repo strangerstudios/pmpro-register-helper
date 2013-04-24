@@ -3,7 +3,7 @@ Contributors: strangerstudios
 Tags: users, user meta, meta, memberships, registration
 Requires at least: 3.0
 Tested up to: 3.4.1
-Stable tag: .4
+Stable tag: .5
 
 Add extra fields to your checkout page. Works with Paid Memberships Pro.
 
@@ -59,7 +59,7 @@ $html = new PMProRH_Field("htmlsection", "html", array("html"=>"<p>You can put a
 
 In can be helpful to store the fields in an array use a loop to add the fields. e.g.
 
-$fields = array()
+$fields = array();
 $fields[] = new PMProRH_Field("company", "text", array("size"=>40, "class"=>"company", "profile"=>true, "required"=>true));
 $fields[] = new PMProRH_Field("referral", "text", array("label"=>"Referral Code", "profile"=>"admins"));
 $fields[] = new PMProRH_Field("gender", "select", array("options"=>array("" => "", "male"=>"Male", "female"=>"Female")));
@@ -87,6 +87,9 @@ Note that the "checkout_boxes" location is now just the first checkout_box in th
 Please post it in the issues section of GitHub and we'll fix it as soon as we can. Thanks for helping. https://github.com/strangerstudios/pmpro-register-helper/issues
 
 == Changelog ==
+= .5 =
+* Added change password page module
+
 = .4 =
 * Added the select2 and html options types.
 

@@ -3,7 +3,7 @@
 Plugin Name: PMPro Register Helper
 Plugin URI: http://www.paidmembershipspro.com/pmpro-register-helper/
 Description: Shortcodes and other functions to help customize your registration forms.
-Version: .4
+Version: .5
 Author: Stranger Studios
 Author URI: http://www.strangerstudios.com
 */
@@ -17,6 +17,7 @@ global $pmprorh_options;
 	If you don't have Paid Memberships Pro installed, you can use the custom registration form included with this plugin by using the [pmprorh_register_form] shortcode.
 */
 require_once(dirname(__FILE__) . "/modules/register-form.php");
+require_once(dirname(__FILE__) . "/modules/change-password.php");
 
 //PMProRH_Field class
 /*

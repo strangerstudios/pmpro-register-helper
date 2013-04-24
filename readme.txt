@@ -89,6 +89,7 @@ Please post it in the issues section of GitHub and we'll fix it as soon as we ca
 == Changelog ==
 = .5 =
 * Added change password page module
+* Added profile page module. (Note this code needs added security, including XSS checks in the post data and wp nonce support.)
 
 = .4 =
 * Added the select2 and html options types.

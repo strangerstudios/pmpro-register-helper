@@ -19,6 +19,12 @@ global $pmprorh_options;
 require_once(dirname(__FILE__) . "/modules/register-form.php");
 require_once(dirname(__FILE__) . "/modules/change-password.php");
 
+/*
+	Modules controlling the directory and profile functionality
+*/
+//require_once(dirname(__FILE__) . "/modules/directory.php");
+require_once(dirname(__FILE__) . "/modules/profile.php");
+
 //PMProRH_Field class
 /*
 	Some examples of creating fields with the class.

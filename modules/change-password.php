@@ -67,18 +67,7 @@ function pmprorh_change_password_form_shortcode($atts, $content=null, $code="")
 	extract(shortcode_atts(array(
 		'level' => NULL
 	), $atts));
-	*/
-	
-	if(!empty($_REQUEST['wp-submit']))
-	{
-		$user_login = $_REQUEST['user_login'];
-		$user_email = $_REQUEST['user_email'];		
-	}
-	else
-	{
-		$user_login = "";
-		$user_email = "";
-	}
+	*/		
 		
 	global $current_user, $pmpro_msg, $pmpro_msgt, $pmprorh_options;
 	ob_start();

@@ -412,6 +412,7 @@ function pmprorh_rf_pmpro_registration_checks($okay)
 	$required = array();
 	
 	//any fields?
+	global $pmprorh_registration_fields;
 	if(!empty($pmprorh_registration_fields))
 	{
 		//cycle through groups

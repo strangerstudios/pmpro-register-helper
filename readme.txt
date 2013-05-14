@@ -92,6 +92,7 @@ Please post it in the issues section of GitHub and we'll fix it as soon as we ca
 * Added change password page module
 * Added profile page module. (Note this code needs added security, including XSS checks in the post data and wp nonce support.)
 * Added directory page module.
+* displayInProfile method for fields will show a dump of the value if the current user does not have the authority to edit the profile user.
 
 = .4 =
 * Added the select2 and html options types.

@@ -2,6 +2,50 @@
 /*
 	This module contains code to show public profiles.
 */
+function pmprorh_profile_preheader()
+{
+	if(!is_admin())
+	{
+		global $post;
+		if(!empty($post->post_content) && strpos($post->post_content, "[pmpro_profile") !== false)
+		{
+			/*
+				Preheader operations here.
+			*/			
+			global $main_post_id;
+			$main_post_id = $post->ID;
+			
+			wp_enqueue_style("pmprorh_profile", plugins_url("css/pmprorh_profile.css", dirname(__FILE__)));	
+			
+			function pmprorh_post_title($title, $post_id = NULL)
+			{				
+				global $main_post_id;
+				if(!empty($_REQUEST['pu']) && $post_id == $main_post_id)
+				{
+					global $wpdb;
+					
+					$user_nicename = $_REQUEST['pu'];
+					$display_name = $wpdb->get_var("SELECT display_name FROM $wpdb->users WHERE user_nicename = '" . $wpdb->escape($user_nicename) . "' LIMIT 1");					
+					
+					if(!empty($display_name))
+					{
+						$title = $display_name;
+						
+						//member lite theme uses this
+						global $longtitle;
+						$longtitle = $display_name;						
+					}
+				}
+				
+				return $title;
+			}
+			add_filter("wp_title", "pmprorh_post_title");
+			add_filter("the_title", "pmprorh_post_title", 10, 2);
+		}
+	}
+}
+add_action("wp", "pmprorh_profile_preheader", 1);	
+
 function pmprorh_profile_shortcode($atts, $content=null, $code="")
 {
 	// $atts    ::= array of attributes
@@ -63,7 +107,11 @@ function pmprorh_profile_shortcode($atts, $content=null, $code="")
 	?>
 		<div id="pmpro_message" class="pmpro_message <?php echo $pmpro_msgt?>"><?php echo $pmpro_msg?></div>
 	<?php
-	}
+	}		
+	
+	//show bio
+	if(!empty($pu->description))
+		echo wpautop($pu->description);
 	
 	//show the fields
 	if(!empty($profile_fields))
@@ -79,12 +127,15 @@ function pmprorh_profile_shortcode($atts, $content=null, $code="")
 			}
 			?>
 			</table>
+			
+			<?php if(current_user_can("edit_users", $current_user->ID)) { ?>
 			<div class="pmpro_submit">
 				<span id="pmpro_submit_span">
 					<input type="hidden" name="submit-profile" value="1">		
 					<input type="submit" class="pmpro_btn pmpro_btn-submit" value="Save Profile">				
 				</span>
 			</div>
+			<?php } ?>
 		</form>
 		<?php
 	}	

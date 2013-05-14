@@ -11,6 +11,8 @@ Author URI: http://www.strangerstudios.com
 global $pmprorh_options;
 //$pmprorh_options["register_redirect_url"] = home_url("/tools/rq/");
 //$pmprorh_options["use_email_for_login"] = true;
+$pmprorh_options["directory_page"] = "/directory/";
+$pmprorh_options["profile_page"] = "/profile/";
 
 //Register Form Module
 /*
@@ -22,7 +24,7 @@ require_once(dirname(__FILE__) . "/modules/change-password.php");
 /*
 	Modules controlling the directory and profile functionality
 */
-//require_once(dirname(__FILE__) . "/modules/directory.php");
+require_once(dirname(__FILE__) . "/modules/directory.php");
 require_once(dirname(__FILE__) . "/modules/profile.php");
 
 //PMProRH_Field class

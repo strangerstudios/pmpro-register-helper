@@ -88,8 +88,10 @@ Please post it in the issues section of GitHub and we'll fix it as soon as we ca
 
 == Changelog ==
 = .5 =
+* Fixed bug where required fields weren't really required.
 * Added change password page module
 * Added profile page module. (Note this code needs added security, including XSS checks in the post data and wp nonce support.)
+* Added directory page module.
 
 = .4 =
 * Added the select2 and html options types.

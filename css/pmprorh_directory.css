@@ -47,3 +47,7 @@ a.pmpro_thumbnail:hover {
 .pmpro_clear {clear: both;}
 
 .pmpro_directory_search {float: right; width: 300px; text-align: right;}
+
+.pmpro_pagination {margin-bottom: 1em;}
+.pmpro_pagination .pmpro_prev {float: left; width: 250px;}
+.pmpro_pagination .pmpro_next {float: right; width: 250px;}

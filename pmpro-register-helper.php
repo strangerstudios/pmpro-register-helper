@@ -3,7 +3,7 @@
 Plugin Name: PMPro Register Helper
 Plugin URI: http://www.paidmembershipspro.com/pmpro-register-helper/
 Description: Shortcodes and other functions to help customize your registration forms.
-Version: .5
+Version: .5.1
 Author: Stranger Studios
 Author URI: http://www.strangerstudios.com
 */
@@ -807,3 +807,38 @@ function pmprorh_enqueue_select2()
 	wp_enqueue_script('select2', plugins_url('js/select2.js', __FILE__), array( 'jquery' ), '3.1' );
 }
 add_action("init", "pmprorh_enqueue_select2");
+
+
+/*
+	adding meta fields to confirmation email
+*/
+function pmprorh_pmpro_email_filter($email)
+{
+	global $wpdb;
+ 
+	//only update admin confirmation emails
+	if(strpos($email->template, "checkout") !== false && strpos($email->template, "admin") !== false)
+	{ 
+		//get the user_id from the email
+		$user_id = $wpdb->get_var("SELECT ID FROM $wpdb->users WHERE user_email = '" . $email->data['user_email'] . "' LIMIT 1");
+
+		if(!empty($user_id))
+		{
+			//get meta fields
+			$fields = pmprorh_getProfileFields($user_id);
+			
+			//add to bottom of email
+			if(!empty($fields))
+			{
+				$email->body .= "\nExtra Fields:\n";
+				foreach($fields as $field)
+				{
+					$email->body .= "- " . $field->label . ": " . get_user_meta($user_id, $field->name, true) . "\n";
+				}
+			}
+		}
+	}
+ 
+	return $email;
+}
+add_filter("pmpro_email_filter", "pmprorh_pmpro_email_filter", 10, 2);

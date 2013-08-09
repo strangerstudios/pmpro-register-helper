@@ -830,12 +830,13 @@ function pmprorh_pmpro_email_filter($email)
 			//add to bottom of email
 			if(!empty($fields))
 			{
-				$email->body .= "\nExtra Fields:\n";
+				$email->body .= "<p>Extra Fields:<br />";
 				foreach($fields as $field)
 				{
-					$email->body .= "- " . $field->label . ": " . get_user_meta($user_id, $field->name, true) . "\n";
-				}
-			}
+					$email->body .= "- " . $field->label . ": " . get_user_meta($user_id, $field->name, true) . "<br />";
+				}				
+				$email->body .= "</p>";
+			}			
 		}
 	}
  

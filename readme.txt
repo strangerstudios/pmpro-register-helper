@@ -3,7 +3,7 @@ Contributors: strangerstudios
 Tags: users, user meta, meta, memberships, registration
 Requires at least: 3.0
 Tested up to: 3.6
-Stable tag: .5.1
+Stable tag: .5.2
 
 Add extra fields to your checkout page. Works with Paid Memberships Pro.
 
@@ -87,6 +87,10 @@ Note that the "checkout_boxes" location is now just the first checkout_box in th
 Please post it in the issues section of GitHub and we'll fix it as soon as we can. Thanks for helping. https://github.com/strangerstudios/pmpro-register-helper/issues
 
 == Changelog ==
+= .5.2 =
+* Supports sending false as a label to keep the label from being shown.
+* Fixed capability check in $field->displayInProfile to be "edit_user" instead of "edit_users".
+
 = .5.1 =
 * Includes meta fields and values in checkout confirmation emails sent to admins. (But not to members. Feel free to copy the code at the bottom of pmpro-register-helper.php and tweak to send to members as well. May add a way to do this in the future with an option to turn on/off.)
 

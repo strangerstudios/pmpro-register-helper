@@ -72,8 +72,10 @@
 					$this->cols = 80;
 			}	
 
-			//default label
-			if(empty($this->label))
+			//default label			
+			if(isset($this->label) && $this->label === false)
+				$this->label = false;	//still false
+			elseif(empty($this->label))
 				$this->label = ucwords($this->name);
 			
 			return true;
@@ -199,7 +201,7 @@
 				<th><label for="<?php echo esc_attr($this->name);?>"><?php echo $this->label;?></label></th>
 				<td>
 					<?php 						
-						if(current_user_can("edit_users", $current_user->ID))
+						if(current_user_can("edit_user", $current_user->ID))
 							$this->display($value); 
 						else
 							echo "<div>" . $value . "</div>";

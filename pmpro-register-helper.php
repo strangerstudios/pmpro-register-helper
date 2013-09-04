@@ -3,7 +3,7 @@
 Plugin Name: PMPro Register Helper
 Plugin URI: http://www.paidmembershipspro.com/pmpro-register-helper/
 Description: Shortcodes and other functions to help customize your registration forms.
-Version: .5.1
+Version: .5.2.1
 Author: Stranger Studios
 Author URI: http://www.strangerstudios.com
 */
@@ -182,7 +182,7 @@ function pmprorh_register_form_after_password()
 {
 	global $pmprorh_registration_fields;	
 	
-	if(!empty($pmprorh_registration_fields["pmprorh_after_passwprd"]))
+	if(!empty($pmprorh_registration_fields["pmprorh_after_password"]))
 	{
 		foreach($pmprorh_registration_fields["pmprorh_after_password"] as $field)
 		{			

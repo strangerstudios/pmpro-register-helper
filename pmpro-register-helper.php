@@ -616,7 +616,7 @@ function pmprorh_signup_shortcode($atts, $content=null, $code="")
 				<label for="username">Username</label>
 				<input id="username" name="username" type="text" class="input" size="30" value="" /> 
 			</div>
-			<?php do_action("pmpro_after_username");?>
+			<?php do_action("pmpro_checkout_after_username");?>
 			<div>
 				<label for="password">Password</label>
 				<input id="password" name="password" type="password" class="input" size="30" value="" /> 
@@ -629,7 +629,7 @@ function pmprorh_signup_shortcode($atts, $content=null, $code="")
 					<input id="password2" name="password2" type="password" class="input" size="30" value="" /> 
 				</div>			
 			<?php } ?>
-			<?php do_action("pmpro_after_password");?>
+			<?php do_action("pmpro_checkout_after_password");?>
 			<div>
 				<label for="bemail">E-mail Address</label>
 				<input id="bemail" name="bemail" type="text" class="input" size="30" value="" /> 
@@ -642,7 +642,7 @@ function pmprorh_signup_shortcode($atts, $content=null, $code="")
 					<input id="bconfirmemail" name="bconfirmemail" type="text" class="input" size="30" value="" /> 
 				</div>	         
 			<?php } ?>
-			<?php do_action("pmpro_after_email");?>
+			<?php do_action("pmpro_checkout_after_email");?>
 			<div class="pmpro_hidden">
 				<label for="fullname">Full Name</label>
 				<input id="fullname" name="fullname" type="text" class="input" size="30" value="" /> <strong>LEAVE THIS BLANK</strong>

@@ -191,7 +191,7 @@
 			<?php
 		}
 		
-		function displayInProfile($user_id)
+		function displayInProfile($user_id, $edit = NULL)
 		{
 			global $current_user;
 			$value = get_user_meta($user_id, $this->name, true);
@@ -201,7 +201,7 @@
 				<th><label for="<?php echo esc_attr($this->name);?>"><?php echo $this->label;?></label></th>
 				<td>
 					<?php 						
-						if(current_user_can("edit_user", $current_user->ID))
+						if(current_user_can("edit_user", $current_user->ID) && $edit !== false)
 							$this->display($value); 
 						else
 							echo "<div>" . $value . "</div>";

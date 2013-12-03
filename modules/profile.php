@@ -79,7 +79,7 @@ function pmprorh_profile_shortcode($atts, $content=null, $code="")
 	
 	//which fields are marked for the profile	
 	$profile_fields = pmprorh_getProfileFields($pu->ID);
-	
+		
 	//are we saving?
 	if(!empty($_REQUEST['submit-profile']))
 	{
@@ -113,22 +113,24 @@ function pmprorh_profile_shortcode($atts, $content=null, $code="")
 	if(!empty($pu->description))
 		echo wpautop($pu->description);
 	
+	//show users be able to edit their own profile?
+	$edit_own_profile = false;	//can just send them to the WP profile page to edit if you want
+	
 	//show the fields
 	if(!empty($profile_fields))
 	{	
 		?>
 		<form action="" method="post">
 			<table class="form-table">
-			<?php
-			//cycle through groups
+			<?php			
 			foreach($profile_fields as $field)
 			{			
-				$field->displayInProfile($pu->ID);			
+				$field->displayInProfile($pu->ID, $edit_own_profile);			
 			}
 			?>
 			</table>
 			
-			<?php if(current_user_can("edit_users", $current_user->ID)) { ?>
+			<?php if(current_user_can("edit_users", $current_user->ID) && $edit_own_profile) { ?>
 			<div class="pmpro_submit">
 				<span id="pmpro_submit_span">
 					<input type="hidden" name="submit-profile" value="1">		

@@ -162,7 +162,12 @@
 			}
 			
 			if(!empty($this->required) && !empty($this->showrequired))
-				$r .= '<span class="required">* Required</span>';
+			{
+				if(is_string($this->showrequired))
+					$r .= $this->showrequired;
+				else
+					$r .= '<span class="pmpro_asterisk"> *</span>';
+			}
 			return $r;
 		}	
 

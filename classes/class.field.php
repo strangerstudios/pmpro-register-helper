@@ -49,7 +49,7 @@
 				if(empty($this->size))
 					$this->size = 30;
 			}
-			elseif($this->type == "select" || $type == "multiselect" || $type == "select2")
+			elseif($this->type == "select" || $type == "multiselect" || $type == "select2" || $type == "radio")
 			{
 				if(empty($this->options))
 					$this->options = array("", "- choose one -");
@@ -140,6 +140,19 @@
 				else
 					$r .= '<script>jQuery("#' . $this->id . '").select2();</script>';
 			}
+			elseif($this->type == "radio")
+			{
+				$count = 0;
+				foreach($this->options as $ovalue => $option)
+				{
+					$count++;
+					$r .= '<input type="radio" id="pmprorh_field_' . $this->name . $count . '" name="' . $this->name . '" value="' . esc_attr($ovalue) . '" ';
+					if(!empty($ovalue) && $ovalue == $value)
+						$r .= 'checked="checked"';
+					$r .= ' /> ';
+					$r .= '<label class="pmprorh_radio_label" for="pmprorh_field_' . $this->name . $count . '">' . $option . '</label> &nbsp; ';
+				}
+			}
 			elseif($this->type == "textarea")
 			{
 				$r = '<textarea id="' . $this->id . '" name="' . $this->name . '" rows="' . $this->rows . '" cols="' . $this->cols . '" ';
@@ -158,7 +171,7 @@
 			}
 			else
 			{
-				$r = "Unknown type for field <strong>" . $this->name . "</strong>.";
+				$r = "Unknown type <strong>" . $this->type . "</strong> for field <strong>" . $this->name . "</strong>.";
 			}
 			
 			if(!empty($this->required) && !empty($this->showrequired))
@@ -167,10 +180,64 @@
 					$r .= $this->showrequired;
 				else
 					$r .= '<span class="pmpro_asterisk"> *</span>';
-			}
+			}						
+			
 			return $r;
 		}	
-
+		
+		function getDependenciesJS()
+		{
+			//dependencies
+			if(!empty($this->depends))
+			{	
+				//build the checks
+				$checks = array();
+				foreach($this->depends as $check)
+				{
+					if(!empty($check['id']))
+					{
+						$checks[] = "(jQuery('#" . $check['id'] . " input').val() == " . json_encode($check['value']) . " || " . 
+									"jQuery('#" . $check['id'] . " select').val() == " . json_encode($check['value']) . ")";
+						$binds[] = "#" . $check['id'] . " input, #" . $check['id'] . " select";
+					}
+				}
+				
+				if(!empty($checks) && !empty($binds))
+				{
+				?>
+				<script>
+					//function to check and hide/show
+					function pmprorh_<?php echo $this->id;?>_hideshow()
+					{
+						if(
+							<?php echo implode(" && ", $checks); ?>
+						)
+						{
+							jQuery('#<?php echo $this->id;?>').show();
+							jQuery('#<?php echo $this->id;?>').removeAttr('disabled');
+						}
+						else
+						{
+							jQuery('#<?php echo $this->id;?>').hide();
+							jQuery('#<?php echo $this->id;?>').attr('disabled', 'disabled');
+						}
+					}
+					
+					jQuery(document).ready(function() {											
+							//run on page load
+							pmprorh_<?php echo $this->id;?>_hideshow();
+							
+							//and run when certain fields are changed
+							jQuery('<?php echo implode(',', $binds);?>').bind('click change keyup', function() {
+								pmprorh_<?php echo $this->id;?>_hideshow();
+							});
+					});
+				</script>
+				<?php
+				}
+			}
+		}
+		
 		function displayAtCheckout()
 		{
 			global $current_user;
@@ -186,7 +253,7 @@
 				$value = "";
 				
 			?>
-			<div <?php if(!empty($this->divclass)) echo 'class="' . $this->divclass . '"';?>>
+			<div id="<?php echo $this->id;?>" <?php if(!empty($this->divclass)) echo 'class="' . $this->divclass . '"';?>>
 				<label for="<?php echo esc_attr($this->name);?>"><?php echo $this->label;?></label>
 				<?php $this->display($value); ?>	
 				<?php if(!empty($this->hint)) { ?>
@@ -194,6 +261,8 @@
 				<?php } ?>
 			</div>	
 			<?php
+			
+			$this->getDependenciesJS();
 		}
 		
 		function displayInProfile($user_id, $edit = NULL)
@@ -202,7 +271,7 @@
 			$value = get_user_meta($user_id, $this->name, true);
 				
 			?>
-			<tr>
+			<tr id="<?php echo $this->id;?>">
 				<th><label for="<?php echo esc_attr($this->name);?>"><?php echo $this->label;?></label></th>
 				<td>
 					<?php 						
@@ -214,6 +283,8 @@
 				</td>
 			</tr>			
 			<?php
+			
+			$this->getDependenciesJS();
 		}		
 		
 		//from: http://stackoverflow.com/questions/173400/php-arrays-a-good-way-to-check-if-an-array-is-associative-or-numeric/4254008#4254008

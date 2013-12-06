@@ -122,7 +122,6 @@ function pmprorh_directory_shortcode($atts, $content=null, $code="")
 							<a href="<?php echo home_url($pmprorh_options["profile_page"]);?>?pu=<?php echo $auser->user_nicename;?>"><i class="pmpro_icon-user"></i> View Profile</a>																															
 							<div class="pmpro_clear"></div>
 						</div>		
-						<hr />		
 						<?php																			
 					}
 				?>
@@ -132,7 +131,7 @@ function pmprorh_directory_shortcode($atts, $content=null, $code="")
 		else
 		{	
 			?>
-			<div class="message">No matching profiles found<?php if($s) { ?> within <em><?php echo ucwords(esc_html($s));?></em>. <a href="<?php echo home_url($pmprorh_options["directory_page"]);?>">View All Members</a><?php } else { ?>.<?php } ?></div>
+			<div class="pmpro_message pmpro_error">No matching profiles found<?php if($s) { ?> within <em><?php echo ucwords(esc_html($s));?></em>. <a href="<?php echo home_url($pmprorh_options["directory_page"]);?>">View All Members</a><?php } else { ?>.<?php } ?></div>
 			<?php					
 		}
 		

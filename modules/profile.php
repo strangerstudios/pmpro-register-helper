@@ -120,6 +120,7 @@ function pmprorh_profile_shortcode($atts, $content=null, $code="")
 	if(!empty($profile_fields))
 	{	
 		?>
+		<div class="pmpro_directory_profile">
 		<form action="" method="post">
 			<table class="form-table">
 			<?php			
@@ -139,6 +140,7 @@ function pmprorh_profile_shortcode($atts, $content=null, $code="")
 			</div>
 			<?php } ?>
 		</form>
+		</div>
 		<?php
 	}	
 			

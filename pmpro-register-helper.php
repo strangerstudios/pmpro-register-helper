@@ -3,7 +3,7 @@
 Plugin Name: PMPro Register Helper
 Plugin URI: http://www.paidmembershipspro.com/pmpro-register-helper/
 Description: Shortcodes and other functions to help customize your registration forms.
-Version: .5.3
+Version: .5.4
 Author: Stranger Studios
 Author URI: http://www.strangerstudios.com
 */
@@ -356,13 +356,13 @@ function pmprorh_pmpro_after_checkout($user_id)
 	
 	//any fields?
 	if(!empty($pmprorh_registration_fields))
-	{
+	{		
 		//cycle through groups
 		foreach($pmprorh_registration_fields as $where => $fields)
 		{						
 			//cycle through fields
 			foreach($fields as $field)
-			{
+			{				
 				if(!pmprorh_checkFieldForLevel($field))
 					continue;
 				
@@ -382,11 +382,16 @@ function pmprorh_pmpro_after_checkout($user_id)
 					
 					//unset
 					unset($_SESSION[$field->name]);
-				}	
+				}
+				elseif(isset($_FILES[$field->name]))
+				{
+					//file
+					$value = $_FILES[$field->name]['name'];
+				}
 												
 				//update user meta
 				if(isset($value))	
-				{
+				{					
 					//callback?
 					if(!empty($field->save_function))
 						call_user_func($field->save_function, $user_id, $field->name, $value);
@@ -395,7 +400,7 @@ function pmprorh_pmpro_after_checkout($user_id)
 				}
 			}			
 		}
-	}			
+	}
 }
 add_action('pmpro_after_checkout', 'pmprorh_pmpro_after_checkout');
 add_action('pmpro_before_send_to_paypal_standard', 'pmprorh_pmpro_after_checkout');	//for paypal standard we need to do this just before sending the user to paypal
@@ -723,7 +728,7 @@ function pmprorh_pmpro_registration_checks($okay)
 add_filter("pmpro_registration_checks", "pmprorh_pmpro_registration_checks");
 
 function pmprorh_checkFieldForLevel($field, $scope = "default", $args = NULL)
-{
+{	
 	if(!empty($field->levels))
 	{
 		if($scope == "profile")
@@ -848,3 +853,22 @@ function pmprorh_pmpro_email_filter($email)
 	return $email;
 }
 add_filter("pmpro_email_filter", "pmprorh_pmpro_email_filter", 10, 2);
+
+/*
+	Replace last occurence of a string.
+	From: http://stackoverflow.com/a/3835653/1154321
+*/
+if(!function_exists("str_lreplace"))
+{
+	function str_lreplace($search, $replace, $subject)
+	{
+		$pos = strrpos($subject, $search);
+
+		if($pos !== false)
+		{
+			$subject = substr_replace($subject, $replace, $pos, strlen($search));
+		}
+
+		return $subject;
+	}
+}

@@ -71,6 +71,11 @@
 				if(empty($this->cols))
 					$this->cols = 80;
 			}	
+			elseif($this->type == "file")
+			{
+				//use the file save function
+				$this->save_function = array("PMProRH_Field", "saveFile");
+			}
 
 			//default label			
 			if(isset($this->label) && $this->label === false)
@@ -81,8 +86,62 @@
 			return true;
 		}
 		
+		//save function for files
+		function saveFile($user_id, $name, $value)
+		{			
+			//setup some vars
+			$file = $_FILES[$name];
+			$user = get_userdata($user_id);
+			
+			//check extension against allowed extensions
+			$filetype = wp_check_filetype($file['name']);
+			
+			//TODO check extensions here. need to pass $this->extensions to the function
+			//if(!empty($this->extensions) && !in_array($filetype['ext'], $this->extensions))
+			//	return false;	//bail
+			
+			/*
+				save file in uploads
+			*/
+			//check for a register helper directory in wp-content
+			$upload_dir = wp_upload_dir();
+			$pmprorh_dir = $upload_dir['basedir'] . "/pmpro-register-helper/" . $user->user_login . "/";
+			
+			//create the dir and subdir if needed
+			if(!is_dir($pmprorh_dir))
+			{
+				wp_mkdir_p($pmprorh_dir);
+			}
+						
+			//if we already have a file for this field, delete it
+			$old_file = get_user_meta($user->ID, $name, true);			
+			if(!empty($old_file) && !empty($old_file['fullpath']) && file_exists($old_file['fullpath']))
+			{				
+				unlink($old_file['fullpath']);				
+			}
+			
+			//figure out new filename
+			$filename = $file['name'];
+			$count = 0;
+			while(file_exists($pmprorh_dir . $filename))
+			{
+				if($count)
+					$filename = str_lreplace("-" . $count . "." . $filetype['ext'], "-" . strval($count+1) . "." . $filetype['ext'], $filename);
+				else
+					$filename = str_lreplace("." . $filetype['ext'], "-1." . $filetype['ext'], $filename);
+					
+				$count++;
+			}
+			
+			//save file
+			move_uploaded_file($file['tmp_name'], $pmprorh_dir . $filename);
+			
+			//save filename in usermeta
+			update_user_meta($user_id, $name, array("original_filename"=>$file['name'], "filename"=>$filename, "fullpath"=> $pmprorh_dir . $filename, "fullurl"=>content_url("/pmpro-register-helper/" . $user->user_login . "/" . $filename), "size"=>$file['size']));
+		}
+		
 		//echo the HTML for the field
-		function display($value = "")
+		function display($value = NULL)
 		{
 			echo $this->getHTML($value);
 			return;
@@ -98,6 +157,8 @@
 					$r .= 'size="' . $this->size . '" ';
 				if(!empty($this->class))
 					$r .= 'class="' . $this->class . '" ';
+				if(!empty($this->readonly))
+					$r .= 'readonly="readonly" ';
 				$r .= ' />';				
 			}
 			elseif($this->type == "select")
@@ -105,6 +166,8 @@
 				$r = '<select id="' . $this->id . '" name="' . $this->name . '" ';
 				if(!empty($this->class))
 					$r .= 'class="' . $this->class . '" ';
+				if(!empty($this->readonly))
+					$r .= 'readonly="readonly" ';
 				$r .= '>\n';
 				foreach($this->options as $ovalue => $option)
 				{
@@ -125,6 +188,8 @@
 				$r = '<select id="' . $this->id . '" name="' . $this->name . '[]" multiple="multiple" placeholder="Choose one or more." ';
 				if(!empty($this->class))
 					$r .= 'class="' . $this->class . '" ';
+				if(!empty($this->readonly))
+					$r .= 'readonly="readonly" ';
 				$r .= '>';
 				foreach($this->options as $ovalue => $option)
 				{
@@ -149,6 +214,8 @@
 					$r .= '<input type="radio" id="pmprorh_field_' . $this->name . $count . '" name="' . $this->name . '" value="' . esc_attr($ovalue) . '" ';
 					if(!empty($ovalue) && $ovalue == $value)
 						$r .= 'checked="checked"';
+					if(!empty($this->readonly))
+						$r .= 'readonly="readonly" ';
 					$r .= ' /> ';
 					$r .= '<label class="pmprorh_radio_label" for="pmprorh_field_' . $this->name . $count . '">' . $option . '</label> &nbsp; ';
 				}
@@ -158,16 +225,46 @@
 				$r = '<textarea id="' . $this->id . '" name="' . $this->name . '" rows="' . $this->rows . '" cols="' . $this->cols . '" ';
 				if(!empty($this->class))
 					$r .= 'class="' . $this->class . '" ';
+				if(!empty($this->readonly))
+					$r .= 'readonly="readonly" ';
 				$r .= '>' . esc_textarea($value) . '</textarea>';				
 			}
 			elseif($this->type == "hidden")
 			{
-				$r = '<input type="hidden" id="' . $this->id . '" name="' . $this->name . '" value="' . esc_attr($value) . '" />';						
+				$r = '<input type="hidden" id="' . $this->id . '" name="' . $this->name . '" value="' . esc_attr($value) . '" ';
+				if(!empty($this->readonly))
+					$r .= 'readonly="readonly" ';
+				$r .= '/>';						
 			}
 			elseif($this->type == "html")
 			{
 				//arbitrary html/etc
 				$r = $this->html;
+			}
+			elseif($this->type == "file")
+			{
+				//file input
+				$r = '<input type="file" id="' . $this->id . '" name="' . $this->name . '" />';
+				
+				//show name of existing file
+				if(!empty($value))
+					$r .= basename($value);
+				
+				if(!empty($this->readonly))
+					$r .= 'readonly="readonly" ';
+				
+				//include script to change enctype of the form
+				$r .= '
+				<script>
+					jQuery(document).ready(function() {
+						jQuery("#' . $this->id . '").closest("form").attr("enctype", "multipart/form-data");
+					});
+				</script>
+				';
+			}
+			elseif($this->type == "readonly")
+			{
+				$r .= $this->value;
 			}
 			else
 			{
@@ -189,36 +286,36 @@
 		{
 			//dependencies
 			if(!empty($this->depends))
-			{	
+			{					
 				//build the checks
 				$checks = array();
 				foreach($this->depends as $check)
 				{
 					if(!empty($check['id']))
 					{
-						$checks[] = "(jQuery('#" . $check['id'] . " input').val() == " . json_encode($check['value']) . " || " . 
-									"jQuery('#" . $check['id'] . " select').val() == " . json_encode($check['value']) . ")";
-						$binds[] = "#" . $check['id'] . " input, #" . $check['id'] . " select";
+						$checks[] = "(jQuery('#" . $check['id'] . "_div input').val() == " . json_encode($check['value']) . " || " . 
+									"jQuery('#" . $check['id'] . "_div select').val() == " . json_encode($check['value']) . ")";
+						$binds[] = "#" . $check['id'];
 					}
 				}
-				
+								
 				if(!empty($checks) && !empty($binds))
 				{
 				?>
 				<script>
 					//function to check and hide/show
 					function pmprorh_<?php echo $this->id;?>_hideshow()
-					{
+					{						
 						if(
 							<?php echo implode(" && ", $checks); ?>
 						)
 						{
-							jQuery('#<?php echo $this->id;?>').show();
+							jQuery('#<?php echo $this->id;?>_div').show();
 							jQuery('#<?php echo $this->id;?>').removeAttr('disabled');
 						}
 						else
 						{
-							jQuery('#<?php echo $this->id;?>').hide();
+							jQuery('#<?php echo $this->id;?>_div').hide();
 							jQuery('#<?php echo $this->id;?>').attr('disabled', 'disabled');
 						}
 					}
@@ -247,15 +344,19 @@
 				$value = $_REQUEST[$this->name];
 			elseif(isset($_SESSION[$this->name]))
 				$value = $_SESSION[$this->name];
-			elseif(!empty($current_user->ID))
-				$value = get_user_meta($current_user->ID, $this->name, true);			
+			elseif(!empty($current_user->ID) && metadata_exists("user", $current_user->ID, $this->name))
+			{				
+				$file = get_user_meta($current_user->ID, $this->name, true);			
+				$value = $file['filename'];				
+			}
+			elseif(!empty($this->value))
+				$value = $this->value;
 			else
-				$value = "";
-				
+				$value = "";			
 			?>
-			<div id="<?php echo $this->id;?>" <?php if(!empty($this->divclass)) echo 'class="' . $this->divclass . '"';?>>
+			<div id="<?php echo $this->id;?>_div" <?php if(!empty($this->divclass)) echo 'class="' . $this->divclass . '"';?>>
 				<label for="<?php echo esc_attr($this->name);?>"><?php echo $this->label;?></label>
-				<?php $this->display($value); ?>	
+				<?php $this->display($value); ?>
 				<?php if(!empty($this->hint)) { ?>
 					<div class="leftmar"><small class="lite"><?php echo $this->hint;?></small></div>
 				<?php } ?>
@@ -268,8 +369,15 @@
 		function displayInProfile($user_id, $edit = NULL)
 		{
 			global $current_user;
-			$value = get_user_meta($user_id, $this->name, true);
-				
+			if(metadata_exists("user", $user_id, $this->name))
+			{				
+				$file = get_user_meta($user_id, $this->name, true);
+				$value = $file['filename'];
+			}
+			elseif(!empty($this->value))
+				$value = $this->value;
+			else
+				$value = "";				
 			?>
 			<tr id="<?php echo $this->id;?>">
 				<th><label for="<?php echo esc_attr($this->name);?>"><?php echo $this->label;?></label></th>

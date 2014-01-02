@@ -3,7 +3,7 @@
 Plugin Name: PMPro Register Helper
 Plugin URI: http://www.paidmembershipspro.com/pmpro-register-helper/
 Description: Shortcodes and other functions to help customize your registration forms.
-Version: .5.4
+Version: .5.5
 Author: Stranger Studios
 Author URI: http://www.strangerstudios.com
 */
@@ -434,7 +434,28 @@ function pmprorh_rf_pmpro_registration_checks($okay)
 				if(!pmprorh_checkFieldForLevel($field))
 					continue;
 					
-				$value = $_REQUEST[$field->name];	
+				if(isset($_REQUEST[$field->name]))
+					$value = $_REQUEST[$field->name];	
+				elseif(isset($_FILES[$field->name]))
+				{
+					$value = $_FILES[$field->name]['name'];
+					
+					//handle empty file but the user already has a file
+					if(empty($value) && !empty($_REQUEST[$field->name . "_old"]))
+						$value = $_REQUEST[$field->name . "_old"];
+					else
+					{
+						//check extension against allowed extensions
+						$filetype = wp_check_filetype_and_ext($_FILES[$field->name]['tmp_name'], $_FILES[$field->name]['name']);						
+						if((!$filetype['type'] || !$filetype['ext'] ) && !current_user_can( 'unfiltered_upload' ))
+						{			
+							pmpro_setMessage("Sorry, the file type for " . $_FILES[$field->name]['name'] . " is not permitted for security reasons.", "pmpro_error");
+							return false;
+						}
+					}
+				}
+				else
+					$value = false;
 			 
 				if(!empty($field->required) && empty($value))
 				{
@@ -553,7 +574,6 @@ function pmprorh_getProfileFields($user_id)
 */
 function pmprorh_rf_save_extra_profile_fields( $user_id ) 
 {
-
 	if ( !current_user_can( 'edit_user', $user_id ) )
 		return false;
 
@@ -565,14 +585,14 @@ function pmprorh_rf_save_extra_profile_fields( $user_id )
 		//cycle through fields
 		foreach($profile_fields as $field)
 		{
-			if(isset($_POST[$field->name]))
+			if(isset($_POST[$field->name]) || isset($_FILES[$field->name]))
 			{
 				//callback?
 				if(!empty($field->save_function))
 					call_user_func($field->save_function, $user_id, $field->name, $_POST[$field->name]);
 				else
 					update_user_meta($user_id, $field->name, $_POST[$field->name]);				
-			}
+			}			
 		}
 	}
 }

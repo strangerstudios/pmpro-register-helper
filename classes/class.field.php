@@ -88,17 +88,22 @@
 		
 		//save function for files
 		function saveFile($user_id, $name, $value)
-		{			
+		{
 			//setup some vars
 			$file = $_FILES[$name];
 			$user = get_userdata($user_id);
 			
-			//check extension against allowed extensions
-			$filetype = wp_check_filetype($file['name']);
+			//no file?
+			if(empty($file['name']))
+				return;
 			
-			//TODO check extensions here. need to pass $this->extensions to the function
-			//if(!empty($this->extensions) && !in_array($filetype['ext'], $this->extensions))
-			//	return false;	//bail
+			//check extension against allowed extensions
+			$filetype = wp_check_filetype_and_ext($file['tmp_name'], $file['name']);									
+			if((!$filetype['type'] || !$filetype['ext'] ) && !current_user_can( 'unfiltered_upload' ))
+			{			
+				//we throw an error earlier, but this just bails on the upload just in case
+				return false;
+			}
 			
 			/*
 				save file in uploads
@@ -129,15 +134,19 @@
 					$filename = str_lreplace("-" . $count . "." . $filetype['ext'], "-" . strval($count+1) . "." . $filetype['ext'], $filename);
 				else
 					$filename = str_lreplace("." . $filetype['ext'], "-1." . $filetype['ext'], $filename);
-					
+								
 				$count++;
+				
+				//let's not expect more than 50 files with the same name
+				if($count > 50)
+					die("Error uploading file. Too many files with the same name.");									
 			}
 			
 			//save file
 			move_uploaded_file($file['tmp_name'], $pmprorh_dir . $filename);
 			
 			//save filename in usermeta
-			update_user_meta($user_id, $name, array("original_filename"=>$file['name'], "filename"=>$filename, "fullpath"=> $pmprorh_dir . $filename, "fullurl"=>content_url("/pmpro-register-helper/" . $user->user_login . "/" . $filename), "size"=>$file['size']));
+			update_user_meta($user_id, $name, array("original_filename"=>$file['name'], "filename"=>$filename, "fullpath"=> $pmprorh_dir . $filename, "fullurl"=>content_url("/uploads/pmpro-register-helper/" . $user->user_login . "/" . $filename), "size"=>$file['size']));
 		}
 		
 		//echo the HTML for the field
@@ -243,12 +252,29 @@
 			}
 			elseif($this->type == "file")
 			{
-				//file input
-				$r = '<input type="file" id="' . $this->id . '" name="' . $this->name . '" />';
+				$r = '';
 				
 				//show name of existing file
 				if(!empty($value))
-					$r .= basename($value);
+				{
+					$r .= '<div class="leftmar">Current File: <a target="_blank" href="' . $this->file['fullurl'] . '">' . basename($value) . '</a></div><div class="leftmar">';
+				}
+			
+				//file input
+				$r .= '<input type="file" id="' . $this->id . '" name="' . $this->name . '" />';								
+				
+				//old value
+				if(is_user_logged_in())
+				{
+					global $current_user;
+					$old_value = get_user_meta($current_user->ID, $this->name, true);
+					if(!empty($old_value))
+						$r .= '<input type="hidden" name="' . $this->name . '_old" value="' . esc_attr($old_value['filename']) . '" />';
+				}
+				
+				//closing div
+				if(!empty($value))
+					$r .= '</div>';
 				
 				if(!empty($this->readonly))
 					$r .= 'readonly="readonly" ';
@@ -271,13 +297,17 @@
 				$r = "Unknown type <strong>" . $this->type . "</strong> for field <strong>" . $this->name . "</strong>.";
 			}
 			
+			//show required by default
+			if(!empty($this->required) && !isset($this->showrequired))
+				$this->showrequired = true;
+			
 			if(!empty($this->required) && !empty($this->showrequired))
 			{
 				if(is_string($this->showrequired))
 					$r .= $this->showrequired;
 				else
 					$r .= '<span class="pmpro_asterisk"> *</span>';
-			}						
+			}		
 			
 			return $r;
 		}	
@@ -346,8 +376,8 @@
 				$value = $_SESSION[$this->name];
 			elseif(!empty($current_user->ID) && metadata_exists("user", $current_user->ID, $this->name))
 			{				
-				$file = get_user_meta($current_user->ID, $this->name, true);			
-				$value = $file['filename'];				
+				$this->file = get_user_meta($current_user->ID, $this->name, true);			
+				$value = $this->file['filename'];				
 			}
 			elseif(!empty($this->value))
 				$value = $this->value;
@@ -371,8 +401,8 @@
 			global $current_user;
 			if(metadata_exists("user", $user_id, $this->name))
 			{				
-				$file = get_user_meta($user_id, $this->name, true);
-				$value = $file['filename'];
+				$this->file = get_user_meta($user_id, $this->name, true);
+				$value = $this->file['filename'];
 			}
 			elseif(!empty($this->value))
 				$value = $this->value;

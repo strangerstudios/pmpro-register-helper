@@ -3,7 +3,7 @@ Contributors: strangerstudios
 Tags: users, user meta, meta, memberships, registration
 Requires at least: 3.0
 Tested up to: 3.6
-Stable tag: .5.4
+Stable tag: .5.5
 
 Add extra fields to your checkout page. Works with Paid Memberships Pro.
 
@@ -106,6 +106,11 @@ Note that the "checkout_boxes" location is now just the first checkout_box in th
 Please post it in the issues section of GitHub and we'll fix it as soon as we can. Thanks for helping. https://github.com/strangerstudios/pmpro-register-helper/issues
 
 == Changelog ==
+= .5.5 =
+* Properly handling required fields of type file.
+* Checking file type and extension against WP's list for security.
+* "showrequired" defaults to true now if "required" is set.
+
 = .5.4 =
 * Added readonly field type (displays a label and static text) and readonly property (sets the readonly property of the html element). Examples in readme.
 * Changed ids on the checkout form. The inputs will now have id = to the one set. The wrapping div will have an id like id_div.

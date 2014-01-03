@@ -443,13 +443,13 @@ function pmprorh_rf_pmpro_registration_checks($okay)
 					//handle empty file but the user already has a file
 					if(empty($value) && !empty($_REQUEST[$field->name . "_old"]))
 						$value = $_REQUEST[$field->name . "_old"];
-					else
+					elseif(!empty($value))
 					{
 						//check extension against allowed extensions
 						$filetype = wp_check_filetype_and_ext($_FILES[$field->name]['tmp_name'], $_FILES[$field->name]['name']);						
 						if((!$filetype['type'] || !$filetype['ext'] ) && !current_user_can( 'unfiltered_upload' ))
 						{			
-							pmpro_setMessage("Sorry, the file type for " . $_FILES[$field->name]['name'] . " is not permitted for security reasons.", "pmpro_error");
+							pmpro_setMessage(sprintf(__("Sorry, the file type for %s is not permitted for security reasons.", "pmpro"), $_FILES[$field->name]['name']), "pmpro_error");
 							return false;
 						}
 					}

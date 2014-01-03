@@ -400,9 +400,15 @@
 		{
 			global $current_user;
 			if(metadata_exists("user", $user_id, $this->name))
-			{				
-				$this->file = get_user_meta($user_id, $this->name, true);
-				$value = $this->file['filename'];
+			{
+				$meta = get_user_meta($user_id, $this->name, true);				
+				if(is_array($meta) && !empty($meta['filename']))
+				{
+					$this->file = get_user_meta($user_id, $this->name, true);
+					$value = $this->file['filename'];
+				}
+				else
+					$value = $meta;
 			}
 			elseif(!empty($this->value))
 				$value = $this->value;

@@ -3,7 +3,7 @@ Contributors: strangerstudios
 Tags: users, user meta, meta, memberships, registration
 Requires at least: 3.0
 Tested up to: 3.6
-Stable tag: .5.5
+Stable tag: .5.5.1
 
 Add extra fields to your checkout page. Works with Paid Memberships Pro.
 
@@ -106,6 +106,9 @@ Note that the "checkout_boxes" location is now just the first checkout_box in th
 Please post it in the issues section of GitHub and we'll fix it as soon as we can. Thanks for helping. https://github.com/strangerstudios/pmpro-register-helper/issues
 
 == Changelog ==
+= .5.5.1 =
+* Fixed bug where only the first letter of a value was shown on the edit profile page.
+
 = .5.5 =
 * Properly handling required fields of type file.
 * Checking file type and extension against WP's list for security.

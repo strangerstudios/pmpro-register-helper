@@ -143,7 +143,12 @@ function pmprorh_profile_shortcode($atts, $content=null, $code="")
 		</div>
 		<?php
 	}	
-			
+	else
+	{
+		?>
+		<div class="pmpro_directory_profile">No additional registration fields found.</div>
+		<?php
+	}
 	$temp_content = ob_get_contents();
 	ob_end_clean();
 	

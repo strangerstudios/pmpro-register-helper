@@ -177,13 +177,13 @@
 					$r .= 'class="' . $this->class . '" ';
 				if(!empty($this->readonly))
 					$r .= 'readonly="readonly" ';
-				$r .= '>\n';
+				$r .= ">\n";
 				foreach($this->options as $ovalue => $option)
 				{
 					$r .= '<option value="' . esc_attr($ovalue) . '" ';
 					if(!empty($ovalue) && $ovalue == $value)
 						$r .= 'selected="selected" ';
-					$r .= '>' . $option . '</option>\n';
+					$r .= '>' . $option . "</option>\n";
 				}
 				$r .= '</select>';
 			}

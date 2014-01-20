@@ -3,7 +3,7 @@ Contributors: strangerstudios
 Tags: users, user meta, meta, memberships, registration
 Requires at least: 3.0
 Tested up to: 3.6
-Stable tag: .5.5.1
+Stable tag: .5.6
 
 Add extra fields to your checkout page. Works with Paid Memberships Pro.
 
@@ -106,6 +106,11 @@ Note that the "checkout_boxes" location is now just the first checkout_box in th
 Please post it in the issues section of GitHub and we'll fix it as soon as we can. Thanks for helping. https://github.com/strangerstudios/pmpro-register-helper/issues
 
 == Changelog ==
+= .5.6 =
+* Requires version 1.7.6.1 of PMPro or later.
+* Added a "memberslistcsv" option for fields. When set to true, the field will show up as a column in the Members List CSV export. (Thanks, Harsha.)
+* Fixed bug where restrict by email was case sensitive.
+
 = .5.5.1 =
 * Fixed bug where only the first letter of a value was shown on the edit profile page.
 

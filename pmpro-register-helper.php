@@ -532,11 +532,43 @@ function pmprorh_rf_show_extra_profile_fields($user)
 		?>
 		</table>
 		<?php
-	}	
+	}
 }
 add_action( 'show_user_profile', 'pmprorh_rf_show_extra_profile_fields' );
 add_action( 'edit_user_profile', 'pmprorh_rf_show_extra_profile_fields' );
 
+/*
+	Get RH fields which are set to showup in the Members List CSV Export.	
+*/
+function pmprorh_getCSVFields()
+{
+	global $pmprorh_registration_fields;
+	
+	$csv_fields = array();
+	if(!empty($pmprorh_registration_fields))
+	{
+		//cycle through groups
+		foreach($pmprorh_registration_fields as $where => $fields)
+		{			
+			//cycle through fields
+			foreach($fields as $field)
+			{				
+				if(!empty($field->memberslistcsv) && ($field->memberslistcsv == "true"))
+				{	
+					$csv_fields[] = $field;
+				}
+	
+			}
+		}
+	}
+	
+	return $csv_fields;
+}
+
+/*
+	Get the RH fields which are marked to show in the profile.
+	If a $user_id is passed in, get fields based on the user's level.
+*/
 function pmprorh_getProfileFields($user_id)
 {
 	global $pmprorh_registration_fields;
@@ -726,11 +758,11 @@ function pmprorh_pmpro_registration_checks($okay)
 		$restrict_emails = pmpro_getOption("level_" . $pmpro_level->id . "_restrict_emails");		
 		if(!empty($restrict_emails))
 		{
-			$restrict_emails = str_replace(array(";", ",", " "), "\n", $restrict_emails);
+			$restrict_emails = strtolower(str_replace(array(";", ",", " "), "\n", $restrict_emails));
 			if(!empty($current_user->user_email))
-				$needle = $current_user->user_email;
+				$needle = strtolower($current_user->user_email);
 			else
-				$needle = $_REQUEST['bemail'];
+				$needle = strtolower($_REQUEST['bemail']);
 			$haystack = explode("\n", $restrict_emails);
 			array_walk($haystack, create_function('&$val', '$val = trim($val);')); 			
 			if(!in_array($needle, $haystack))
@@ -873,6 +905,37 @@ function pmprorh_pmpro_email_filter($email)
 	return $email;
 }
 add_filter("pmpro_email_filter", "pmprorh_pmpro_email_filter", 10, 2);
+
+/*
+	Add CSV fields to the Member's List CSV Export.
+*/
+function pmprorh_pmpro_members_list_csv_extra_columns($columns)
+{	
+	$csv_cols = pmprorh_getCSVFields($user_id);		
+	foreach($csv_cols as $key => $value)
+	{		
+		$columns[$value->name] = "pmprorh_csv_columns";
+	}
+	
+	return $columns;
+}
+add_filter("pmpro_members_list_csv_extra_columns", "pmprorh_pmpro_members_list_csv_extra_columns", 10);
+
+//function to pull meta for the added CSV columns
+function pmprorh_csv_columns($user, $column)
+{
+	if(!empty($user->metavalues->$column))
+	{		
+		return $user->metavalues->$column;
+	}
+	else
+	{
+		return "";
+	}
+}
+
+
+
 
 /*
 	Replace last occurence of a string.

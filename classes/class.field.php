@@ -323,8 +323,7 @@
 				{
 					if(!empty($check['id']))
 					{
-						$checks[] = "(jQuery('#" . $check['id'] . "_div input').val() == " . json_encode($check['value']) . " || " . 
-									"jQuery('#" . $check['id'] . "_div select').val() == " . json_encode($check['value']) . ")";
+						$checks[] = "(jQuery('#" . $check['id'] . "').val() == " . json_encode($check['value']) . ")";
 						$binds[] = "#" . $check['id'];
 					}
 				}
@@ -340,11 +339,13 @@
 							<?php echo implode(" && ", $checks); ?>
 						)
 						{
+							jQuery('#<?php echo $this->id;?>_tr').show();
 							jQuery('#<?php echo $this->id;?>_div').show();
 							jQuery('#<?php echo $this->id;?>').removeAttr('disabled');
 						}
 						else
 						{
+							jQuery('#<?php echo $this->id;?>_tr').hide();
 							jQuery('#<?php echo $this->id;?>_div').hide();
 							jQuery('#<?php echo $this->id;?>').attr('disabled', 'disabled');
 						}
@@ -415,7 +416,7 @@
 			else
 				$value = "";				
 			?>
-			<tr id="<?php echo $this->id;?>">
+			<tr id="<?php echo $this->id;?>_tr">
 				<th><label for="<?php echo esc_attr($this->name);?>"><?php echo $this->label;?></label></th>
 				<td>
 					<?php 						

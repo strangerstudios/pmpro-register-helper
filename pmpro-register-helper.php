@@ -895,7 +895,16 @@ function pmprorh_pmpro_email_filter($email)
 				$email->body .= "<p>Extra Fields:<br />";
 				foreach($fields as $field)
 				{
-					$email->body .= "- " . $field->label . ": " . get_user_meta($user_id, $field->name, true) . "<br />";
+					$meta = get_user_meta($user_id, $field->name, true);
+					
+					$email->body .= "- " . $field->label . ": ";
+					
+					if(is_array($meta)) $email->body .= implode(', ', $meta);
+					
+					else $email->body .= $meta;
+					
+					$email->body .= "<br />";
+					
 				}				
 				$email->body .= "</p>";
 			}			

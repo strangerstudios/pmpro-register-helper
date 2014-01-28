@@ -424,7 +424,10 @@
 							$this->display($value); 
 						else
 							echo "<div>" . $value . "</div>";
-					?>	
+					?>
+					<?php if(!empty($this->hint)) { ?>
+						<div class="leftmar"><small class="lite"><?php echo $this->hint;?></small></div>
+					<?php } ?>
 				</td>
 			</tr>			
 			<?php

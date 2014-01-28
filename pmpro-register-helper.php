@@ -3,7 +3,7 @@
 Plugin Name: PMPro Register Helper
 Plugin URI: http://www.paidmembershipspro.com/pmpro-register-helper/
 Description: Shortcodes and other functions to help customize your registration forms.
-Version: .5.6.1
+Version: .5.7
 Author: Stranger Studios
 Author URI: http://www.strangerstudios.com
 */
@@ -722,9 +722,9 @@ function pmprorh_signup_shortcode($atts, $content=null, $code="")
 add_shortcode("pmpro_signup", "pmprorh_signup_shortcode");
 
 /*
-	This code can be used to restrict level signups by email address.
+	This code can be used to restrict level signups by email address or username
 */
-//text area for emails on edit level page
+//text area for emails and user names on edit level page
 function pmprorh_pmpro_membership_level_after_other_settings()
 {
 	$level = $_REQUEST['edit'];	
@@ -734,14 +734,24 @@ function pmprorh_pmpro_membership_level_after_other_settings()
 	<p>To restrict signups to specific email addresses, enter those email addresses below, one per line. If blank, signups will not be restricted.</p>
 	<textarea rows="10" cols="80" name="restrict_emails" id="restrict_emails"><?php echo str_replace("\"", "&quot;", stripslashes($restrict_emails))?></textarea>
 	<?php
+	
+	$restrict_usernames = pmpro_getOption("level_" . $level . "_restrict_usernames");
+	?>
+	<h3 class="topborder">Restrict by Username</h3>
+	<p>To restrict signups to specific users or usernames, enter those email usernames below, one per line. If blank, signups will not be restricted.</p>
+	<textarea rows="10" cols="80" name="restrict_usernames" id="restrict_usernames"><?php echo str_replace("\"", "&quot;", stripslashes($restrict_usernames))?></textarea>
+	<?php
 }
 add_action("pmpro_membership_level_after_other_settings", "pmprorh_pmpro_membership_level_after_other_settings");
 
-//update the emails on save
+//update the emails and usernames on save
 function pmprorh_pmpro_save_membership_level($saveid)
 {
 	$restrict_emails = $_REQUEST['restrict_emails'];
 	pmpro_setOption("level_" . $saveid . "_restrict_emails", $restrict_emails);
+	
+	$restrict_emails = $_REQUEST['restrict_usernames'];
+	pmpro_setOption("level_" . $saveid . "_restrict_usernames", $restrict_emails);
 }
 add_action("pmpro_save_membership_level", "pmprorh_pmpro_save_membership_level");
 
@@ -769,6 +779,31 @@ function pmprorh_pmpro_registration_checks($okay)
 			{
 				global $pmpro_msg, $pmpro_msgt;
 				$pmpro_msg = "This membership level is restricted to certain users only. Make sure you've entered your email address correctly.";
+				$pmpro_msgt = "pmpro_error";
+				$okay = false;
+				
+				//no further checks here
+				return $okay;
+			}
+		}
+		
+		//are we restricting user names for this level
+		$restrict_usernames = pmpro_getOption("level_" . $pmpro_level->id . "_restrict_usernames");		
+		
+		if(!empty($restrict_usernames))
+		{
+			$restrict_usernames = strtolower(str_replace(array(";", ",", " "), "\n", $restrict_usernames));
+			if(!empty($current_user->user_login))
+				$needle = strtolower($current_user->user_login);
+			else
+				$needle = strtolower($_REQUEST['username']);
+			$haystack = explode("\n", $restrict_usernames);
+			
+			array_walk($haystack, create_function('&$val', '$val = trim($val);')); 			
+			if(!in_array($needle, $haystack))
+			{
+				global $pmpro_msg, $pmpro_msgt;
+				$pmpro_msg = "This membership level is restricted to certain users only. Make sure you are logged into your existing account and using the proper username.";
 				$pmpro_msgt = "pmpro_error";
 				$okay = false;
 			}

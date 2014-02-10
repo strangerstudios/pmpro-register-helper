@@ -229,6 +229,16 @@
 					$r .= '<label class="pmprorh_radio_label" for="pmprorh_field_' . $this->name . $count . '">' . $option . '</label> &nbsp; ';
 				}
 			}
+			
+			elseif($this->type == "checkbox")
+			{
+				$r.= '<input name="'.$this->name.'"' .' type="checkbox" value="1"'.' id="'.$this->id.'"';
+				$r.=checked( $value, 1,false);		
+				if(!empty($this->readonly))
+					$r .= 'readonly="readonly" ';		
+				$r .= ' /> ';
+			}
+			
 			elseif($this->type == "textarea")
 			{
 				$r = '<textarea id="' . $this->id . '" name="' . $this->name . '" rows="' . $this->rows . '" cols="' . $this->cols . '" ';
@@ -424,10 +434,7 @@
 							$this->display($value); 
 						else
 							echo "<div>" . $value . "</div>";
-					?>
-					<?php if(!empty($this->hint)) { ?>
-						<div class="leftmar"><small class="lite"><?php echo $this->hint;?></small></div>
-					<?php } ?>
+					?>	
 				</td>
 			</tr>			
 			<?php

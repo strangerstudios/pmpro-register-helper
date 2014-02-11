@@ -187,6 +187,8 @@
 					$r .= 'class="' . $this->class . '" ';
 				if(!empty($this->readonly))
 					$r .= 'readonly="readonly" ';
+				if(!empty($this->multiple))
+					$r .= 'multiple="multiple" ';
 				$r .= ">\n";
 				foreach($this->options as $ovalue => $option)
 				{

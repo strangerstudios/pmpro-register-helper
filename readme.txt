@@ -109,6 +109,7 @@ Please post it in the issues section of GitHub and we'll fix it as soon as we ca
 = .5.8 =
 * Now saving file info in a temp folder and $_SESSION so you can upload files using offsite gateways like PayPal Express.
 * Using single quotes so \n in HTML output echos properly. (Thanks, joshlevinson on GitHub)
+* If a "multiple" value is set on a select field, it will add the multiple property to the select element. (Thanks, joshlevinson on GitHub)
 
 = .5.7 =
 * Added ability to restrict checkouts by username.

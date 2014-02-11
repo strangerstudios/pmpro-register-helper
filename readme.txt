@@ -110,6 +110,8 @@ Please post it in the issues section of GitHub and we'll fix it as soon as we ca
 * Now saving file info in a temp folder and $_SESSION so you can upload files using offsite gateways like PayPal Express.
 * Using single quotes so \n in HTML output echos properly. (Thanks, joshlevinson on GitHub)
 * If a "multiple" value is set on a select field, it will add the multiple property to the select element. (Thanks, joshlevinson on GitHub)
+* Added "ext" option for file fields. If set to an array of extensions, it will check that the file uploaded matches one of those extensions.
+* Added "accept" option for file fields. Sets the "accept" property of the minetype(s) given. e.g. use "image/*" to filter the file input to images.
 
 = .5.7 =
 * Added ability to restrict checkouts by username.

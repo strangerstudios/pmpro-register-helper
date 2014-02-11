@@ -104,6 +104,15 @@
 				//we throw an error earlier, but this just bails on the upload just in case
 				return false;
 			}
+			else
+			{
+				//check for specific extensions anyway
+				if(!empty($this->ext) && !in_array($filetype['ext'], $this->ext))
+				{
+					pmpro_setMessage(sprintf(__("Sorry, the file type for %s is not permitted for security reasons.", "pmpro"), $file['name']), "pmpro_error");
+					return false;
+				}
+			}
 			
 			/*
 				save file in uploads
@@ -273,7 +282,10 @@
 				}
 			
 				//file input
-				$r .= '<input type="file" id="' . $this->id . '" name="' . $this->name . '" />';								
+				$r .= '<input type="file" id="' . $this->id . '" ';
+				if(!empty($this->accept))
+					$r .= 'accept="' . esc_attr($this->accept) . '" ';
+				$r .= 'name="' . $this->name . '" />';								
 				
 				//old value
 				if(is_user_logged_in())

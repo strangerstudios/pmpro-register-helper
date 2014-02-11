@@ -464,6 +464,15 @@ function pmprorh_rf_pmpro_registration_checks($okay)
 							pmpro_setMessage(sprintf(__("Sorry, the file type for %s is not permitted for security reasons.", "pmpro"), $_FILES[$field->name]['name']), "pmpro_error");
 							return false;
 						}
+						else
+						{
+							//check for specific extensions anyway
+							if(!empty($field->ext) && !in_array($filetype['ext'], $field->ext))
+							{
+								pmpro_setMessage(sprintf(__("Sorry, the file type for %s is not permitted for security reasons.", "pmpro"), $_FILES[$field->name]['name']), "pmpro_error");
+								return false;
+							}
+						}
 					}
 				}
 				else

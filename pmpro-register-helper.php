@@ -376,16 +376,28 @@ function pmprorh_pmpro_after_checkout($user_id)
 					$value = $_REQUEST[$field->name];
 				}
 				elseif(isset($_SESSION[$field->name]))
-				{
-					//session
-					$value = $_SESSION[$field->name];
+				{					
+					//file or value?
+					if(is_array($_SESSION[$field->name]))
+					{
+						//add to files global
+						$_FILES[$field->name] = $_SESSION[$field->name];
+						
+						//set value to name
+						$value = $_SESSION[$field->name]['name'];
+					}
+					else					
+					{
+						//session
+						$value = $_SESSION[$field->name];
+					}
 					
 					//unset
 					unset($_SESSION[$field->name]);
 				}
 				elseif(isset($_FILES[$field->name]))
 				{
-					//file
+					//file					
 					$value = $_FILES[$field->name]['name'];
 				}
 												
@@ -501,6 +513,32 @@ function pmprorh_rf_pmpro_paypalexpress_session_vars()
 					
 				if(isset($_REQUEST[$field->name]))
 					$_SESSION[$field->name] = $_REQUEST[$field->name];
+				elseif(isset($_FILES[$field->name]))
+				{
+					/*
+						We need to save the file somewhere and save values in $_SESSION
+					*/
+					
+					//check for a register helper directory in wp-content
+					$upload_dir = wp_upload_dir();
+					$pmprorh_dir = $upload_dir['basedir'] . "/pmpro-register-helper/tmp/";
+					
+					//create the dir and subdir if needed
+					if(!is_dir($pmprorh_dir))
+					{
+						wp_mkdir_p($pmprorh_dir);
+					}					
+					
+					//move file
+					$new_filename = $pmprorh_dir . basename($_FILES[$field->name]['tmp_name']);
+					move_uploaded_file($_FILES[$field->name]['tmp_name'], $new_filename);
+					
+					//update location of file
+					$_FILES[$field->name]['tmp_name'] = $new_filename;
+					
+					//save file info in session
+					$_SESSION[$field->name] = $_FILES[$field->name];										
+				}
 			}
 		}
 	}
@@ -956,6 +994,47 @@ function pmprorh_pmpro_members_list_csv_extra_columns($columns)
 }
 add_filter("pmpro_members_list_csv_extra_columns", "pmprorh_pmpro_members_list_csv_extra_columns", 10);
 
+/*
+	Activation/Deactivation
+*/
+function pmprorh_activation()
+{
+	wp_schedule_event(time(), 'daily', 'pmprorh_cron_delete_tmp');	
+}
+function pmprorh_deactivation()
+{
+	wp_clear_scheduled_hook('pmprorh_cron_delete_tmp');	
+}
+register_activation_hook(__FILE__, 'pmprorh_activation');
+register_deactivation_hook(__FILE__, 'pmprorh_deactivation');
+
+/*
+	Delete old files in wp-content/uploads/pmpro-register-helper/tmp every day.
+*/
+function pmprorh_cron_delete_tmp()
+{
+	$upload_dir = wp_upload_dir();
+	$pmprorh_dir = $upload_dir['basedir'] . "/pmpro-register-helper/tmp/";
+	
+	if($handle = opendir($pmprorh_dir))
+	{
+		while(false !== ($file = readdir($handle)))
+		{ 			
+			$file = $pmprorh_dir . $file;
+			$filelastmodified = filemtime($file);						
+			if(is_file($file) && (time() - $filelastmodified) > 3600)
+			{				
+				unlink($file);
+			}
+		}
+
+		closedir($handle); 
+	}
+	
+	exit;
+}
+add_action('pmprorh_cron_delete_tmp', 'pmprorh_cron_delete_tmp');
+
 //function to pull meta for the added CSV columns
 function pmprorh_csv_columns($user, $column)
 {
@@ -968,9 +1047,6 @@ function pmprorh_csv_columns($user, $column)
 		return "";
 	}
 }
-
-
-
 
 /*
 	Replace last occurence of a string.

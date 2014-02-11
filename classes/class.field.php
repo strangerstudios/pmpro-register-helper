@@ -128,6 +128,7 @@
 			//figure out new filename
 			$filename = $file['name'];
 			$count = 0;
+						
 			while(file_exists($pmprorh_dir . $filename))
 			{
 				if($count)
@@ -141,12 +142,21 @@
 				if($count > 50)
 					die("Error uploading file. Too many files with the same name.");									
 			}
-			
+						
 			//save file
-			move_uploaded_file($file['tmp_name'], $pmprorh_dir . $filename);
+			if(strpos($file['tmp_name'], $upload_dir['basedir']) !== false)
+			{
+				//was uploaded and saved to $_SESSION
+				rename($file['tmp_name'], $pmprorh_dir . $filename);			
+			}
+			else
+			{
+				//it was just uploaded
+				move_uploaded_file($file['tmp_name'], $pmprorh_dir . $filename);				
+			}
 			
 			//save filename in usermeta
-			update_user_meta($user_id, $name, array("original_filename"=>$file['name'], "filename"=>$filename, "fullpath"=> $pmprorh_dir . $filename, "fullurl"=>content_url("/uploads/pmpro-register-helper/" . $user->user_login . "/" . $filename), "size"=>$file['size']));
+			update_user_meta($user_id, $name, array("original_filename"=>$file['name'], "filename"=>$filename, "fullpath"=> $pmprorh_dir . $filename, "fullurl"=>content_url("/uploads/pmpro-register-helper/" . $user->user_login . "/" . $filename), "size"=>$file['size']));			
 		}
 		
 		//echo the HTML for the field
@@ -253,7 +263,7 @@
 			elseif($this->type == "file")
 			{
 				$r = '';
-				
+								
 				//show name of existing file
 				if(!empty($value))
 				{
@@ -374,7 +384,17 @@
 			if(isset($_REQUEST[$this->name]))
 				$value = $_REQUEST[$this->name];
 			elseif(isset($_SESSION[$this->name]))
-				$value = $_SESSION[$this->name];
+			{
+				//file or value?
+				if(is_array($_SESSION[$this->name]))
+				{
+					$_FILES[$this->name] = $_SESSION[$this->name];
+					$this->file = $_SESSION[$this->name]['name'];
+					$value = $_SESSION[$this->name]['name'];
+				}
+				else
+					$value = $_SESSION[$this->name];
+			}
 			elseif(!empty($current_user->ID) && metadata_exists("user", $current_user->ID, $this->name))
 			{				
 				$this->file = get_user_meta($current_user->ID, $this->name, true);			

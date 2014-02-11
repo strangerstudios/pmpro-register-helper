@@ -3,7 +3,7 @@ Contributors: strangerstudios
 Tags: users, user meta, meta, memberships, registration
 Requires at least: 3.0
 Tested up to: 3.6
-Stable tag: .5.7
+Stable tag: .5.8
 
 Add extra fields to your checkout page. Works with Paid Memberships Pro.
 
@@ -106,6 +106,10 @@ Note that the "checkout_boxes" location is now just the first checkout_box in th
 Please post it in the issues section of GitHub and we'll fix it as soon as we can. Thanks for helping. https://github.com/strangerstudios/pmpro-register-helper/issues
 
 == Changelog ==
+= .5.8 =
+* Now saving file info in a temp folder and $_SESSION so you can upload files using offsite gateways like PayPal Express.
+* Using single quotes so \n in HTML output echos properly. (Thanks, joshlevinson on GitHub)
+
 = .5.7 =
 * Added ability to restrict checkouts by username.
 * Added hints to text fields.

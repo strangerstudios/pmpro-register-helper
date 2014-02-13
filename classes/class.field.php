@@ -43,6 +43,15 @@
 			else
 				$this->class .= " input";			
 			
+			//default label			
+			if(isset($this->label) && $this->label === false)
+				$this->label = false;	//still false
+			elseif(empty($this->label))
+				$this->label = ucwords($this->name);
+			
+			if(!isset($this->showmainlabel))
+				$this->showmainlabel = true;
+			
 			//default fields						
 			if($this->type == "text")
 			{
@@ -76,12 +85,14 @@
 				//use the file save function
 				$this->save_function = array("PMProRH_Field", "saveFile");
 			}
-
-			//default label			
-			if(isset($this->label) && $this->label === false)
-				$this->label = false;	//still false
-			elseif(empty($this->label))
-				$this->label = ucwords($this->name);
+			elseif($this->type == "checkbox")
+			{
+				if(!isset($this->text))
+				{
+					$this->text = $this->label;
+					$this->showmainlabel = false;
+				}
+			}
 			
 			return true;
 		}
@@ -249,6 +260,16 @@
 					$r .= ' /> ';
 					$r .= '<label class="pmprorh_radio_label" for="pmprorh_field_' . $this->name . $count . '">' . $option . '</label> &nbsp; ';
 				}
+			}
+			elseif($this->type == "checkbox")
+			{
+				$r.= '<input name="'.$this->name.'"' .' type="checkbox" value="1"'.' id="'.$this->id.'"';
+				$r.=checked( $value, 1,false);		
+				if(!empty($this->readonly))
+					$r .= 'readonly="readonly" ';		
+				$r .= ' /> ';
+				$r .= '<label class="pmprorh_checkbox_label" for="' . $this->name . '">' . $this->text . '</label> &nbsp; ';
+				$r .= '<input type="hidden" name="'.$this->name.'_checkbox" value="1" />';	//extra field so we can track unchecked boxes
 			}
 			elseif($this->type == "textarea")
 			{
@@ -420,8 +441,15 @@
 				$value = "";			
 			?>
 			<div id="<?php echo $this->id;?>_div" <?php if(!empty($this->divclass)) echo 'class="' . $this->divclass . '"';?>>
-				<label for="<?php echo esc_attr($this->name);?>"><?php echo $this->label;?></label>
-				<?php $this->display($value); ?>
+				<?php if(!empty($this->showmainlabel)) { ?>
+					<label for="<?php echo esc_attr($this->name);?>"><?php echo $this->label;?></label>
+					<?php $this->display($value); ?>
+				<?php } else { ?>
+					<div class="leftmar">
+						<?php $this->display($value); ?>
+					</div>
+				<?php } ?>
+				
 				<?php if(!empty($this->hint)) { ?>
 					<div class="leftmar"><small class="lite"><?php echo $this->hint;?></small></div>
 				<?php } ?>
@@ -451,7 +479,11 @@
 				$value = "";				
 			?>
 			<tr id="<?php echo $this->id;?>_tr">
-				<th><label for="<?php echo esc_attr($this->name);?>"><?php echo $this->label;?></label></th>
+				<th>
+					<?php if(!empty($this->showmainlabel)) { ?>
+						<label for="<?php echo esc_attr($this->name);?>"><?php echo $this->label;?></label>
+					<?php } ?>
+				</th>
 				<td>
 					<?php 						
 						if(current_user_can("edit_user", $current_user->ID) && $edit !== false)

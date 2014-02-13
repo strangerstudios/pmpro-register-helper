@@ -3,7 +3,7 @@
 Plugin Name: PMPro Register Helper
 Plugin URI: http://www.paidmembershipspro.com/pmpro-register-helper/
 Description: Shortcodes and other functions to help customize your registration forms.
-Version: .5.7
+Version: .5.9
 Author: Stranger Studios
 Author URI: http://www.strangerstudios.com
 */
@@ -136,10 +136,10 @@ function pmprorh_scripts()
 		if(!defined("PMPRO_VERSION"))
 		{
 			//load some styles that we need from PMPro
-			wp_enqueue_style("pmprorh_pmpro", plugins_url('css/pmpro.css',__FILE__ ));
+			wp_enqueue_style("pmprorh_pmpro", plugins_url('css/pmpro.css',__FILE__ ), NULL, ".5.9");
 		}
 		
-		wp_enqueue_style("pmprorh_frontend", plugins_url('css/pmprorh_frontend.css',__FILE__ ));
+		wp_enqueue_style("pmprorh_frontend", plugins_url('css/pmprorh_frontend.css',__FILE__ ), NULL, ".5.9");
 	}
 }
 add_action("init", "pmprorh_scripts");
@@ -671,7 +671,15 @@ function pmprorh_rf_save_extra_profile_fields( $user_id )
 					call_user_func($field->save_function, $user_id, $field->name, $_POST[$field->name]);
 				else
 					update_user_meta($user_id, $field->name, $_POST[$field->name]);				
-			}			
+			}
+			elseif(!empty($_POST[$field->name . "_checkbox"]) && $field->type == 'checkbox')	//handle unchecked checkboxes
+			{
+				//callback?
+				if(!empty($field->save_function))
+					call_user_func($field->save_function, $user_id, $field->name, 0);
+				else
+					update_user_meta($user_id, $field->name, 0);		
+			}				
 		}
 	}
 }

@@ -3,7 +3,7 @@ Contributors: strangerstudios
 Tags: users, user meta, meta, memberships, registration
 Requires at least: 3.0
 Tested up to: 3.6
-Stable tag: .5.8
+Stable tag: .5.9
 
 Add extra fields to your checkout page. Works with Paid Memberships Pro.
 
@@ -52,7 +52,10 @@ $select2 = new PMProRH_Field("category", "select2", array("profile"=>"only", "re
 
 //radio
 $radio = new PMProRH_Field("gender", "radio", array("options"=>array("male"=>"Male", "female"=>"Female"))); 
-	
+
+//checkbox
+$checkbox = new PMProRH_Field("agree", "checkbox", array("profile"=>true));
+
 //textarea
 $history = new PMProRH_Field("history", "textarea", array("rows"=>10, "label"=>"Tell us a little about your history."));
 	
@@ -106,6 +109,9 @@ Note that the "checkout_boxes" location is now just the first checkout_box in th
 Please post it in the issues section of GitHub and we'll fix it as soon as we can. Thanks for helping. https://github.com/strangerstudios/pmpro-register-helper/issues
 
 == Changelog ==
+= .5.9 =
+* Added checkbox as a field option.
+
 = .5.8 =
 * Now saving file info in a temp folder and $_SESSION so you can upload files using offsite gateways like PayPal Express.
 * Using single quotes so \n in HTML output echos properly. (Thanks, joshlevinson on GitHub)

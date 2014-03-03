@@ -99,11 +99,11 @@
 		
 		//save function for files
 		function saveFile($user_id, $name, $value)
-		{
+		{			
 			//setup some vars
 			$file = $_FILES[$name];
 			$user = get_userdata($user_id);
-			
+						
 			//no file?
 			if(empty($file['name']))
 				return;
@@ -117,8 +117,36 @@
 			}
 			else
 			{
+				//need to check this in case we are in class context or not
+				if(!empty($this))
+				{
+					if(!empty($this->ext))
+						$ext = $this->ext;
+					else
+						$ext = false;
+				}
+				else
+				{
+					global $pmprorh_registration_fields;					
+					foreach($pmprorh_registration_fields as $checkout_box)
+					{
+						foreach($checkout_box as $field)
+						{
+							if($field->name == $name)
+							{
+								if(!empty($field->ext))
+									$ext = $field->ext;
+								else
+									$ext = false;
+									
+								break 2;
+							}
+						}
+					}
+				}
+				
 				//check for specific extensions anyway
-				if(!empty($this->ext) && !in_array($filetype['ext'], $this->ext))
+				if(!empty($ext) && !in_array($filetype['ext'], $ext))
 				{
 					pmpro_setMessage(sprintf(__("Sorry, the file type for %s is not permitted for security reasons.", "pmpro"), $file['name']), "pmpro_error");
 					return false;

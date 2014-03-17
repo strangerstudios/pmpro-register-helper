@@ -3,7 +3,7 @@
 Plugin Name: PMPro Register Helper
 Plugin URI: http://www.paidmembershipspro.com/pmpro-register-helper/
 Description: Shortcodes and other functions to help customize your registration forms.
-Version: .5.10
+Version: .5.11
 Author: Stranger Studios
 Author URI: http://www.strangerstudios.com
 */
@@ -1001,7 +1001,7 @@ add_filter("pmpro_email_filter", "pmprorh_pmpro_email_filter", 10, 2);
 */
 function pmprorh_pmpro_members_list_csv_extra_columns($columns)
 {	
-	$csv_cols = pmprorh_getCSVFields($user_id);		
+	$csv_cols = pmprorh_getCSVFields();		
 	foreach($csv_cols as $key => $value)
 	{		
 		$columns[$value->name] = "pmprorh_csv_columns";

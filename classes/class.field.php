@@ -216,7 +216,7 @@
 		
 		//get HTML for the field
 		function getHTML($value = "")
-		{
+		{			
 			if($this->type == "text")
 			{
 				$r = '<input type="text" id="' . $this->id . '" name="' . $this->name . '" value="' . esc_attr($value) . '" ';
@@ -460,8 +460,14 @@
 			}
 			elseif(!empty($current_user->ID) && metadata_exists("user", $current_user->ID, $this->name))
 			{				
-				$this->file = get_user_meta($current_user->ID, $this->name, true);			
-				$value = $this->file['filename'];				
+				$meta = get_user_meta($current_user->ID, $this->name, true);				
+				if(is_array($meta) && !empty($meta['filename']))
+				{
+					$this->file = get_user_meta($current_user->ID, $this->name, true);
+					$value = $this->file['filename'];
+				}
+				else
+					$value = $meta;									
 			}
 			elseif(!empty($this->value))
 				$value = $this->value;

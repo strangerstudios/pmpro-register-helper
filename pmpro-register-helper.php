@@ -721,7 +721,7 @@ function pmprorh_signup_shortcode($atts, $content=null, $code="")
 			<?php
 				if($intro)
 				{
-					echo wpautop("Register for " . $membership_levels[$level]->name . ".");
+					echo wpautop("Register for " .pmpro_getLevel($level)->name. ".");
 				}
 			?>
 			

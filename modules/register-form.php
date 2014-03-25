@@ -186,6 +186,10 @@ function pmprorh_register_form_shortcode($atts, $content=null, $code="")
 		<input type="text" name="user_email" id="user_email" class="input" value="<?php echo esc_attr($user_email); ?>" size="25" /> <span class="required">* Required</span>
 	</div>
 	<?php do_action("pmprorh_after_email"); ?>
+	<div class="pmpro_hidden">
+        	<label for="fullname"><?php _e('Full Name', 'pmpro');?></label>
+        	<input id="fullname" name="fullname" type="text" class="input <?php echo pmpro_getClassForField("fullname");?>" size="30" value="" /> <strong><?php _e('LEAVE THIS BLANK', 'pmpro');?></strong>
+    	</div>
 	<div id="div_pass1">
 		<label>Password</label>
 		<input autocomplete="off" name="pass1" id="pass1" size="25" class="input" value="" type="password" /> <span class="required">* Required</span>

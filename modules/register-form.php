@@ -19,7 +19,14 @@ function pmprorh_register_form_handler()
 			$user_login = $_REQUEST['user_login'];
 			$user_email = $_REQUEST['user_email'];
 			$pass1 = $_REQUEST['pass1'];
-			$pass2 = $_REQUEST['pass2'];
+			
+			$fullname = $_REQUEST['fullname'];
+			
+			$pmpro_checkout_confirm_password = apply_filters("pmpro_checkout_confirm_password", true);					
+			if($pmpro_checkout_confirm_password)
+				$pass2 = $_REQUEST['pass2'];
+			else
+				$pass2 = $pass1;
 						
 			if(!empty($pmprorh_options['use_email_for_login']))
 				$user_login = $user_email;	//use email for login
@@ -54,6 +61,11 @@ function pmprorh_register_form_handler()
 			{
 				$pmpro_msg = "The email address entered is in an invalid format. Please try again.";	
 				$pmpro_msgt = "pmpro_error";
+			}
+			elseif(!empty($fullname))
+			{
+				$pmpro_msg = "Please leave the full name field empty. That field is a trap for automated spammers.";	
+				$pmpro_msgt = "alert-danger";
 			}
 			else
 			{
@@ -190,10 +202,19 @@ function pmprorh_register_form_shortcode($atts, $content=null, $code="")
 		<label>Password</label>
 		<input autocomplete="off" name="pass1" id="pass1" size="25" class="input" value="" type="password" /> <span class="required">* Required</span>
 	</div>
-	<div id="div_pass2">
-		<label>Confirm Password</label>
-		<input autocomplete="off" name="pass2" id="pass2" size="25" class="input" value="" type="password" /> <span class="required">* Required</span>
-	</div>   
+	<?php
+		$pmpro_checkout_confirm_password = apply_filters("pmpro_checkout_confirm_password", true);					
+		if($pmpro_checkout_confirm_password)
+		{
+		?>
+		<div id="div_pass2">
+			<label>Confirm Password</label>
+			<input autocomplete="off" name="pass2" id="pass2" size="25" class="input" value="" type="password" /> <span class="required">* Required</span>
+		</div>   
+		<?php
+		}
+	?>
+	
 	<?php do_action("pmprorh_after_password"); ?>    
     <?php do_action("pmprorh_register_form"); ?>
 	

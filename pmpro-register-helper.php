@@ -3,30 +3,50 @@
 Plugin Name: PMPro Register Helper
 Plugin URI: http://www.paidmembershipspro.com/pmpro-register-helper/
 Description: Shortcodes and other functions to help customize your registration forms.
-Version: .5.11
+Version: .5.12
 Author: Stranger Studios
 Author URI: http://www.strangerstudios.com
 */
-//options - just defaults for now, will be in settings eventually
+/*
+	options - just defaults for now, will be in settings eventually
+	
+	Copy these lines into a custom plugin or your theme's functions.php
+	and edit them to fit your needs.
+*/
 global $pmprorh_options;
 //$pmprorh_options["register_redirect_url"] = home_url("/tools/rq/");
 //$pmprorh_options["use_email_for_login"] = true;
-$pmprorh_options["directory_page"] = "/directory/";
-$pmprorh_options["profile_page"] = "/profile/";
-
-//Register Form Module
-/*
-	If you don't have Paid Memberships Pro installed, you can use the custom registration form included with this plugin by using the [pmprorh_register_form] shortcode.
-*/
-require_once(dirname(__FILE__) . "/modules/register-form.php");
-require_once(dirname(__FILE__) . "/modules/change-password.php");
+//$pmprorh_options["directory_page"] = "/directory/";
+//$pmprorh_options["profile_page"] = "/profile/";
 
 /*
-	Modules controlling the directory and profile functionality
-*/
-require_once(dirname(__FILE__) . "/modules/directory.php");
-require_once(dirname(__FILE__) . "/modules/profile.php");
+	Loading Modules
+	
+	You can create customizations/modifications by copying the
+	register-form.php, change-password.php,	directory.php, and/or profile.php
+	files and placing them in wp-content/themes/{YOUR THEME}/paid-memberships-pro/register-helper/
 
+	The code will check if there is a custom version before using the default.
+*/
+$pmprorh_options['modules'] = apply_filters('pmprorh_modules', array('register-form', 'change-password', 'directory', 'profile'));
+$custom_dir = get_stylesheet_directory()."/paid-memberships-pro/register-helper/";
+if(!empty($pmprorh_options) && !empty($pmprorh_options['modules']))
+{
+	foreach($pmprorh_options['modules'] as $value)
+	{
+		//check folder for files,
+		$custom_file = $custom_dir.$value.".php";
+
+		if(file_exists($custom_file))
+		{	
+			require_once($custom_file);
+			
+		}
+		else
+			require_once(dirname(__FILE__) . "/modules/".$value.".php");
+	}
+}
+	
 //PMProRH_Field class
 /*
 	Some examples of creating fields with the class.
@@ -285,7 +305,14 @@ function pmprorh_pmpro_checkout_boxes()
 	
 	foreach($pmprorh_checkout_boxes as $cb)
 	{
+		//how many fields to show at checkout?
+		$n = 0;		
 		if(!empty($pmprorh_registration_fields[$cb->name]))
+			foreach($pmprorh_registration_fields[$cb->name] as $field)				
+				if(pmprorh_checkFieldForLevel($field) && (!isset($field->profile) || (isset($field->profile) && $field->profile !== "only" && $field->profile !== "only_admin")))
+					$n++;
+
+		if($n > 0)
 		{
 			?>
 			<table id="pmpro_checkout_box-<?php echo $cb->name; ?>" class="pmpro_checkout" width="100%" cellpadding="0" cellspacing="0" border="0">

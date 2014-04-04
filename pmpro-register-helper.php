@@ -788,6 +788,17 @@ function pmprorh_signup_shortcode($atts, $content=null, $code="")
 				<label for="fullname">Full Name</label>
 				<input id="fullname" name="fullname" type="text" class="input" size="30" value="" /> <strong>LEAVE THIS BLANK</strong>
 			</div>
+			
+			<div class="pmpro_captcha">
+				<?php 																								
+					global $recaptcha, $recaptcha_publickey;										
+					if($recaptcha == 2 || ($recaptcha == 1 && pmpro_isLevelFree($pmpro_level))) 
+					{											
+						echo recaptcha_get_html($recaptcha_publickey, NULL, true);						
+					}								
+				?>								
+			</div>
+			
 			<div>
 				<span id="pmpro_submit_span" >
 					<input type="hidden" name="submit-checkout" value="1" />		

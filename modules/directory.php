@@ -12,7 +12,7 @@ function pmprorh_directory_preheader()
 			/*
 				Preheader operations here.
 			*/
-			wp_enqueue_style("pmprorh_directory", plugins_url("css/pmprorh_directory.css", dirname(__FILE__)));	
+			wp_enqueue_style("pmprorh_directory", PMPRORH_DIR . "/css/pmprorh_directory.css");	
 		}
 	}
 }

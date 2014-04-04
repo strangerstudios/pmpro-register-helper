@@ -15,7 +15,7 @@ function pmprorh_profile_preheader()
 			global $main_post_id;
 			$main_post_id = $post->ID;
 			
-			wp_enqueue_style("pmprorh_profile", plugins_url("css/pmprorh_profile.css", dirname(__FILE__)));	
+			wp_enqueue_style("pmprorh_profile", PMPRORH_DIR . "/css/pmprorh_profile.css");	
 			
 			function pmprorh_post_title($title, $post_id = NULL)
 			{				

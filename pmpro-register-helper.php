@@ -7,6 +7,9 @@ Version: .5.12
 Author: Stranger Studios
 Author URI: http://www.strangerstudios.com
 */
+
+define ('PMPRORH_DIR', dirname(__FILE__) );
+
 /*
 	options - just defaults for now, will be in settings eventually
 	

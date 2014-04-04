@@ -109,6 +109,9 @@ Note that the "checkout_boxes" location is now just the first checkout_box in th
 Please post it in the issues section of GitHub and we'll fix it as soon as we can. Thanks for helping. https://github.com/strangerstudios/pmpro-register-helper/issues
 
 == Changelog ==
+= .5.13 =
+* Added PMPRORH_DIR constant. Now using constant to enqueue stylesheets.
+
 = .5.12 =
 * Now looking in /themes/{YOUR THEME}/paid-memberships-pro/register-helper/ for copies of the modules .php files, which will be used in place of the default modules if found.
 * Will no longer show a checkout box on the checkout page if there are no fields in it.

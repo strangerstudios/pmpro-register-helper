@@ -111,6 +111,8 @@ Please post it in the issues section of GitHub and we'll fix it as soon as we ca
 == Changelog ==
 = .5.13 =
 * Added PMPRORH_DIR constant. Now using constant to enqueue stylesheets.
+* Will now look in /themes/{YOUR THEME}/paid-memberships-pro/register-helper/css/ for copies of the CSS files, which will be used in place of the default CSS files if found.
+* Fixed required field error so it will not show duplicate warnings for fields with the same name and will use proper grammar when 1 field is missing.
 
 = .5.12 =
 * Now looking in /themes/{YOUR THEME}/paid-memberships-pro/register-helper/ for copies of the modules .php files, which will be used in place of the default modules if found.

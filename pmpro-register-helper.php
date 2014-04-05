@@ -8,7 +8,8 @@ Author: Stranger Studios
 Author URI: http://www.strangerstudios.com
 */
 
-define ('PMPRORH_DIR', dirname(__FILE__) );
+define('PMPRORH_DIR', dirname(__FILE__) );
+define('PMPRORH_VERSION', '.5.12');
 
 /*
 	options - just defaults for now, will be in settings eventually
@@ -42,8 +43,7 @@ if(!empty($pmprorh_options) && !empty($pmprorh_options['modules']))
 
 		if(file_exists($custom_file))
 		{	
-			require_once($custom_file);
-			
+			require_once($custom_file);	
 		}
 		else
 			require_once(dirname(__FILE__) . "/modules/".$value.".php");
@@ -158,11 +158,22 @@ function pmprorh_scripts()
 	{
 		if(!defined("PMPRO_VERSION"))
 		{
-			//load some styles that we need from PMPro
-			wp_enqueue_style("pmprorh_pmpro", plugins_url('css/pmpro.css',__FILE__ ), NULL, ".5.9");
+			//load some styles that we need from PMPro (check child theme, then parent theme, then plugin folder)	
+			if(file_exists(get_stylesheet_directory()."/paid-memberships-pro/register-helper/css/pmpro.css"))
+				wp_enqueue_style(get_stylesheet_directory_uri()."/paid-memberships-pro/register-helper/css/pmpro.css");
+			elseif(file_exists(get_template_directory()."/paid-memberships-pro/register-helper/css/pmpro.css"))
+				wp_enqueue_style(get_template_directory_uri()."/paid-memberships-pro/register-helper/css/pmpro.css");
+			else
+				wp_enqueue_style("pmprorh_pmpro", PMPRORH_DIR . "/css/pmpro.css", NULL, PMPRORH_VERSION);			
 		}
 		
-		wp_enqueue_style("pmprorh_frontend", plugins_url('css/pmprorh_frontend.css',__FILE__ ), NULL, ".5.9");
+		//load some styles that we need from PMPro (check child theme, then parent theme, then plugin folder)	
+		if(file_exists(get_stylesheet_directory()."/paid-memberships-pro/register-helper/css/pmprorh_frontend.css"))
+			wp_enqueue_style(get_stylesheet_directory_uri()."/paid-memberships-pro/register-helper/css/pmprorh_frontend.css");
+		elseif(file_exists(get_template_directory()."/paid-memberships-pro/register-helper/css/pmprorh_frontend.css"))
+			wp_enqueue_style(get_template_directory_uri()."/paid-memberships-pro/register-helper/css/pmprorh_frontend.css");
+		else
+			wp_enqueue_style("pmprorh_frontend", PMPRORH_DIR . "/css/pmprorh_frontend.css", NULL, "");		
 	}
 }
 add_action("init", "pmprorh_scripts");
@@ -518,7 +529,9 @@ function pmprorh_rf_pmpro_registration_checks($okay)
 	
 	if(!empty($required))
 	{
-		if(count($required) > 1)
+		$required = array_unique($required);
+		
+		if(count($required) == 1)
 			$pmpro_msg = "The " . implode(", ", $required) . " field is required.";
 		else
 			$pmpro_msg = "The " . implode(", ", $required) . " fields are required.";

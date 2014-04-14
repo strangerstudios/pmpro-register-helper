@@ -3,12 +3,13 @@
 Plugin Name: PMPro Register Helper
 Plugin URI: http://www.paidmembershipspro.com/pmpro-register-helper/
 Description: Shortcodes and other functions to help customize your registration forms.
-Version: .5.12
+Version: .5.13
 Author: Stranger Studios
 Author URI: http://www.strangerstudios.com
 */
 
 define('PMPRORH_DIR', dirname(__FILE__) );
+define('PMPRORH_URL', WP_PLUGIN_URL . "/pmpro-register-helper");
 define('PMPRORH_VERSION', '.5.12');
 
 /*
@@ -164,7 +165,7 @@ function pmprorh_scripts()
 			elseif(file_exists(get_template_directory()."/paid-memberships-pro/register-helper/css/pmpro.css"))
 				wp_enqueue_style(get_template_directory_uri()."/paid-memberships-pro/register-helper/css/pmpro.css");
 			else
-				wp_enqueue_style("pmprorh_pmpro", PMPRORH_DIR . "/css/pmpro.css", NULL, PMPRORH_VERSION);			
+				wp_enqueue_style("pmprorh_pmpro", PMPRORH_URL . "/css/pmpro.css", NULL, PMPRORH_VERSION);			
 		}
 		
 		//load some styles that we need from PMPro (check child theme, then parent theme, then plugin folder)	
@@ -173,7 +174,7 @@ function pmprorh_scripts()
 		elseif(file_exists(get_template_directory()."/paid-memberships-pro/register-helper/css/pmprorh_frontend.css"))
 			wp_enqueue_style(get_template_directory_uri()."/paid-memberships-pro/register-helper/css/pmprorh_frontend.css");
 		else
-			wp_enqueue_style("pmprorh_frontend", PMPRORH_DIR . "/css/pmprorh_frontend.css", NULL, "");		
+			wp_enqueue_style("pmprorh_frontend", PMPRORH_URL . "/css/pmprorh_frontend.css", NULL, "");		
 	}
 }
 add_action("init", "pmprorh_scripts");

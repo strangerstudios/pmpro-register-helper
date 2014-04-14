@@ -10,7 +10,7 @@ Author URI: http://www.strangerstudios.com
 
 define('PMPRORH_DIR', dirname(__FILE__) );
 define('PMPRORH_URL', WP_PLUGIN_URL . "/pmpro-register-helper");
-define('PMPRORH_VERSION', '.5.12');
+define('PMPRORH_VERSION', '.5.13');
 
 /*
 	options - just defaults for now, will be in settings eventually

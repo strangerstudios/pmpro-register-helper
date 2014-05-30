@@ -1,9 +1,9 @@
 === PMPro Register Helper ===
 Contributors: strangerstudios
 Tags: users, user meta, meta, memberships, registration
-Requires at least: 3.0
-Tested up to: 3.6
-Stable tag: .5.13
+Requires at least: 3.5
+Tested up to: 3.9.1
+Stable tag: .5.14
 
 Add extra fields to your checkout page. Works with Paid Memberships Pro.
 
@@ -109,6 +109,9 @@ Note that the "checkout_boxes" location is now just the first checkout_box in th
 Please post it in the issues section of GitHub and we'll fix it as soon as we can. Thanks for helping. https://github.com/strangerstudios/pmpro-register-helper/issues
 
 == Changelog ==
+= .5.14 =
+* Now adding pmpro_error class to required fields if they are empty. (Thanks, Adrian)
+
 = .5.13 =
 * Added PMPRORH_DIR constant. Now using constant to enqueue stylesheets.
 * Will now look in /themes/{YOUR THEME}/paid-memberships-pro/register-helper/css/ for copies of the CSS files, which will be used in place of the default CSS files if found.
@@ -120,7 +123,7 @@ Please post it in the issues section of GitHub and we'll fix it as soon as we ca
 * Added fullname honey pot field to the register form module.
 
 = .5.11.1 =
-* Added pmpro_checkout_confirm_password filter. You can disable/hide the "confirm password" field on registration by adding `add_filter("pmpro_checkout_confirm_password", "__return_false");` to your active theme's functions.php/etc.
+* Added pmpro_checkout_confirm_password filter. You can disable/hide the "confirm password" field on registration by adding `add_filter("pmpro_checkout_confirm_password", "__return_false");` to your active theme's functi)ons.php/etc.
 
 = .5.11 =
 * Fixed bug where only first letter of a meta value was showing up on checkout form.

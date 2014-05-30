@@ -472,7 +472,11 @@
 			elseif(!empty($this->value))
 				$value = $this->value;
 			else
-				$value = "";			
+				$value = "";
+
+			//update class value
+			$this->class .= " " . pmpro_getClassForField($this->name);
+
 			?>
 			<div id="<?php echo $this->id;?>_div" <?php if(!empty($this->divclass)) echo 'class="' . $this->divclass . '"';?>>
 				<?php if(!empty($this->showmainlabel)) { ?>

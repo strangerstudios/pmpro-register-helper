@@ -3,7 +3,7 @@
 Plugin Name: PMPro Register Helper
 Plugin URI: http://www.paidmembershipspro.com/pmpro-register-helper/
 Description: Shortcodes and other functions to help customize your registration forms.
-Version: .5.13
+Version: .5.14
 Author: Stranger Studios
 Author URI: http://www.strangerstudios.com
 */
@@ -465,11 +465,7 @@ add_action('pmpro_before_send_to_paypal_standard', 'pmprorh_pmpro_after_checkout
 //require the fields
 function pmprorh_rf_pmpro_registration_checks($okay)
 {
-	global $pmpro_msg, $pmpro_msgt, $current_user;
-	
-	//if there is an earlier error, just return that
-	if(!$okay)
-		return $okay;
+	global $current_user;
 	
 	//array to store fields that were required and missed
 	$required = array();
@@ -503,7 +499,8 @@ function pmprorh_rf_pmpro_registration_checks($okay)
 						$filetype = wp_check_filetype_and_ext($_FILES[$field->name]['tmp_name'], $_FILES[$field->name]['name']);						
 						if((!$filetype['type'] || !$filetype['ext'] ) && !current_user_can( 'unfiltered_upload' ))
 						{			
-							pmpro_setMessage(sprintf(__("Sorry, the file type for %s is not permitted for security reasons.", "pmpro"), $_FILES[$field->name]['name']), "pmpro_error");
+							if($okay)	//only want to update message if there is no previous error
+								pmpro_setMessage(sprintf(__("Sorry, the file type for %s is not permitted for security reasons.", "pmpro"), $_FILES[$field->name]['name']), "pmpro_error");
 							return false;
 						}
 						else
@@ -511,7 +508,8 @@ function pmprorh_rf_pmpro_registration_checks($okay)
 							//check for specific extensions anyway
 							if(!empty($field->ext) && !in_array($filetype['ext'], $field->ext))
 							{
-								pmpro_setMessage(sprintf(__("Sorry, the file type for %s is not permitted for security reasons.", "pmpro"), $_FILES[$field->name]['name']), "pmpro_error");
+								if($okay)	//only want to update message if there is no previous error
+									pmpro_setMessage(sprintf(__("Sorry, the file type for %s is not permitted for security reasons.", "pmpro"), $_FILES[$field->name]['name']), "pmpro_error");
 								return false;
 							}
 						}
@@ -532,16 +530,24 @@ function pmprorh_rf_pmpro_registration_checks($okay)
 	{
 		$required = array_unique($required);
 		
+		//add them to error fields
+		global $pmpro_error_fields;
+		$pmpro_error_fields = array_merge((array)$pmpro_error_fields, $required);
+		
 		if(count($required) == 1)
 			$pmpro_msg = "The " . implode(", ", $required) . " field is required.";
 		else
 			$pmpro_msg = "The " . implode(", ", $required) . " fields are required.";
 		$pmpro_msgt = "pmpro_error";
+
+		if($okay)
+			pmpro_setMessage($pmpro_msg, $pmpro_msgt);
+
 		return false;
 	}
 	
-	//all good
-	return true;
+	//return whatever status was before
+	return $okay;
 }
 add_filter("pmpro_registration_checks", "pmprorh_rf_pmpro_registration_checks");
 

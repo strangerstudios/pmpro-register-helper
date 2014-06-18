@@ -3,7 +3,7 @@
 Plugin Name: PMPro Register Helper
 Plugin URI: http://www.paidmembershipspro.com/pmpro-register-helper/
 Description: Shortcodes and other functions to help customize your registration forms.
-Version: .5.14
+Version: .5.15
 Author: Stranger Studios
 Author URI: http://www.strangerstudios.com
 */
@@ -467,8 +467,9 @@ function pmprorh_rf_pmpro_registration_checks($okay)
 {
 	global $current_user;
 	
-	//array to store fields that were required and missed
+	//arrays to store fields that were required and missed
 	$required = array();
+    $required_labels = array();
 	
 	//any fields?
 	global $pmprorh_registration_fields;
@@ -520,7 +521,8 @@ function pmprorh_rf_pmpro_registration_checks($okay)
 			 
 				if(!empty($field->required) && empty($value))
 				{
-					$required[] = $field->name;		
+					$required[] = $field->name;
+                    $required_labels[] = $field->label;
 				}
 			}
 		}
@@ -535,9 +537,9 @@ function pmprorh_rf_pmpro_registration_checks($okay)
 		$pmpro_error_fields = array_merge((array)$pmpro_error_fields, $required);
 		
 		if(count($required) == 1)
-			$pmpro_msg = "The " . implode(", ", $required) . " field is required.";
+			$pmpro_msg = "The " . implode(", ", $required_labels) . " field is required.";
 		else
-			$pmpro_msg = "The " . implode(", ", $required) . " fields are required.";
+			$pmpro_msg = "The " . implode(", ", $required_labels) . " fields are required.";
 		$pmpro_msgt = "pmpro_error";
 
 		if($okay)

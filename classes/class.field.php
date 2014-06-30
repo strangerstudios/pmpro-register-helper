@@ -71,7 +71,7 @@
 					foreach($this->options as $option)
 						$newoptions[$option] = $option;
 					$this->options = $newoptions;
-				}				
+				}
 			}
 			elseif($this->type == "textarea")
 			{
@@ -291,7 +291,7 @@
 			}
 			elseif($this->type == "checkbox")
 			{
-				$r.= '<input name="'.$this->name.'"' .' type="checkbox" value="1"'.' id="'.$this->id.'"';
+				$r = '<input name="'.$this->name.'"' .' type="checkbox" value="1"'.' id="'.$this->id.'"';
 				$r.=checked( $value, 1,false);		
 				if(!empty($this->readonly))
 					$r .= 'readonly="readonly" ';		
@@ -527,7 +527,7 @@
 						if(current_user_can("edit_user", $current_user->ID) && $edit !== false)
 							$this->display($value); 
 						else
-							echo "<div>" . $value . "</div>";
+							echo "<div>" . $this->displayValue($value) . "</div>";						
 					?>
 					<?php if(!empty($this->hint)) { ?>
 						<div class="leftmar"><small class="lite"><?php echo $this->hint;?></small></div>
@@ -538,6 +538,27 @@
 			
 			$this->getDependenciesJS();
 		}		
+		
+		//checks for array values and values from fields with options
+		function displayValue($value)
+		{
+			if(is_array($value) && !empty($this->options))
+			{							
+				$labels = array();
+				foreach($value as $item)
+				{
+					$labels[] = $this->options[$item];
+				}
+				
+				echo implode(", ", $labels);
+			}
+			elseif(is_array($value))
+				echo implode(", ", $value);
+			elseif(!empty($this->options))
+				echo $this->options[$value];
+			else
+				echo $value;
+		}
 		
 		//from: http://stackoverflow.com/questions/173400/php-arrays-a-good-way-to-check-if-an-array-is-associative-or-numeric/4254008#4254008
 		function is_assoc($array) {			

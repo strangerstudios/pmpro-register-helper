@@ -111,6 +111,7 @@ Please post it in the issues section of GitHub and we'll fix it as soon as we ca
 == Changelog ==
 = .5.15 =
 * Added the displayValue($value) method to the field class and using it in the displayInProfile method. This handles values that are arrays or indexes in a field's options.
+* Now using field labels instead of names when displaying list of fields in the required fields error message.
 
 = .5.14 =
 * Now adding pmpro_error class to required fields if they are empty. (Thanks, Adrian)

@@ -3,7 +3,7 @@
 Plugin Name: PMPro Register Helper
 Plugin URI: http://www.paidmembershipspro.com/pmpro-register-helper/
 Description: Shortcodes and other functions to help customize your registration forms.
-Version: .5.15
+Version: .5.16
 Author: Stranger Studios
 Author URI: http://www.strangerstudios.com
 */
@@ -394,8 +394,8 @@ add_action("pmpro_checkout_before_submit_button", "pmprorh_pmpro_checkout_before
 */
 function pmprorh_pmpro_after_checkout($user_id)
 {
-	global $pmprorh_registration_fields;	
-	
+	global $pmprorh_registration_fields;
+
 	//any fields?
 	if(!empty($pmprorh_registration_fields))
 	{		
@@ -404,7 +404,7 @@ function pmprorh_pmpro_after_checkout($user_id)
 		{						
 			//cycle through fields
 			foreach($fields as $field)
-			{				
+			{
 				if(!pmprorh_checkFieldForLevel($field))
 					continue;
 				
@@ -442,7 +442,7 @@ function pmprorh_pmpro_after_checkout($user_id)
 					//file					
 					$value = $_FILES[$field->name]['name'];
 				}
-												
+
 				//update user meta
 				if(isset($value))	
 				{					
@@ -481,12 +481,15 @@ function pmprorh_rf_pmpro_registration_checks($okay)
 			//cycle through fields
 			foreach($fields as $field)
 			{
+                //handle arrays
+                $field->name = preg_replace('/\[\]$/', '', $field->name);
+
 				//if the field is not for this level, skip it
 				if(!pmprorh_checkFieldForLevel($field))
 					continue;
 					
 				if(isset($_REQUEST[$field->name]))
-					$value = $_REQUEST[$field->name];	
+					$value = $_REQUEST[$field->name];
 				elseif(isset($_FILES[$field->name]))
 				{
 					$value = $_FILES[$field->name]['name'];

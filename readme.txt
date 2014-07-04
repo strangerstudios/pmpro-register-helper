@@ -3,7 +3,7 @@ Contributors: strangerstudios
 Tags: users, user meta, meta, memberships, registration
 Requires at least: 3.5
 Tested up to: 3.9.1
-Stable tag: .5.15
+Stable tag: .5.16
 
 Add extra fields to your checkout page. Works with Paid Memberships Pro.
 
@@ -109,6 +109,9 @@ Note that the "checkout_boxes" location is now just the first checkout_box in th
 Please post it in the issues section of GitHub and we'll fix it as soon as we can. Thanks for helping. https://github.com/strangerstudios/pmpro-register-helper/issues
 
 == Changelog ==
+= .5.16 =
+* Fixed bug with required select fields with "multiple" enabled.
+
 = .5.15 =
 * Added the displayValue($value) method to the field class and using it in the displayInProfile method. This handles values that are arrays or indexes in a field's options.
 * Now using field labels instead of names when displaying list of fields in the required fields error message.

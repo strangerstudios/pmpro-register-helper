@@ -109,7 +109,7 @@ Note that the "checkout_boxes" location is now just the first checkout_box in th
 Please post it in the issues section of GitHub and we'll fix it as soon as we can. Thanks for helping. https://github.com/strangerstudios/pmpro-register-helper/issues
 
 == Changelog ==
-= .5.16.1 =
+= .5.17 =
 * Fixed bugs with multiselect fields. Now both using the field type "multiselect" or adding "multiple"=>true to the attributes for a select field will turn it into a multi select field.
 
 = .5.16 =

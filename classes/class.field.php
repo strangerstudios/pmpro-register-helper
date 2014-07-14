@@ -26,7 +26,7 @@
 			
 			//add attributes as properties of this class
 			if(!empty($attr))
-			{
+			{				
 				foreach($attr as $key=>$value)
 				{
 					$this->$key = $value;
@@ -60,6 +60,7 @@
 			}
 			elseif($this->type == "select" || $type == "multiselect" || $type == "select2" || $type == "radio")
 			{
+				//default option
 				if(empty($this->options))
 					$this->options = array("", "- choose one -");
 				
@@ -230,7 +231,15 @@
 			}
 			elseif($this->type == "select")
 			{
-				$r = '<select id="' . $this->id . '" name="' . $this->name . '" ';
+				//if multiple is set, value must be an array
+				if(!empty($this->multiple) && !is_array($value))				
+					$value = array($value);
+								
+				if(!empty($this->multiple))
+					$r = '<select id="' . $this->id . '" name="' . $this->name . '[]" ';	//multiselect
+				else
+					$r = '<select id="' . $this->id . '" name="' . $this->name . '" ';		//regular
+					
 				if(!empty($this->class))
 					$r .= 'class="' . $this->class . '" ';
 				if(!empty($this->readonly))
@@ -241,7 +250,30 @@
 				foreach($this->options as $ovalue => $option)
 				{
 					$r .= '<option value="' . esc_attr($ovalue) . '" ';
-					if(!empty($ovalue) && $ovalue == $value)
+					if(!empty($this->multiple) && in_array($ovalue, $value))
+						$r .= 'selected="selected" ';
+					elseif(!empty($ovalue) && $ovalue == $value)
+						$r .= 'selected="selected" ';
+					$r .= '>' . $option . "</option>\n";
+				}
+				$r .= '</select>';
+			}
+			elseif($this->type == "multiselect")
+			{
+				//value must be an array
+				if(!is_array($value))
+					$value = array($value);
+				
+				$r = '<select id="' . $this->id . '" name="' . $this->name . '[]" multiple="multiple"';
+				if(!empty($this->class))
+					$r .= 'class="' . $this->class . '" ';
+				if(!empty($this->readonly))
+					$r .= 'readonly="readonly" ';				
+				$r .= ">\n";
+				foreach($this->options as $ovalue => $option)
+				{
+					$r .= '<option value="' . esc_attr($ovalue) . '" ';
+					if(!empty($ovalue) && in_array($ovalue, $value))
 						$r .= 'selected="selected" ';
 					$r .= '>' . $option . "</option>\n";
 				}

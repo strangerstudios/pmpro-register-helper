@@ -2,8 +2,8 @@
 Contributors: strangerstudios
 Tags: users, user meta, meta, memberships, registration
 Requires at least: 3.5
-Tested up to: 3.9.1
-Stable tag: .5.17.1
+Tested up to: 4.0
+Stable tag: .5.17.2
 
 Add extra fields to your checkout page. Works with Paid Memberships Pro.
 
@@ -109,6 +109,9 @@ Note that the "checkout_boxes" location is now just the first checkout_box in th
 Please post it in the issues section of GitHub and we'll fix it as soon as we can. Thanks for helping. https://github.com/strangerstudios/pmpro-register-helper/issues
 
 == Changelog ==
+= .5.17.2 =
+* The "depends" functionality now supports checking select2 and multiselect fields. The depending field will show up if any of the selected values in the multiselect equals the value given. e.g. "depends"=>array(array("id"=>"category", "value"=>"category1")) will show the depending field if category1 is one of the options selected in the #category multiselect field. (Thanks, Erik Bertrand)
+
 = .5.17.1 =
 * Fixed fatal error that would occur sometimes if Paid Memberships Pro was not active. (Thanks, Karmyn Tyler Cobb)
 

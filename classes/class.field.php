@@ -309,6 +309,7 @@
 			elseif($this->type == "radio")
 			{
 				$count = 0;
+				$r = '';
 				foreach($this->options as $ovalue => $option)
 				{
 					$count++;
@@ -394,8 +395,8 @@
 				';
 			}
 			elseif($this->type == "readonly")
-			{
-				$r .= $this->value;
+			{				
+				$r = $this->value;
 			}
 			else
 			{

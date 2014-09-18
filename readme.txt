@@ -3,7 +3,7 @@ Contributors: strangerstudios
 Tags: users, user meta, meta, memberships, registration
 Requires at least: 3.5
 Tested up to: 4.0
-Stable tag: .5.17.3
+Stable tag: .5.18
 
 Add extra fields to your checkout page. Works with Paid Memberships Pro.
 
@@ -109,6 +109,9 @@ Note that the "checkout_boxes" location is now just the first checkout_box in th
 Please post it in the issues section of GitHub and we'll fix it as soon as we can. Thanks for helping. https://github.com/strangerstudios/pmpro-register-helper/issues
 
 == Changelog ==
+= .5.18 =
+* Added code to set the enctype on the edit user page so file uploads work in the admin.
+
 = .5.17.3 =
 * Fixed warning on radio and readonly fields when shown in the profile. (Thanks, MarkG)
 

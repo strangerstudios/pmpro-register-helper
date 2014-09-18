@@ -3,7 +3,7 @@
 Plugin Name: PMPro Register Helper
 Plugin URI: http://www.paidmembershipspro.com/pmpro-register-helper/
 Description: Shortcodes and other functions to help customize your registration forms.
-Version: .5.17.3
+Version: .5.18
 Author: Stranger Studios
 Author URI: http://www.strangerstudios.com
 */
@@ -706,6 +706,15 @@ function pmprorh_getProfileFields($user_id)
 }
 
 /*
+	Change the enctype of the edit user form in case files need to be uploaded.
+*/
+function pmprorh_user_edit_form_tag()
+{
+	echo ' enctype="multipart/form-data"';
+}
+add_action('user_edit_form_tag', 'pmprorh_user_edit_form_tag');
+
+/*
 	Save profile fields.
 */
 function pmprorh_rf_save_extra_profile_fields( $user_id ) 
@@ -720,7 +729,7 @@ function pmprorh_rf_save_extra_profile_fields( $user_id )
 	{		
 		//cycle through fields
 		foreach($profile_fields as $field)
-		{
+		{						
 			if(isset($_POST[$field->name]) || isset($_FILES[$field->name]))
 			{
 				//callback?

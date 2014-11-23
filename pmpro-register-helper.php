@@ -3,14 +3,14 @@
 Plugin Name: PMPro Register Helper
 Plugin URI: http://www.paidmembershipspro.com/pmpro-register-helper/
 Description: Shortcodes and other functions to help customize your registration forms.
-Version: .5.18
+Version: .5.19
 Author: Stranger Studios
 Author URI: http://www.strangerstudios.com
 */
 
 define('PMPRORH_DIR', dirname(__FILE__) );
 define('PMPRORH_URL', WP_PLUGIN_URL . "/pmpro-register-helper");
-define('PMPRORH_VERSION', '.5.18');
+define('PMPRORH_VERSION', '.5.19');
 
 /*
 	options - just defaults for now, will be in settings eventually
@@ -1109,11 +1109,11 @@ function pmprorh_cron_delete_tmp()
 {
 	$upload_dir = wp_upload_dir();
 	$pmprorh_dir = $upload_dir['basedir'] . "/pmpro-register-helper/tmp/";
-	
-	if($handle = opendir($pmprorh_dir))
-	{
+		
+	if(file_exists($pmprorh_dir) && $handle = opendir($pmprorh_dir))
+	{		
 		while(false !== ($file = readdir($handle)))
-		{ 			
+		{			
 			$file = $pmprorh_dir . $file;
 			$filelastmodified = filemtime($file);						
 			if(is_file($file) && (time() - $filelastmodified) > 3600)

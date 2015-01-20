@@ -3,7 +3,7 @@ Contributors: strangerstudios
 Tags: users, user meta, meta, memberships, registration
 Requires at least: 3.5
 Tested up to: 4.0.1
-Stable tag: .5.19
+Stable tag: .5.20
 
 Add extra fields to your checkout page. Works with Paid Memberships Pro.
 
@@ -109,6 +109,9 @@ Note that the "checkout_boxes" location is now just the first checkout_box in th
 Please post it in the issues section of GitHub and we'll fix it as soon as we can. Thanks for helping. https://github.com/strangerstudios/pmpro-register-helper/issues
 
 == Changelog ==
+= .5.20 =
+* Fixed bug which prevented multiple select fields user metadata from being saved when getting back from payment gateway.
+
 = .5.19 =
 * Can now set the "showrequired" option to "label" (all lower) and the required asterisk will be rendered between the label and the input field. Useful for some themes/designs.
 * Fixed warning in pmprorh_cron_delete_tmp(). (Thanks, nozzljohn)

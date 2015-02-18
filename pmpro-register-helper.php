@@ -3,7 +3,7 @@
 Plugin Name: PMPro Register Helper
 Plugin URI: http://www.paidmembershipspro.com/pmpro-register-helper/
 Description: Shortcodes and other functions to help customize your registration forms.
-Version: .5.19
+Version: .6
 Author: Stranger Studios
 Author URI: http://www.strangerstudios.com
 */
@@ -1061,8 +1061,18 @@ function pmprorh_pmpro_email_filter($email)
 			{
 				$email->body .= "<p>Extra Fields:<br />";
 				foreach($fields as $field)
-				{
-					$email->body .= "- " . $field->label . ": " . get_user_meta($user_id, $field->name, true) . "<br />";
+				{					
+					$email->body .= "- " . $field->label . ": ";
+				
+					$value = get_user_meta($user_id, $field->name, true);
+					if($field->type == "file" && is_array($value) && !empty($value['fullurl']))
+						$email->body .= $value['fullurl'];
+					elseif(is_array($value))
+						$email->body .= implode(", ", $value);					
+					else
+						$email->body .= $value;
+					
+					$email->body .= "<br />";
 				}				
 				$email->body .= "</p>";
 			}			

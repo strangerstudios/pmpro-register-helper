@@ -109,6 +109,9 @@ Note that the "checkout_boxes" location is now just the first checkout_box in th
 Please post it in the issues section of GitHub and we'll fix it as soon as we can. Thanks for helping. https://github.com/strangerstudios/pmpro-register-helper/issues
 
 == Changelog ==
+= .6 =
+* Added date as a field option.
+
 = .5.20 =
 * Now allowing duplicate emails with pmpro_checkout_oldemail filter
 

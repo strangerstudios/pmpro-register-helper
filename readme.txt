@@ -3,7 +3,7 @@ Contributors: strangerstudios
 Tags: users, user meta, meta, memberships, registration
 Requires at least: 3.5
 Tested up to: 4.1
-Stable tag: .5.20
+Stable tag: .6
 
 Add extra fields to your checkout page. Works with Paid Memberships Pro.
 
@@ -74,6 +74,9 @@ $readonly_text = new PMProRH_Field("r2", "text", array("value"=>"Readonly value"
 //file uploads
 $resume = new PMProRH_Field("resume", "file", array("profile"=>true, "options"=>array()));
 
+//date fields
+$date = new PMProRH_Field("date", "date", array("profile"=>true));
+
 //Dependent fields. Add a "depends" value to the params array. Value should be an array of arrays. The inner array should be of the form array("id"=>{field id}, "value"=>{field value})
 $category = new PMProRH_Field("category", "select", array("options"=>array("cat1"=>"Category 1", "cat2"=>"Category 2")));  
 $subcat1 = new PMProRH_Field("subcat", "select", array("options"=>array(1=>"Subcat 1.1", 2=>"Subcat 1.2", 3=>"Subcat 1.3"), "depends"=>array(array("id"=>"category", "value"=>"cat1"))));  
@@ -110,6 +113,8 @@ Please post it in the issues section of GitHub and we'll fix it as soon as we ca
 
 == Changelog ==
 = .6 =
+* Added support for integration with PMMPro Add Member addon. Use "addmember"=>true in your field options.
+* "readonly" option now gives select fields disabled="disabled" attribute
 * Added date as a field option.
 
 = .5.20 =

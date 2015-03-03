@@ -353,49 +353,6 @@
 					$r .= 'readonly="readonly" ';
 				$r .= '>' . esc_textarea($value) . '</textarea>';				
 			}
-            elseif($this->type == "date")
-            {
-                $r = '<select id="' . $this->id . '_m" name="' . $this->name . '[m]"';
-
-                if(!empty($this->class))
-                    $r .= ' class="' . $this->class . '"';
-
-                if(!empty($this->readonly))
-                    $r .= 'disabled="disabled"';
-
-                $r .= ' >';
-
-                //setup date vars
-                if(!empty($value))
-                    $value = strtotime($value);
-                else
-                    $value = strtotime(date('Y-m-d'));
-
-                $year = date("Y", $value);
-                $month = date("n", $value);
-                $day = date("j", $value);
-
-                for($i = 1; $i < 13; $i++)
-                {
-                    $r .= '<option value="' . $i . '" ';
-                    if($i == $month)
-                        $r .= 'selected="selected"';
-
-                    $r .= '>' . date("M", strtotime($i . "/1/" . $year, current_time("timestamp"))) . '</option>';
-                }
-
-                $r .= '</select>><input id="' . $this->id . '_d" name="' . $this->name . '[d]" type="text" size="2" value="' . $day . '" ';
-
-                if(!empty($this->readonly))
-                    $r .= 'readonly="readonly" ';
-
-                $r .= '/><input id="' . $this->id . '_y" name="' . $this->name . '[y]" type="text" size="4" value="' . $year . '" ';
-
-                if(!empty($this->readonly))
-                    $r .= 'readonly="readonly" ';
-
-                $r .= '/>';
-            }
 			elseif($this->type == "hidden")
 			{
 				$r = '<input type="hidden" id="' . $this->id . '" name="' . $this->name . '" value="' . esc_attr($value) . '" ';
@@ -449,7 +406,50 @@
 				</script>
 				';
 			}
-			elseif($this->type == "readonly")
+            elseif($this->type == "date")
+            {
+                $r = '<select id="' . $this->id . '_m" name="' . $this->name . '[m]"';
+
+                if(!empty($this->class))
+                    $r .= ' class="' . $this->class . '"';
+
+                if(!empty($this->readonly))
+                    $r .= 'disabled="disabled"';
+
+                $r .= ' >';
+
+                //setup date vars
+                if(!empty($value))
+                    $value = strtotime($value);
+                else
+                    $value = strtotime(date('Y-m-d'));
+
+                $year = date("Y", $value);
+                $month = date("n", $value);
+                $day = date("j", $value);
+
+                for($i = 1; $i < 13; $i++)
+                {
+                    $r .= '<option value="' . $i . '" ';
+                    if($i == $month)
+                        $r .= 'selected="selected"';
+
+                    $r .= '>' . date("M", strtotime($i . "/1/" . $year, current_time("timestamp"))) . '</option>';
+                }
+
+                $r .= '</select><input id="' . $this->id . '_d" name="' . $this->name . '[d]" type="text" size="2" value="' . $day . '" ';
+
+                if(!empty($this->readonly))
+                    $r .= 'readonly="readonly" ';
+
+                $r .= '/><input id="' . $this->id . '_y" name="' . $this->name . '[y]" type="text" size="4" value="' . $year . '" ';
+
+                if(!empty($this->readonly))
+                    $r .= 'readonly="readonly" ';
+
+                $r .= '/>';
+            }
+            elseif($this->type == "readonly")
 			{				
 				$r = $this->value;
 			}

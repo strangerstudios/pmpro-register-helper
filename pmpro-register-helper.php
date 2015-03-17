@@ -619,7 +619,7 @@ function pmprorh_rf_show_extra_profile_fields($user)
 	global $pmprorh_registration_fields;
 
 	//which fields are marked for the profile	
-	$profile_fields = pmprorh_getProfileFields($user->ID);			
+	$profile_fields = pmprorh_getProfileFields($user->ID);
 	
 	//show the fields
 	if(!empty($profile_fields))
@@ -640,6 +640,108 @@ function pmprorh_rf_show_extra_profile_fields($user)
 }
 add_action( 'show_user_profile', 'pmprorh_rf_show_extra_profile_fields' );
 add_action( 'edit_user_profile', 'pmprorh_rf_show_extra_profile_fields' );
+
+/*
+    Integrate with PMPro Add Member Admin addon
+ */
+function pmprorh_pmpro_add_member_fields($user)
+{
+    global $pmprorh_registration_fields;
+
+    $addmember_fields = array();
+    if(!empty($pmprorh_registration_fields))
+    {
+        //cycle through groups
+        foreach($pmprorh_registration_fields as $where => $fields)
+        {
+            //cycle through fields
+            foreach($fields as $field)
+            {
+                if(!empty($field->addmember))
+                {
+                    if(current_user_can("manage_options", $user->ID) || current_user_can(apply_filters('pmpro_add_member_cap', 'edit_users')))
+                        $addmember_fields[] = $field;
+                }
+                elseif(!empty($field->addmember))
+                {
+                    $addmember_fields[] = $field;
+                }
+            }
+        }
+    }
+
+
+    //show the fields
+    if(!empty($addmember_fields))
+    {
+        ?>
+            <?php
+            //cycle through groups
+            foreach($addmember_fields as $field)
+            {
+                $field->displayInProfile($user->ID);
+            }
+            ?>
+    <?php
+    }
+}
+add_action( 'pmpro_add_member_fields', 'pmprorh_pmpro_add_member_fields' );
+
+function pmprorh_pmpro_add_member_added()
+{
+    $user_id = get_user_by('login', $_REQUEST['user_login'])->ID;
+
+    global $pmprorh_registration_fields;
+
+    $addmember_fields = array();
+    if(!empty($pmprorh_registration_fields))
+    {
+        //cycle through groups
+        foreach($pmprorh_registration_fields as $where => $fields)
+        {
+            //cycle through fields
+            foreach($fields as $field)
+            {
+                if(!empty($field->addmember))
+                {
+                    if(current_user_can("manage_options", $user_id) || current_user_can(apply_filters('pmpro_add_member_cap', 'edit_users')))
+                        $addmember_fields[] = $field;
+                }
+                elseif(!empty($field->addmember))
+                {
+                    $addmember_fields[] = $field;
+                }
+            }
+        }
+    }
+
+    //save our added fields in session while the user goes off to PayPal
+    if(!empty($addmember_fields))
+    {
+        //cycle through fields
+        foreach($addmember_fields as $field)
+        {
+            if(isset($_POST[$field->name]) || isset($_FILES[$field->name]))
+            {
+                //callback?
+                if(!empty($field->save_function))
+                    call_user_func($field->save_function, $user_id, $field->name, $_POST[$field->name]);
+                else
+                    update_user_meta($user_id, $field->name, $_POST[$field->name]);
+            }
+            elseif(!empty($_POST[$field->name . "_checkbox"]) && $field->type == 'checkbox')	//handle unchecked checkboxes
+            {
+                //callback?
+                if(!empty($field->save_function))
+                    call_user_func($field->save_function, $user_id, $field->name, 0);
+                else
+                    update_user_meta($user_id, $field->name, 0);
+            }
+        }
+    }
+
+}
+add_action( 'pmpro_add_member_added', 'pmprorh_pmpro_add_member_added' );
 
 /*
 	Get RH fields which are set to showup in the Members List CSV Export.	
@@ -988,8 +1090,8 @@ function pmprorh_email_passed($level)
 	{
 		//make sure the email is available
 		$oldemail = $wpdb->get_var("SELECT ID FROM $wpdb->users WHERE user_email = '" . $wpdb->escape($_REQUEST['bemail']) . "' LIMIT 1");
-		if(!$oldemail)
-		{			
+		if(!$oldemail || !apply_filters('pmpro_checkout_oldemail', true) )
+		{
 			//confirm email
 			global $bemail, $bconfirmemail;
 			$bemail = str_replace(" ", "+", $_REQUEST['bemail']);

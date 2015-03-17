@@ -94,6 +94,11 @@
 					$this->showmainlabel = false;
 				}
 			}
+            elseif($this->type == "date")
+            {
+                //use the save date function
+                $this->save_function = array("PMProRH_Field", "saveDate");
+            }
 			
 			return true;
 		}
@@ -207,6 +212,13 @@
 			//save filename in usermeta
 			update_user_meta($user_id, $name, array("original_filename"=>$file['name'], "filename"=>$filename, "fullpath"=> $pmprorh_dir . $filename, "fullurl"=>content_url("/uploads/pmpro-register-helper/" . $user->user_login . "/" . $filename), "size"=>$file['size']));			
 		}
+
+        //fix date then update user meta
+        function saveDate($user_id, $name, $value)
+        {
+            $date = date('Y-m-d', strtotime(date($value['y'] . '-' . $value['m'] . '-' . $value['d'])));
+            update_user_meta($user_id, $name, $date);
+        }
 		
 		//echo the HTML for the field
 		function display($value = NULL)
@@ -243,7 +255,7 @@
 				if(!empty($this->class))
 					$r .= 'class="' . $this->class . '" ';
 				if(!empty($this->readonly))
-					$r .= 'readonly="readonly" ';
+					$r .= 'disabled="disabled" ';
 				if(!empty($this->multiple))
 					$r .= 'multiple="multiple" ';
 				$r .= ">\n";
@@ -268,7 +280,7 @@
 				if(!empty($this->class))
 					$r .= 'class="' . $this->class . '" ';
 				if(!empty($this->readonly))
-					$r .= 'readonly="readonly" ';				
+					$r .= 'readonly="readonly" ';
 				$r .= ">\n";
 				foreach($this->options as $ovalue => $option)
 				{
@@ -394,7 +406,50 @@
 				</script>
 				';
 			}
-			elseif($this->type == "readonly")
+            elseif($this->type == "date")
+            {
+                $r = '<select id="' . $this->id . '_m" name="' . $this->name . '[m]"';
+
+                if(!empty($this->class))
+                    $r .= ' class="' . $this->class . '"';
+
+                if(!empty($this->readonly))
+                    $r .= 'disabled="disabled"';
+
+                $r .= ' >';
+
+                //setup date vars
+                if(!empty($value))
+                    $value = strtotime($value);
+                else
+                    $value = strtotime(date('Y-m-d'));
+
+                $year = date("Y", $value);
+                $month = date("n", $value);
+                $day = date("j", $value);
+
+                for($i = 1; $i < 13; $i++)
+                {
+                    $r .= '<option value="' . $i . '" ';
+                    if($i == $month)
+                        $r .= 'selected="selected"';
+
+                    $r .= '>' . date("M", strtotime($i . "/1/" . $year, current_time("timestamp"))) . '</option>';
+                }
+
+                $r .= '</select><input id="' . $this->id . '_d" name="' . $this->name . '[d]" type="text" size="2" value="' . $day . '" ';
+
+                if(!empty($this->readonly))
+                    $r .= 'readonly="readonly" ';
+
+                $r .= '/><input id="' . $this->id . '_y" name="' . $this->name . '[y]" type="text" size="4" value="' . $year . '" ';
+
+                if(!empty($this->readonly))
+                    $r .= 'readonly="readonly" ';
+
+                $r .= '/>';
+            }
+            elseif($this->type == "readonly")
 			{				
 				$r = $this->value;
 			}

@@ -3,7 +3,7 @@
 Plugin Name: Paid Memberships Pro - Register Helper Add On
 Plugin URI: http://www.paidmembershipspro.com/pmpro-register-helper/
 Description: Shortcodes and other functions to help customize your registration forms.
-Version: .6
+Version: .7
 Author: Stranger Studios
 Author URI: http://www.strangerstudios.com
 */
@@ -137,6 +137,20 @@ function pmprorh_add_checkout_box($name, $label = NULL, $description = "", $orde
 	usort($pmprorh_checkout_boxes, "pmprorh_sortByOrder");
 	
 	return true;
+}
+
+function pmprorh_getCheckoutBoxByName($name)
+{
+	global $pmprorh_checkout_boxes;
+	if(!empty($pmprorh_checkout_boxes))
+	{
+		foreach($pmprorh_checkout_boxes as $box)
+		{
+			if($box->name == $name)
+				return $box;
+		}		
+	}
+	return false;
 }
 
 //from: http://www.php.net/manual/en/function.end.php#107733
@@ -614,23 +628,42 @@ add_action("pmpro_paypalexpress_session_vars", "pmprorh_rf_pmpro_paypalexpress_s
 /*
 	Show profile fields.
 */
-function pmprorh_rf_show_extra_profile_fields($user)
+function pmprorh_rf_show_extra_profile_fields($user, $withlocations = false)
 {
 	global $pmprorh_registration_fields;
 
 	//which fields are marked for the profile	
-	$profile_fields = pmprorh_getProfileFields($user->ID);
+	$profile_fields = pmprorh_getProfileFields($user->ID, $withlocations);
 	
 	//show the fields
-	if(!empty($profile_fields))
+	//show the fields
+	if(!empty($profile_fields) && $withlocations)
+	{			
+		foreach($profile_fields as $where => $fields)
+		{						
+			$box = pmprorh_getCheckoutBoxByName($where);			
+			?>
+			<h3><?php echo $box->label;?></h3>
+			<table class="form-table">
+			<?php
+			//cycle through groups			
+			foreach($fields as $field)
+			{			
+				$field->displayInProfile($user->ID);			
+			}
+			?>
+			</table>
+			<?php
+		}
+	}	
+	elseif(!empty($profile_fields))
 	{		
-		?>
-		<h3>Extra profile information</h3>
+		?>		
 		<table class="form-table">
 		<?php
 		//cycle through groups
 		foreach($profile_fields as $field)
-		{			
+		{
 			$field->displayInProfile($user->ID);			
 		}
 		?>
@@ -638,8 +671,12 @@ function pmprorh_rf_show_extra_profile_fields($user)
 		<?php
 	}
 }
-add_action( 'show_user_profile', 'pmprorh_rf_show_extra_profile_fields' );
-add_action( 'edit_user_profile', 'pmprorh_rf_show_extra_profile_fields' );
+function pmprorh_rf_show_extra_profile_fields_withlocations($user)
+{
+	pmprorh_rf_show_extra_profile_fields($user, true);
+}
+add_action( 'show_user_profile', 'pmprorh_rf_show_extra_profile_fields_withlocations' );
+add_action( 'edit_user_profile', 'pmprorh_rf_show_extra_profile_fields_withlocations' );
 
 /*
     Integrate with PMPro Add Member Admin addon
@@ -775,7 +812,7 @@ function pmprorh_getCSVFields()
 	Get the RH fields which are marked to show in the profile.
 	If a $user_id is passed in, get fields based on the user's level.
 */
-function pmprorh_getProfileFields($user_id)
+function pmprorh_getProfileFields($user_id, $withlocations = false)
 {
 	global $pmprorh_registration_fields;
 	
@@ -791,14 +828,22 @@ function pmprorh_getProfileFields($user_id)
 				if(!pmprorh_checkFieldForLevel($field, "profile", $user_id))
 					continue;				
 				
-				if(!empty($field->profile) && ($field->profile === "admins" || $field->profile === "admin"))
+				if(!empty($field->profile) && ($field->profile === "admins" || $field->profile === "admin" || $field->profile === "only_admin"))
 				{
 					if(current_user_can("manage_options", $user_id))
-						$profile_fields[] = $field;
+					{
+						if($withlocations)
+							$profile_fields[$where][] = $field;
+						else
+							$profile_fields[] = $field;
+					}
 				}
 				elseif(!empty($field->profile))
 				{
-					$profile_fields[] = $field;
+					if($withlocations)
+						$profile_fields[$where][] = $field;
+					else
+						$profile_fields[] = $field;
 				}
 			}
 		}

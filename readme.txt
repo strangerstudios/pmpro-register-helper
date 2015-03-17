@@ -1,4 +1,4 @@
-=== PMPro Register Helper ===
+=== Paid Memberships Pro - Register Helper Add On ===
 Contributors: strangerstudios
 Tags: users, user meta, meta, memberships, registration
 Requires at least: 3.5

@@ -112,6 +112,9 @@ Please post it in the issues section of GitHub and we'll fix it as soon as we ca
 = .6 =
 * Updated code to add profile fields into the admin confirmation email to handle multiselect and file types better. (Thanks, sweettea)
 
+= .5.20 =
+* Fixed bug which prevented multiple select fields user metadata from being saved when getting back from payment gateway.
+
 = .5.19 =
 * Can now set the "showrequired" option to "label" (all lower) and the required asterisk will be rendered between the label and the input field. Useful for some themes/designs.
 * Fixed warning in pmprorh_cron_delete_tmp(). (Thanks, nozzljohn)

@@ -10,7 +10,7 @@ Author URI: http://www.strangerstudios.com
 
 define('PMPRORH_DIR', dirname(__FILE__) );
 define('PMPRORH_URL', WP_PLUGIN_URL . "/pmpro-register-helper");
-define('PMPRORH_VERSION', '.5.19');
+define('PMPRORH_VERSION', '.5.20');
 
 /*
 	options - just defaults for now, will be in settings eventually
@@ -422,7 +422,7 @@ function pmprorh_pmpro_after_checkout($user_id)
 				elseif(isset($_SESSION[$field->name]))
 				{					
 					//file or value?
-					if(is_array($_SESSION[$field->name]))
+					if(is_array($_SESSION[$field->name]) && isset($_SESSION[$field->name]['name']))
 					{
 						//add to files global
 						$_FILES[$field->name] = $_SESSION[$field->name];

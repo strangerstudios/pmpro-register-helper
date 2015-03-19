@@ -115,6 +115,7 @@ Please post it in the issues section of GitHub and we'll fix it as soon as we ca
 = .6.1 =
 * Now respecting checkout boxes as sections when displaying profile fields at checkout and in the profile. Some of this was in the documentation, but not in the actual plugin until now.
 * Fixed bug which prevented multiple select fields user metadata from being saved when getting back from payment gateway. (Thanks, Andrea "toomuchdesign" Carraro on GitHub)
+* Fixed bug with required asterisks showing in the wrong places.
 
 = .6 =
 * Updated code to add profile fields into the admin confirmation email to handle multiselect and file types better. (Thanks, sweettea)

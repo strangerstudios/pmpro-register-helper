@@ -3,7 +3,7 @@
 Plugin Name: Paid Memberships Pro - Register Helper Add On
 Plugin URI: http://www.paidmembershipspro.com/pmpro-register-helper/
 Description: Shortcodes and other functions to help customize your registration forms.
-Version: .7
+Version: .6.1
 Author: Stranger Studios
 Author URI: http://www.strangerstudios.com
 */

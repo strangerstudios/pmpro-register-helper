@@ -462,7 +462,7 @@
 			if(!empty($this->required) && !isset($this->showrequired))
 				$this->showrequired = true;
 			
-			if(!empty($this->required) && !empty($this->showrequired) && $this->showrequired != 'label')
+			if(!empty($this->required) && !empty($this->showrequired) && $this->showrequired !== 'label')
 			{
 				if(is_string($this->showrequired))
 					$r .= $this->showrequired;
@@ -570,7 +570,7 @@
 				<?php if(!empty($this->showmainlabel)) { ?>
 					<label for="<?php echo esc_attr($this->name);?>"><?php echo $this->label;?></label>
 					<?php 
-						if(!empty($this->required) && !empty($this->showrequired) && $this->showrequired == 'label')
+						if(!empty($this->required) && !empty($this->showrequired) && $this->showrequired === 'label')
 						{
 						?><span class="pmpro_asterisk"> *</span><?php
 						}

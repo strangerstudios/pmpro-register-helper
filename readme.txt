@@ -3,7 +3,7 @@ Contributors: strangerstudios
 Tags: users, user meta, meta, memberships, registration
 Requires at least: 3.5
 Tested up to: 4.1.1
-Stable tag: .6.1
+Stable tag: .6.2
 
 Add extra fields to your checkout page. Works with Paid Memberships Pro.
 
@@ -112,6 +112,9 @@ Note that the "checkout_boxes" location is now just the first checkout_box in th
 Please post it in the issues section of GitHub and we'll fix it as soon as we can. Thanks for helping. https://github.com/strangerstudios/pmpro-register-helper/issues
 
 == Changelog ==
+= .6.2 =
+* Added after_pricing_fields location linked to the pmpro_checkout_after_pricing_fields action in the checkout template.
+
 = .6.1 =
 * Now respecting checkout boxes as sections when displaying profile fields at checkout and in the profile. Some of this was in the documentation, but not in the actual plugin until now.
 * Fixed bug which prevented multiple select fields user metadata from being saved when getting back from payment gateway. (Thanks, Andrea "toomuchdesign" Carraro on GitHub)

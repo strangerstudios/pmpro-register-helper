@@ -3,7 +3,7 @@
 Plugin Name: Paid Memberships Pro - Register Helper Add On
 Plugin URI: http://www.paidmembershipspro.com/pmpro-register-helper/
 Description: Shortcodes and other functions to help customize your registration forms.
-Version: .6.2
+Version: .6.3
 Author: Stranger Studios
 Author URI: http://www.strangerstudios.com
 */
@@ -490,6 +490,7 @@ function pmprorh_pmpro_after_checkout($user_id)
 }
 add_action('pmpro_after_checkout', 'pmprorh_pmpro_after_checkout');
 add_action('pmpro_before_send_to_paypal_standard', 'pmprorh_pmpro_after_checkout');	//for paypal standard we need to do this just before sending the user to paypal
+add_action('pmpro_before_send_to_twocheckout', 'pmprorh_pmpro_after_checkout', 20);	//for 2checkout we need to do this just before sending the user to 2checkout
 
 /*
 	Require required fields.
@@ -594,20 +595,20 @@ add_filter("pmpro_registration_checks", "pmprorh_rf_pmpro_registration_checks");
 function pmprorh_rf_pmpro_paypalexpress_session_vars()
 {
 	global $pmprorh_registration_fields;
-	
-	//save our added fields in session while the user goes off to PayPal	
+
+	//save our added fields in session while the user goes off to PayPal
 	if(!empty($pmprorh_registration_fields))
 	{
 		//cycle through groups
 		foreach($pmprorh_registration_fields as $where => $fields)
-		{			
+		{
 			//cycle through fields
 			foreach($fields as $field)
 			{
-				if(!pmprorh_checkFieldForLevel($field))
+                if(!pmprorh_checkFieldForLevel($field))
 					continue;
-					
-				if(isset($_REQUEST[$field->name]))
+
+                if(isset($_REQUEST[$field->name]))
 					$_SESSION[$field->name] = $_REQUEST[$field->name];
 				elseif(isset($_FILES[$field->name]))
 				{
@@ -633,13 +634,14 @@ function pmprorh_rf_pmpro_paypalexpress_session_vars()
 					$_FILES[$field->name]['tmp_name'] = $new_filename;
 					
 					//save file info in session
-					$_SESSION[$field->name] = $_FILES[$field->name];										
+					$_SESSION[$field->name] = $_FILES[$field->name];
 				}
 			}
 		}
 	}
 }
 add_action("pmpro_paypalexpress_session_vars", "pmprorh_rf_pmpro_paypalexpress_session_vars");
+add_action("pmpro_before_send_to_twocheckout", "pmprorh_rf_pmpro_paypalexpress_session_vars");
 
 /*
 	Show profile fields.

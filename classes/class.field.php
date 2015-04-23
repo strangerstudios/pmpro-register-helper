@@ -451,7 +451,7 @@
             }
             elseif($this->type == "readonly")
 			{				
-				$r = $this->value;
+				$r = $value;
 			}
 			else
 			{

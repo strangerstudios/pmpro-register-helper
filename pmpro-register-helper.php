@@ -3,14 +3,14 @@
 Plugin Name: Paid Memberships Pro - Register Helper Add On
 Plugin URI: http://www.paidmembershipspro.com/pmpro-register-helper/
 Description: Shortcodes and other functions to help customize your registration forms.
-Version: .6.2.1
+Version: .6.3
 Author: Stranger Studios
 Author URI: http://www.strangerstudios.com
 */
 
 define('PMPRORH_DIR', dirname(__FILE__) );
 define('PMPRORH_URL', WP_PLUGIN_URL . "/pmpro-register-helper");
-define('PMPRORH_VERSION', '.6.2');
+define('PMPRORH_VERSION', '.6.3');
 
 /*
 	options - just defaults for now, will be in settings eventually
@@ -490,6 +490,7 @@ function pmprorh_pmpro_after_checkout($user_id)
 }
 add_action('pmpro_after_checkout', 'pmprorh_pmpro_after_checkout');
 add_action('pmpro_before_send_to_paypal_standard', 'pmprorh_pmpro_after_checkout');	//for paypal standard we need to do this just before sending the user to paypal
+add_action('pmpro_before_send_to_twocheckout', 'pmprorh_pmpro_after_checkout');		//for twocheckout need to update user meta before sending to the gateway
 
 /*
 	Require required fields.

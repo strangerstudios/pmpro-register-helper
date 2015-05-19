@@ -2,8 +2,8 @@
 Contributors: strangerstudios
 Tags: users, user meta, meta, memberships, registration
 Requires at least: 3.5
-Tested up to: 4.1.1
-Stable tag: .6.2.1
+Tested up to: 4.2.2
+Stable tag: .6.3
 
 Add extra fields to your checkout page. Works with Paid Memberships Pro.
 
@@ -112,6 +112,9 @@ Note that the "checkout_boxes" location is now just the first checkout_box in th
 Please post it in the issues section of GitHub and we'll fix it as soon as we can. Thanks for helping. https://github.com/strangerstudios/pmpro-register-helper/issues
 
 == Changelog ==
+= .6.3 =
+* Added hook to support 2Checkout gateway with PMPro.
+
 = .6.2.1 =
 * Fixed bug with readonly fields not showing up in the profile.
 * You can now use "false" or "true" when setting attributes in the pmprorh_signup shortcode. (Thanks, Kim)

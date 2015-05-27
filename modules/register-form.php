@@ -77,8 +77,8 @@ function pmprorh_register_form_handler()
 					//if creating a new user, check that the email and user_login are available
 					if(empty($current_user->ID))
 					{
-						$oldusername = $wpdb->get_var("SELECT user_login FROM $wpdb->users WHERE user_login = '" . $wpdb->escape($user_login) . "' LIMIT 1");
-						$oldemail = $wpdb->get_var("SELECT user_email FROM $wpdb->users WHERE user_email = '" . $wpdb->escape($user_email) . "' LIMIT 1");
+						$oldusername = $wpdb->get_var("SELECT user_login FROM $wpdb->users WHERE user_login = '" . esc_sql($user_login) . "' LIMIT 1");
+						$oldemail = $wpdb->get_var("SELECT user_email FROM $wpdb->users WHERE user_email = '" . esc_sql($user_email) . "' LIMIT 1");
 
 						//this hook can be used to allow multiple accounts with the same email address
 						$oldemail = apply_filters("pmpro_checkout_oldemail", $oldemail);

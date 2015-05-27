@@ -1154,10 +1154,10 @@ function pmprorh_email_passed($level)
 	global $wpdb, $pmpro_msg, $pmpro_msgt;
 	
 	//confirm email
-	if(!empty($_GET['bemail']))
+	if(!empty($_GET['bemail']) && !is_user_logged_in())
 	{
 		//make sure the email is available
-		$oldemail = $wpdb->get_var("SELECT ID FROM $wpdb->users WHERE user_email = '" . $wpdb->escape($_REQUEST['bemail']) . "' LIMIT 1");
+		$oldemail = $wpdb->get_var("SELECT ID FROM $wpdb->users WHERE user_email = '" . esc_sql($_REQUEST['bemail']) . "' LIMIT 1");
 		if(!$oldemail || !apply_filters('pmpro_checkout_oldemail', true) )
 		{
 			//confirm email

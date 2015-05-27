@@ -31,7 +31,7 @@ function pmprorh_profile_preheader()
 					global $wpdb;
 					
 					$user_nicename = $_REQUEST['pu'];
-					$display_name = $wpdb->get_var("SELECT display_name FROM $wpdb->users WHERE user_nicename = '" . $wpdb->escape($user_nicename) . "' LIMIT 1");					
+					$display_name = $wpdb->get_var("SELECT display_name FROM $wpdb->users WHERE user_nicename = '" . esc_sql($user_nicename) . "' LIMIT 1");					
 					
 					if(!empty($display_name))
 					{
@@ -68,7 +68,7 @@ function pmprorh_profile_shortcode($atts, $content=null, $code="")
 	if(empty($user_id) && !empty($_REQUEST['pu']))		
 	{
 		$user_nicename = $_REQUEST['pu'];
-		$user_id = $wpdb->get_var("SELECT ID FROM $wpdb->users WHERE user_nicename = '" . $wpdb->escape($user_nicename) . "' LIMIT 1");
+		$user_id = $wpdb->get_var("SELECT ID FROM $wpdb->users WHERE user_nicename = '" . esc_sql($user_nicename) . "' LIMIT 1");
 	}
 		
 	if(!empty($user_id))

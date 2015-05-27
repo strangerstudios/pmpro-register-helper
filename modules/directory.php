@@ -68,7 +68,7 @@ function pmprorh_directory_shortcode($atts, $content=null, $code="")
 		if(empty($key))
 			$sqlQuery .= "(u.user_login LIKE '%$s%' OR u.user_email LIKE '%$s%' OR u.display_name LIKE '%$s%' OR um.meta_value LIKE '%$s%') ";
 		else
-			$sqlQuery .= "(um.meta_key = '" . $wpdb->escape($key) . "' AND um.meta_value LIKE '%$s%') ";
+			$sqlQuery .= "(um.meta_key = '" . esc_sql($key) . "' AND um.meta_value LIKE '%$s%') ";
 	
 		if($level)
 			$sqlQuery .= " AND mu.membership_id IN(" . $level . ") ";					

@@ -112,6 +112,8 @@ Note that the "checkout_boxes" location is now just the first checkout_box in th
 Please post it in the issues section of GitHub and we'll fix it as soon as we can. Thanks for helping. https://github.com/strangerstudios/pmpro-register-helper/issues
 
 == Changelog ==
+= .6.2.2 =
+* No only doing the bemail redirect to login if the user is not logged in.
 
 = .6.2.1 =
 * Fixed bug with readonly fields not showing up in the profile.

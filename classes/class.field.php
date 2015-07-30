@@ -57,7 +57,7 @@
 			{
 				if(empty($this->size))
 					$this->size = 30;
-			}
+			}			
 			elseif($this->type == "select" || $type == "multiselect" || $type == "select2" || $type == "radio")
 			{
 				//default option
@@ -233,6 +233,17 @@
 			if($this->type == "text")
 			{
 				$r = '<input type="text" id="' . $this->id . '" name="' . $this->name . '" value="' . esc_attr($value) . '" ';
+				if(!empty($this->size))
+					$r .= 'size="' . $this->size . '" ';
+				if(!empty($this->class))
+					$r .= 'class="' . $this->class . '" ';
+				if(!empty($this->readonly))
+					$r .= 'readonly="readonly" ';
+				$r .= ' />';				
+			}
+			elseif($this->type == "password")
+			{
+				$r = '<input type="password" id="' . $this->id . '" name="' . $this->name . '" value="' . esc_attr($value) . '" ';
 				if(!empty($this->size))
 					$r .= 'size="' . $this->size . '" ';
 				if(!empty($this->class))

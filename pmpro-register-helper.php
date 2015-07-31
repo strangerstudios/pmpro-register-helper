@@ -930,13 +930,19 @@ function pmprorh_signup_shortcode($atts, $content=null, $code="")
 
 	extract(shortcode_atts(array(
 		'button' => "Sign Up Now",
-		'intro' => NULL,
+		'intro' => "0",
 		'level' => NULL,		
+		'login' => true,
 		'short' => NULL,
 		'title' => "Register For " . pmpro_getLevel($level)->name,
 	), $atts));
 	
 	//turn 0's into falses
+	if($login === "0" || $login === "false" || $login === "no")
+		$login = false;
+	else
+		$login = true;
+
 	if($short === "0" || $short === "false" || $short === "no")
 		$short = false;
 	else
@@ -944,8 +950,6 @@ function pmprorh_signup_shortcode($atts, $content=null, $code="")
 	
 	if($intro === "0" || $intro === "false" || $intro === "no")
 		$intro = false;
-	else
-		$intro = true;
 
 	global $current_user, $membership_levels;
 
@@ -1027,6 +1031,11 @@ function pmprorh_signup_shortcode($atts, $content=null, $code="")
 					<input type="submit" class="pmpro_btn pmpro_btn-submit-checkout" value="<?php echo $button; ?>" />
 				</span>
 			</div>	
+			<?php if(!empty($login) && empty($current_user->ID)) { ?>
+			<div style="text-align:center;">
+				<a href="<?php echo wp_login_url(get_permalink()); ?>"><?php _e('Log In','pmpro'); ?></a>
+			</div>	
+			<?php } ?>
 		</form>
 		<?php } ?>
 	<?php

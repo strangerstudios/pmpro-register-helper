@@ -113,7 +113,9 @@ Please post it in the issues section of GitHub and we'll fix it as soon as we ca
 
 == Changelog ==
 = 1.0.1 =
-* Added "password" as a field type.
+* ENHANCEMENT: Added "password" as a field type.
+* ENHANCEMENT: Added an "intro" attribute to the "pmpro_signup" shortcode. Pass any text into the attribute to have that text shown above the signup form.
+* ENHANCEMENT: Added a "login" attribute to the "pmpro_signup" shortcode. If set to 1 or true, a link to login will be shown below the signup button.
 
 = 1.0 =
 * No update from previous version, but setting to 1.0 since inclusion in the WordPress.org repository.

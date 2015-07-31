@@ -17,7 +17,7 @@ This plugin currently requires Paid Memberships Pro.
 
 Add a sign up form to a post/widget/page using a shortcode:
 
-[pmpro_signup level="3" short="1" intro="0" button="Signup Now"]
+[pmpro_signup level="3" short="1" title="Sign Up for Gold Membership" intro="0" button="Signup Now"]
 
 Adding a field to your checkout page requires two steps: (1) create a field object, (2) call pmprorh_add_registration_field() to add the field to the checkout page. Optionally, you can create your own "checkout_box" or fieldset to the checkout page using pmprorh_add_checkout_box().
 

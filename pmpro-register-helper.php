@@ -929,10 +929,11 @@ function pmprorh_signup_shortcode($atts, $content=null, $code="")
 	// examples: [pmpro_signup level="3" short="1" intro="0" button="Signup Now"]
 
 	extract(shortcode_atts(array(
+		'button' => "Sign Up Now",
+		'intro' => NULL,
 		'level' => NULL,		
 		'short' => NULL,
-		'intro' => true,
-		'button' => "Signup &raquo;"
+		'title' => "Register For " . pmpro_getLevel($level)->name,
 	), $atts));
 	
 	//turn 0's into falses
@@ -950,64 +951,76 @@ function pmprorh_signup_shortcode($atts, $content=null, $code="")
 
 	ob_start();	
 	?>
-		<?php if(!empty($current_user->ID)) { ?>
+		<?php if(!empty($current_user->ID) && pmpro_hasMembershipLevel($level,$current_user->ID)) { ?>
 			<p>You are logged in as <?php echo $current_user->user_login; ?>.</p>
 		<?php } else { ?>
-		<form class="pmpro_form" action="<?php echo pmpro_url("checkout"); ?>" method="post">
+		<form class="pmpro_form pmpro_signup_form" action="<?php echo pmpro_url("checkout"); ?>" method="post">
+			<h2><?php echo $title; ?></h2>
 			<?php
-				if($intro)
-				{
-					echo wpautop("Register for " .pmpro_getLevel($level)->name. ".");
-				}
+				if(!empty($intro))
+					echo wpautop($intro);
 			?>
-			
 			<input type="hidden" id="level" name="level" value="<?php echo $level; ?>" />	
-			<div>
-				<label for="username">Username</label>
-				<input id="username" name="username" type="text" class="input" size="30" value="" /> 
-			</div>
-			<?php do_action("pmpro_checkout_after_username");?>
-			<div>
-				<label for="password">Password</label>
-				<input id="password" name="password" type="password" class="input" size="30" value="" /> 
-			</div>
-			<?php if($short) { ?>
-				<input type="hidden" name="password2_copy" value="1" />
-			<?php } else { ?>
-				<div>
-					<label for="password2">Confirm Password</label>
-					<input id="password2" name="password2" type="password" class="input" size="30" value="" /> 
-				</div>			
-			<?php } ?>
-			<?php do_action("pmpro_checkout_after_password");?>
-			<div>
-				<label for="bemail">E-mail Address</label>
-				<input id="bemail" name="bemail" type="text" class="input" size="30" value="" /> 
-			</div>
-			<?php if($short) { ?>
-				<input type="hidden" name="bconfirmemail_copy" value="1" />
-			<?php } else { ?>
-				<div>
-					<label for="bconfirmemail">Confirm E-mail</label>
-					<input id="bconfirmemail" name="bconfirmemail" type="text" class="input" size="30" value="" /> 
-				</div>	         
-			<?php } ?>
-			<?php do_action("pmpro_checkout_after_email");?>
-			<div class="pmpro_hidden">
-				<label for="fullname">Full Name</label>
-				<input id="fullname" name="fullname" type="text" class="input" size="30" value="" /> <strong>LEAVE THIS BLANK</strong>
-			</div>
-			
-			<div class="pmpro_captcha">
-				<?php 																								
-					global $recaptcha, $recaptcha_publickey;										
-					if($recaptcha == 2 || ($recaptcha == 1 && pmpro_isLevelFree($pmpro_level))) 
-					{											
-						echo recaptcha_get_html($recaptcha_publickey, NULL, true);						
-					}								
-				?>								
-			</div>
-			
+			<?php
+				if(!empty($current_user->ID))
+				{
+					?>
+					<p id="pmpro_account_loggedin">
+						<?php printf(__('You are logged in as <strong>%s</strong>. If you would like to use a different account for this membership, <a href="%s">log out now</a>.', 'pmpro'), $current_user->user_login, wp_logout_url($_SERVER['REQUEST_URI'])); ?>			
+					</p>
+					<?php
+				}
+				else
+				{
+					?>
+					<div>
+						<label for="username">Username</label>
+						<input id="username" name="username" type="text" class="input" size="30" value="" /> 
+					</div>
+					<?php do_action("pmpro_checkout_after_username");?>
+					<div>
+						<label for="password">Password</label>
+						<input id="password" name="password" type="password" class="input" size="30" value="" /> 
+					</div>
+					<?php if($short) { ?>
+						<input type="hidden" name="password2_copy" value="1" />
+					<?php } else { ?>
+						<div>
+							<label for="password2">Confirm Password</label>
+							<input id="password2" name="password2" type="password" class="input" size="30" value="" /> 
+						</div>			
+					<?php } ?>
+					<?php do_action("pmpro_checkout_after_password");?>
+					<div>
+						<label for="bemail">E-mail Address</label>
+						<input id="bemail" name="bemail" type="email" class="input" size="30" value="" /> 
+					</div>
+					<?php if($short) { ?>
+						<input type="hidden" name="bconfirmemail_copy" value="1" />
+					<?php } else { ?>
+						<div>
+							<label for="bconfirmemail">Confirm E-mail</label>
+							<input id="bconfirmemail" name="bconfirmemail" type="email" class="input" size="30" value="" /> 
+						</div>	         
+					<?php } ?>
+					<?php do_action("pmpro_checkout_after_email");?>
+					<div class="pmpro_hidden">
+						<label for="fullname">Full Name</label>
+						<input id="fullname" name="fullname" type="text" class="input" size="30" value="" /> <strong>LEAVE THIS BLANK</strong>
+					</div>
+					
+					<div class="pmpro_captcha">
+						<?php 																								
+							global $recaptcha, $recaptcha_publickey;										
+							if($recaptcha == 2 || ($recaptcha == 1 && pmpro_isLevelFree($pmpro_level))) 
+							{											
+								echo recaptcha_get_html($recaptcha_publickey, NULL, true);						
+							}								
+						?>								
+					</div>
+					<?php
+				}
+			?>			
 			<div>
 				<span id="pmpro_submit_span" >
 					<input type="hidden" name="submit-checkout" value="1" />		

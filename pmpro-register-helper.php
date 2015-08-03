@@ -212,7 +212,7 @@ function pmprorh_default_register_form()
 	{
 		foreach($pmprorh_registration_fields["register_form"] as $field)
 		{					
-			if(pmprorh_checkFieldForLevel($field))
+			if(pmprorh_checkFieldForLevel($field) && $field->profile != "only" && $field->profile != "only_admin")
 				$field->displayAtCheckout();		
 		}
 	}
@@ -228,7 +228,7 @@ function pmprorh_register_form_after_email()
 	{		
 		foreach($pmprorh_registration_fields["pmprorh_after_email"] as $field)
 		{			
-			if(pmprorh_checkFieldForLevel($field))
+			if(pmprorh_checkFieldForLevel($field) && $field->profile != "only" && $field->profile != "only_admin")
 				$field->displayAtCheckout();		
 		}
 	}
@@ -244,7 +244,7 @@ function pmprorh_register_form_after_password()
 	{
 		foreach($pmprorh_registration_fields["pmprorh_after_password"] as $field)
 		{			
-			if(pmprorh_checkFieldForLevel($field))
+			if(pmprorh_checkFieldForLevel($field) && $field->profile != "only" && $field->profile != "only_admin")
 				$field->displayAtCheckout();		
 		}
 	}
@@ -260,7 +260,7 @@ function pmprorh_register_form()
 	{
 		foreach($pmprorh_registration_fields["pmprorh_register_form"] as $field)
 		{			
-			if(pmprorh_checkFieldForLevel($field))
+			if(pmprorh_checkFieldForLevel($field) && $field->profile != "only" && $field->profile != "only_admin")
 				$field->displayAtCheckout();		
 		}
 	}
@@ -279,7 +279,7 @@ function pmprorh_pmpro_checkout_after_username()
 	{
 		foreach($pmprorh_registration_fields["after_username"] as $field)
 		{						
-			if(pmprorh_checkFieldForLevel($field))
+			if(pmprorh_checkFieldForLevel($field) && $field->profile != "only" && $field->profile != "only_admin")
 				$field->displayAtCheckout();		
 		}
 	}
@@ -295,7 +295,7 @@ function pmprorh_pmpro_checkout_after_password()
 	{
 		foreach($pmprorh_registration_fields["after_password"] as $field)
 		{			
-			if(pmprorh_checkFieldForLevel($field))
+			if(pmprorh_checkFieldForLevel($field) && $field->profile != "only" && $field->profile != "only_admin")
 				$field->displayAtCheckout();		
 		}
 	}
@@ -311,7 +311,7 @@ function pmprorh_pmpro_checkout_after_email()
 	{
 		foreach($pmprorh_registration_fields["after_email"] as $field)
 		{			
-			if(pmprorh_checkFieldForLevel($field))
+			if(pmprorh_checkFieldForLevel($field) && $field->profile != "only" && $field->profile != "only_admin")
 				$field->displayAtCheckout();		
 		}
 	}
@@ -327,7 +327,7 @@ function pmprorh_pmpro_checkout_after_captcha()
 	{
 		foreach($pmprorh_registration_fields["after_captcha"] as $field)
 		{			
-			if(pmprorh_checkFieldForLevel($field))
+			if(pmprorh_checkFieldForLevel($field) && $field->profile != "only" && $field->profile != "only_admin")
 				$field->displayAtCheckout();		
 		}
 	}
@@ -345,8 +345,7 @@ function pmprorh_pmpro_checkout_boxes()
 		$n = 0;		
 		if(!empty($pmprorh_registration_fields[$cb->name]))
 			foreach($pmprorh_registration_fields[$cb->name] as $field)				
-				if(pmprorh_checkFieldForLevel($field) && (!isset($field->profile) || (isset($field->profile) && $field->profile !== "only" && $field->profile !== "only_admin")))
-					$n++;
+				if(pmprorh_checkFieldForLevel($field) && (!isset($field->profile) || (isset($field->profile) && $field->profile !== "only" && $field->profile !== "only_admin")))		$n++;
 
 		if($n > 0)
 		{
@@ -365,7 +364,7 @@ function pmprorh_pmpro_checkout_boxes()
 				<?php
 				foreach($pmprorh_registration_fields[$cb->name] as $field)
 				{			
-					if(pmprorh_checkFieldForLevel($field))
+					if(pmprorh_checkFieldForLevel($field) && $field->profile != "only" && $field->profile != "only_admin")
 						$field->displayAtCheckout();		
 				}
 				?>
@@ -387,7 +386,7 @@ function pmprorh_pmpro_checkout_after_pricing_fields()
 	{
 		foreach($pmprorh_registration_fields["after_pricing_fields"] as $field)
 		{			
-			if(pmprorh_checkFieldForLevel($field))
+			if(pmprorh_checkFieldForLevel($field) && $field->profile != "only" && $field->profile != "only_admin")
 				$field->displayAtCheckout();		
 		}
 	}
@@ -403,7 +402,7 @@ function pmprorh_pmpro_checkout_after_billing_fields()
 	{
 		foreach($pmprorh_registration_fields["after_billing_fields"] as $field)
 		{			
-			if(pmprorh_checkFieldForLevel($field))
+			if(pmprorh_checkFieldForLevel($field) && $field->profile != "only" && $field->profile != "only_admin")
 				$field->displayAtCheckout();		
 		}
 	}
@@ -419,7 +418,7 @@ function pmprorh_pmpro_checkout_before_submit_button()
 	{
 		foreach($pmprorh_registration_fields["before_submit_button"] as $field)
 		{			
-			if(pmprorh_checkFieldForLevel($field))
+			if(pmprorh_checkFieldForLevel($field) && $field->profile != "only" && $field->profile != "only_admin")
 				$field->displayAtCheckout();		
 		}
 	}
@@ -444,6 +443,9 @@ function pmprorh_pmpro_after_checkout($user_id)
 			{
 				if(!pmprorh_checkFieldForLevel($field))
 					continue;
+				
+				if($field->profile == "only" || $field->profile == "only_admin")
+					continue;	//wasn't shown at checkout
 				
 				//assume no value
 				$value = NULL;
@@ -525,7 +527,10 @@ function pmprorh_rf_pmpro_registration_checks($okay)
 				//if the field is not for this level, skip it
 				if(!pmprorh_checkFieldForLevel($field))
 					continue;
-					
+				
+				if($field->profile === "only" || $field->profile === "only_admin")
+					continue;	//wasn't shown at checkout
+				
 				if(isset($_REQUEST[$field->name]))
 					$value = $_REQUEST[$field->name];
 				elseif(isset($_FILES[$field->name]))

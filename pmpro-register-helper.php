@@ -364,7 +364,7 @@ function pmprorh_pmpro_checkout_boxes()
 				<?php
 				foreach($pmprorh_registration_fields[$cb->name] as $field)
 				{			
-					if(pmprorh_checkFieldForLevel($field) && $field->profile != "only" && $field->profile != "only_admin")
+					if(pmprorh_checkFieldForLevel($field) && (!isset($field->profile) || (isset($field->profile) && $field->profile !== "only" && $field->profile !== "only_admin")))
 						$field->displayAtCheckout();		
 				}
 				?>
@@ -444,7 +444,7 @@ function pmprorh_pmpro_after_checkout($user_id)
 				if(!pmprorh_checkFieldForLevel($field))
 					continue;
 				
-				if($field->profile == "only" || $field->profile == "only_admin")
+				if(!empty($field->profile) && ($field->profile === "only" || $field->profile === "only_admin"))
 					continue;	//wasn't shown at checkout
 				
 				//assume no value
@@ -528,7 +528,7 @@ function pmprorh_rf_pmpro_registration_checks($okay)
 				if(!pmprorh_checkFieldForLevel($field))
 					continue;
 				
-				if($field->profile === "only" || $field->profile === "only_admin")
+				if(!empty($field->profile) && ($field->profile === "only" || $field->profile === "only_admin"))
 					continue;	//wasn't shown at checkout
 				
 				if(isset($_REQUEST[$field->name]))

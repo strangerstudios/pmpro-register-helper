@@ -2,8 +2,8 @@
 Contributors: strangerstudios
 Tags: users, user meta, meta, memberships, registration
 Requires at least: 3.5
-Tested up to: 4.2.2
-Stable tag: 1.0.1
+Tested up to: 4.2.4
+Stable tag: 1.0.2
 
 Add extra fields to your checkout page. Works with Paid Memberships Pro.
 
@@ -112,6 +112,9 @@ Note that the "checkout_boxes" location is now just the first checkout_box in th
 Please post it in the issues section of GitHub and we'll fix it as soon as we can. Thanks for helping. https://github.com/strangerstudios/pmpro-register-helper/issues
 
 == Changelog ==
+= 1.0.2 =
+* BUG: Fixed bug where all fields with profile=>true were acting as if they were profile=>only. (Thanks, Merry Eisner)
+
 = 1.0.1 =
 * BUG/ENHANCEMENT: Fixed the "only" setting for the profile options, so you can use "profile"=>"only" to have fields that only show up in the profile and don't show up (or get checked for requirements) at checkout. You can also use "only_admin" to add profile fields that can only be seen/edited by admins.
 * ENHANCEMENT: Added "password" as a field type.

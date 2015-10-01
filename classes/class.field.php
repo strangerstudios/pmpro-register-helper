@@ -491,7 +491,10 @@
 				{
 					if(!empty($check['id']))
 					{
-						$checks[] = "(jQuery('#" . $check['id'] . "').val() == " . json_encode($check['value']) . " || jQuery.inArray(" . json_encode($check['value']) . ", jQuery('#" . $check['id'] . "').val()) > -1)";
+						$checks[] = "((jQuery('#" . $check['id']."')".".is(':checkbox')) "
+						."? jQuery('#" . $check['id'] . ":checked').length == ".$check['value']
+						.":(jQuery('#" . $check['id'] . "').val() == " . json_encode($check['value']) . " || jQuery.inArray(" . json_encode($check['value']) . ", jQuery('#" . $check['id'] . "').val()) > -1))";
+						
 						$binds[] = "#" . $check['id'];
 					}
 				}

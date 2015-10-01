@@ -230,6 +230,10 @@
 		//get HTML for the field
 		function getHTML($value = "")
 		{			
+			//vars to store HTML to be added to the beginning or end
+			$r_beginning = "";
+			$r_end = "";
+
 			if($this->type == "text")
 			{
 				$r = '<input type="text" id="' . $this->id . '" name="' . $this->name . '" value="' . esc_attr($value) . '" ';
@@ -398,7 +402,7 @@
 				//show name of existing file
 				if(!empty($value))
 				{
-					$r .= '<div class="leftmar"><small class="lite">Current File: <a target="_blank" href="' . $this->file['fullurl'] . '">' . basename($value) . '</a></small></div>';
+					$r_end .= '<div class="leftmar"><small class="lite">Current File: <a target="_blank" href="' . $this->file['fullurl'] . '">' . basename($value) . '</a></small></div>';
 				}
 			
 				if(!empty($this->readonly))
@@ -469,14 +473,24 @@
 			if(!empty($this->required) && !isset($this->showrequired))
 				$this->showrequired = true;
 			
+			//but don't show required on the profile page unless overridden.
+			if(defined('IS_PROFILE_PAGE') && fIS_PROFILE_PAGE && !apply_filters('pmprorh_show_required_on_profile', false, $this))
+				$this->showrequired = false;
+
 			if(!empty($this->required) && !empty($this->showrequired) && $this->showrequired !== 'label')
 			{
 				if(is_string($this->showrequired))
 					$r .= $this->showrequired;
 				else
 					$r .= '<span class="pmpro_asterisk"> *</span>';
-			}		
-			
+			}
+
+			//anything meant to be added to the beginning or end?
+			$r = $r_beginning . $r . $r_end;
+
+			//filter
+			$r = apply_filters('pmprorh_get_html', $r, $this);
+
 			return $r;
 		}	
 		
@@ -491,10 +505,7 @@
 				{
 					if(!empty($check['id']))
 					{
-						$checks[] = "((jQuery('#" . $check['id']."')".".is(':checkbox')) "
-						."? jQuery('#" . $check['id'] . ":checked').length == ".$check['value']
-						.":(jQuery('#" . $check['id'] . "').val() == " . json_encode($check['value']) . " || jQuery.inArray(" . json_encode($check['value']) . ", jQuery('#" . $check['id'] . "').val()) > -1))";
-						
+						$checks[] = "(jQuery('#" . $check['id'] . "').val() == " . json_encode($check['value']) . " || jQuery.inArray(" . json_encode($check['value']) . ", jQuery('#" . $check['id'] . "').val()) > -1)";
 						$binds[] = "#" . $check['id'];
 					}
 				}

@@ -3,7 +3,7 @@ Contributors: strangerstudios
 Tags: users, user meta, meta, memberships, registration
 Requires at least: 3.5
 Tested up to: 4.3.1
-Stable tag: 1.0.2
+Stable tag: 1.1
 
 Add extra fields to your checkout page. Works with Paid Memberships Pro.
 
@@ -112,6 +112,12 @@ Note that the "checkout_boxes" location is now just the first checkout_box in th
 Please post it in the issues section of GitHub and we'll fix it as soon as we can. Thanks for helping. https://github.com/strangerstudios/pmpro-register-helper/issues
 
 == Changelog ==
+= 1.1 =
+* BUG: Fixed display issues with file fields.
+* BUG: Fixed issue where the "levels" option was only accepting arrays. You can now pass integers as well to check for a single level. (Thanks, Andy Schaff)
+* ENHANCEMENT: No longer showing required asterisks for fields on the user profile page. We weren't forcing requirement on the profile page anyway and the asterisks were breaking some theme designs.
+* ENHANCEMENT: Added the pmprorh_get_html filter. First parameter $r is the HTML about to be returned by the getHTML method. The second parameter $field is the field object.
+
 = 1.0.2 =
 * BUG: Fixed bug where all fields with profile=>true were acting as if they were profile=>only. (Thanks, Merry Eisner)
 

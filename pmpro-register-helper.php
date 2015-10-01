@@ -3,14 +3,14 @@
 Plugin Name: Paid Memberships Pro - Register Helper Add On
 Plugin URI: http://www.paidmembershipspro.com/pmpro-register-helper/
 Description: Custom fields, shortcodes, and other functions to help customize your Paid Memberships Pro checkout process.
-Version: 1.0.2
+Version: 1.1
 Author: Stranger Studios
 Author URI: http://www.strangerstudios.com
 */
 
 define('PMPRORH_DIR', dirname(__FILE__) );
 define('PMPRORH_URL', WP_PLUGIN_URL . "/pmpro-register-helper");
-define('PMPRORH_VERSION', '1.0.1');
+define('PMPRORH_VERSION', '1.1');
 
 /*
 	options - just defaults for now, will be in settings eventually
@@ -1037,7 +1037,9 @@ function pmprorh_checkFieldForLevel($field, $scope = "default", $args = NULL)
 			//check against $_REQUEST
 			if(!empty($_REQUEST['level']))
 			{
-				if(in_array($_REQUEST['level'], $field->levels))
+				if(is_array($field->levels) && in_array($_REQUEST['level'], $field->levels))
+					return true;
+				elseif(intval($_REQUEST['level']) == intval($field->levels))
 					return true;
 				else
 					return false;

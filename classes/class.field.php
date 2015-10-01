@@ -380,12 +380,6 @@
 			{
 				$r = '';
 								
-				//show name of existing file
-				if(!empty($value))
-				{
-					$r .= '<div class="leftmar">Current File: <a target="_blank" href="' . $this->file['fullurl'] . '">' . basename($value) . '</a></div><div class="leftmar">';
-				}
-			
 				//file input
 				$r .= '<input type="file" id="' . $this->id . '" ';
 				if(!empty($this->accept))
@@ -401,10 +395,12 @@
 						$r .= '<input type="hidden" name="' . $this->name . '_old" value="' . esc_attr($old_value['filename']) . '" />';
 				}
 				
-				//closing div
+				//show name of existing file
 				if(!empty($value))
-					$r .= '</div>';
-				
+				{
+					$r .= '<div class="leftmar"><small class="lite">Current File: <a target="_blank" href="' . $this->file['fullurl'] . '">' . basename($value) . '</a></small></div>';
+				}
+			
 				if(!empty($this->readonly))
 					$r .= 'readonly="readonly" ';
 				

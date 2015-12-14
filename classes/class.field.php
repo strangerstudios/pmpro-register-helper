@@ -474,7 +474,7 @@
 				$this->showrequired = true;
 			
 			//but don't show required on the profile page unless overridden.
-			if(defined('IS_PROFILE_PAGE') && fIS_PROFILE_PAGE && !apply_filters('pmprorh_show_required_on_profile', false, $this))
+			if(defined('IS_PROFILE_PAGE') && IS_PROFILE_PAGE && !apply_filters('pmprorh_show_required_on_profile', false, $this))
 				$this->showrequired = false;
 
 			if(!empty($this->required) && !empty($this->showrequired) && $this->showrequired !== 'label')

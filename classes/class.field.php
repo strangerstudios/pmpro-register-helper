@@ -24,6 +24,9 @@
 			$this->type = $type;
 			$this->attr = $attr;
 			
+			//set meta key
+			$this->meta_key = $this->name;
+
 			//add attributes as properties of this class
 			if(!empty($attr))
 			{				
@@ -52,6 +55,11 @@
 			if(!isset($this->showmainlabel))
 				$this->showmainlabel = true;
 			
+			//add prefix to the name if equal to a query var
+			$public_query_vars = array('m', 'p', 'posts', 'w', 'cat', 'withcomments', 'withoutcomments', 's', 'search', 'exact', 'sentence', 'calendar', 'page', 'paged', 'more', 'tb', 'pb', 'author', 'order', 'orderby', 'year', 'monthnum', 'day', 'hour', 'minute', 'second', 'name', 'category_name', 'tag', 'feed', 'author_name', 'static', 'pagename', 'page_id', 'error', 'attachment', 'attachment_id', 'subpost', 'subpost_id', 'preview', 'robots', 'taxonomy', 'term', 'cpage', 'post_type', 'title', 'embed' );
+			if(in_array($this->name, $public_query_vars))
+				$this->name = "pmprorhprefix_" . $this->name;
+
 			//default fields						
 			if($this->type == "text")
 			{
@@ -109,7 +117,8 @@
 			//setup some vars
 			$file = $_FILES[$name];
 			$user = get_userdata($user_id);
-						
+			$meta_key = str_replace("pmprorhprefix_", "", $name);
+
 			//no file?
 			if(empty($file['name']))
 				return;
@@ -173,7 +182,7 @@
 			}
 						
 			//if we already have a file for this field, delete it
-			$old_file = get_user_meta($user->ID, $name, true);			
+			$old_file = get_user_meta($user->ID, $meta_key, true);			
 			if(!empty($old_file) && !empty($old_file['fullpath']) && file_exists($old_file['fullpath']))
 			{				
 				unlink($old_file['fullpath']);				
@@ -210,14 +219,15 @@
 			}
 			
 			//save filename in usermeta
-			update_user_meta($user_id, $name, array("original_filename"=>$file['name'], "filename"=>$filename, "fullpath"=> $pmprorh_dir . $filename, "fullurl"=>content_url("/uploads/pmpro-register-helper/" . $user->user_login . "/" . $filename), "size"=>$file['size']));			
+			update_user_meta($user_id, $meta_key, array("original_filename"=>$file['name'], "filename"=>$filename, "fullpath"=> $pmprorh_dir . $filename, "fullurl"=>content_url("/uploads/pmpro-register-helper/" . $user->user_login . "/" . $filename), "size"=>$file['size']));			
 		}
 
         //fix date then update user meta
         function saveDate($user_id, $name, $value)
         {
+        	$meta_key = str_replace("pmprorhprefix_", "", $name);
             $date = date('Y-m-d', strtotime(date($value['y'] . '-' . $value['m'] . '-' . $value['d'])));
-            update_user_meta($user_id, $name, $date);
+        	update_user_meta($user_id, $meta_key, $date);
         }
 		
 		//echo the HTML for the field
@@ -394,7 +404,7 @@
 				if(is_user_logged_in())
 				{
 					global $current_user;
-					$old_value = get_user_meta($current_user->ID, $this->name, true);
+					$old_value = get_user_meta($current_user->ID, $this->meta_key, true);
 					if(!empty($old_value))
 						$r .= '<input type="hidden" name="' . $this->name . '_old" value="' . esc_attr($old_value['filename']) . '" />';
 				}
@@ -474,7 +484,7 @@
 				$this->showrequired = true;
 			
 			//but don't show required on the profile page unless overridden.
-			if(defined('IS_PROFILE_PAGE') && fIS_PROFILE_PAGE && !apply_filters('pmprorh_show_required_on_profile', false, $this))
+			if(defined('IS_PROFILE_PAGE') && IS_PROFILE_PAGE && !apply_filters('pmprorh_show_required_on_profile', false, $this))
 				$this->showrequired = false;
 
 			if(!empty($this->required) && !empty($this->showrequired) && $this->showrequired !== 'label')
@@ -567,12 +577,12 @@
 				else
 					$value = $_SESSION[$this->name];
 			}
-			elseif(!empty($current_user->ID) && metadata_exists("user", $current_user->ID, $this->name))
+			elseif(!empty($current_user->ID) && metadata_exists("user", $current_user->ID, $this->meta_key))
 			{				
-				$meta = get_user_meta($current_user->ID, $this->name, true);				
+				$meta = get_user_meta($current_user->ID, $this->meta_key, true);				
 				if(is_array($meta) && !empty($meta['filename']))
 				{
-					$this->file = get_user_meta($current_user->ID, $this->name, true);
+					$this->file = get_user_meta($current_user->ID, $this->meta_key, true);
 					$value = $this->file['filename'];
 				}
 				else
@@ -585,9 +595,8 @@
 
 			//update class value
 			$this->class .= " " . pmpro_getClassForField($this->name);
-
 			?>
-			<div id="<?php echo $this->id;?>_div" <?php if(!empty($this->divclass)) echo 'class="' . $this->divclass . '"';?>>
+			<div id="<?php echo $this->id;?>_div" class="pmpro_checkout-field<?php if(!empty($this->divclass)) echo ' ' . $this->divclass; ?>">
 				<?php if(!empty($this->showmainlabel)) { ?>
 					<label for="<?php echo esc_attr($this->name);?>"><?php echo $this->label;?></label>
 					<?php 
@@ -615,12 +624,12 @@
 		function displayInProfile($user_id, $edit = NULL)
 		{
 			global $current_user;
-			if(metadata_exists("user", $user_id, $this->name))
+			if(metadata_exists("user", $user_id, $this->meta_key))
 			{
 				$meta = get_user_meta($user_id, $this->name, true);				
 				if(is_array($meta) && !empty($meta['filename']))
 				{
-					$this->file = get_user_meta($user_id, $this->name, true);
+					$this->file = get_user_meta($user_id, $this->meta_key, true);
 					$value = $this->file['filename'];
 				}
 				else

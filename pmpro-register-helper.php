@@ -82,7 +82,7 @@ global $pmprorh_registration_fields, $pmprorh_checkout_boxes;
 $pmprorh_registration_fields = array();
 $cb = new stdClass();
 $cb->name = "checkout_boxes";
-$cb->label = "More Information";
+$cb->label = apply_filters("pmprorh_section_header", "More Information");
 $cb->order = 0;
 $pmprorh_checkout_boxes = array("checkout_boxes" => $cb);
 
@@ -744,7 +744,7 @@ function pmprorh_pmpro_add_member_fields($user)
     <?php
     }
 }
-add_action( 'pmpro_add_member_fields', 'pmprorh_pmpro_add_member_fields' );
+add_action( 'pmpro_add_member_fields', 'pmprorh_pmpro_add_member_fields', 10, 1 );
 
 function pmprorh_pmpro_add_member_added()
 {
@@ -1033,7 +1033,7 @@ function pmprorh_checkFieldForLevel($field, $scope = "default", $args = NULL)
 			{
 				if(is_array($field->levels) && in_array($_REQUEST['level'], $field->levels))
 					return true;
-				elseif(intval($_REQUEST['level']) == intval($field->levels))
+				elseif(!is_array($field->levels) && (intval($_REQUEST['level']) == intval($field->levels)))
 					return true;
 				else
 					return false;

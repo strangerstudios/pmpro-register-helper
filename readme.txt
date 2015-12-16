@@ -2,8 +2,8 @@
 Contributors: strangerstudios
 Tags: users, user meta, meta, memberships, registration
 Requires at least: 3.5
-Tested up to: 4.3.1
-Stable tag: 1.1
+Tested up to: 4.4
+Stable tag: 1.2
 
 Add extra fields to your checkout page. Works with Paid Memberships Pro.
 
@@ -112,6 +112,13 @@ Note that the "checkout_boxes" location is now just the first checkout_box in th
 Please post it in the issues section of GitHub and we'll fix it as soon as we can. Thanks for helping. https://github.com/strangerstudios/pmpro-register-helper/issues
 
 == Changelog ==
+= 1.2 =
+* BUG: Fixing conflicts that arise when field names overlap with public query vars. For example in WP 4.4 "title" was added as a public query var, which was often used as a field/usermeta name.
+* BUG: Fixed bug where fields were sometimes showing up for levels they weren't set for.
+* BUG: Fixed warnings.
+* ENHANCEMENT: Added "depends" support for radio button fields.
+* ENHANCEMENT: Added "pmprorh_section_header" filter to change the title of the default checkout box heading.
+
 = 1.1 =
 * BUG: Fixed display issues with file fields.
 * BUG: Fixed issue where the "levels" option was only accepting arrays. You can now pass integers as well to check for a single level. (Thanks, Andy Schaff)

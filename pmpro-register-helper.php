@@ -750,7 +750,7 @@ function pmprorh_pmpro_add_member_fields($user)
     <?php
     }
 }
-add_action( 'pmpro_add_member_fields', 'pmprorh_pmpro_add_member_fields' );
+add_action( 'pmpro_add_member_fields', 'pmprorh_pmpro_add_member_fields', 10, 1 );
 
 function pmprorh_pmpro_add_member_added()
 {

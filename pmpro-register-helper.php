@@ -1039,7 +1039,7 @@ function pmprorh_checkFieldForLevel($field, $scope = "default", $args = NULL)
 			{
 				if(is_array($field->levels) && in_array($_REQUEST['level'], $field->levels))
 					return true;
-				elseif(intval($_REQUEST['level']) == intval($field->levels))
+				elseif(!is_array($field->levels) && (intval($_REQUEST['level']) == intval($field->levels)))
 					return true;
 				else
 					return false;

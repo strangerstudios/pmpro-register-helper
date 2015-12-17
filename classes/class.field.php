@@ -16,6 +16,7 @@
 			- required = bool (require this field at registration?)
 			- options = array of strings (e.g. array("value"=>"option name", "value2" = "option 2 name"))
 			- profile = mixed (show field in profile page? true for both, "admins" for admins only)
+			- just_profile = bool (not required. true means only show field in profile)
 			- class = string (class to add to html element)
 		*/
 		function set($name, $type, $attr = array())

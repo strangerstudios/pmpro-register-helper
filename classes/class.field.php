@@ -3,12 +3,42 @@
 	{
 		function __construct($name = NULL, $type = NULL, $attr = NULL)
 		{
+			$this->defaults();
+
 			if(!empty($name))
 				return $this->set($name, $type, $attr);
 			else
 				return true;
 		}
-		
+
+		function defaults() {
+
+			// create default setting variables
+			$this->addmember = false;
+			$this->id = null;
+			$this->label = null;
+			$this->levels = null;
+			$this->memberlistcsv = false;
+			$this->readonly = false;
+			$this->depends = array();
+			$this->showrequired = true;
+			$this->showmainlabel = true;
+			$this->divclass = null;
+			$this->hint = null;
+			$this->size = null;
+			$this->rows = 5;
+			$this->cols = 80;
+			$this->required = false;
+			$this->options = array();
+			$this->multiple = false;
+			$this->text = null;
+			$this->file = null;
+			$this->html = null;
+			$this->profile = null;
+			$this->just_profile = false;
+			$this->class = null;
+		}
+
 		/*
 			setup field based on passed values
 			attr is array of one or more of the following:

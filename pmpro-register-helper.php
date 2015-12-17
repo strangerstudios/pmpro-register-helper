@@ -212,7 +212,7 @@ function pmprorh_default_register_form()
 	{
 		foreach($pmprorh_registration_fields["register_form"] as $field)
 		{					
-			if(pmprorh_checkFieldForLevel($field) && $field->profile !== "only" && $field->profile !== "only_admin")
+			if(pmprorh_checkFieldForLevel($field) && $field->profile !== "only" && $field->profile !== "only_admin" && $field->profile_only != true )
 				$field->displayAtCheckout();		
 		}
 	}

@@ -15,9 +15,9 @@ function pmprorh_directory_preheader()
 			
 			//enqueue the stylesheet for this (check child theme, then parent theme, then plugin folder)	
 			if(file_exists(get_stylesheet_directory()."/paid-memberships-pro/register-helper/css/pmprorh_directory.css"))
-				wp_enqueue_style(get_stylesheet_directory_uri()."/paid-memberships-pro/register-helper/css/pmprorh_directory.css");
+				wp_enqueue_style("pmprorh_directory_user", get_stylesheet_directory_uri()."/paid-memberships-pro/register-helper/css/pmprorh_directory.css");
 			elseif(file_exists(get_template_directory()."/paid-memberships-pro/register-helper/css/pmprorh_directory.css"))
-				wp_enqueue_style(get_template_directory_uri()."/paid-memberships-pro/register-helper/css/pmprorh_directory.css");
+				wp_enqueue_style("pmprorh_directory_user", get_template_directory_uri()."/paid-memberships-pro/register-helper/css/pmprorh_directory.css");
 			else
 				wp_enqueue_style("pmprorh_directory", PMPRORH_DIR . "/css/pmprorh_directory.css", NULL, PMPRORH_VERSION);	
 		}

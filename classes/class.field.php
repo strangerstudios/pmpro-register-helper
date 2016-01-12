@@ -301,11 +301,11 @@
 				if(!is_array($value))
 					$value = array($value);
 				
-				$r = '<select id="' . $this->id . '" name="' . $this->name . '[]" multiple="multiple"';
+				$r = '<select id="' . $this->id . '" name="' . $this->name . '[]" multiple="multiple" ';
 				if(!empty($this->class))
 					$r .= 'class="' . $this->class . '" ';
 				if(!empty($this->readonly))
-					$r .= 'readonly="readonly" ';
+					$r .= 'disabled="disabled" ';
 				$r .= ">\n";
 				foreach($this->options as $ovalue => $option)
 				{
@@ -327,7 +327,7 @@
 				if(!empty($this->class))
 					$r .= 'class="' . $this->class . '" ';
 				if(!empty($this->readonly))
-					$r .= 'readonly="readonly" ';
+					$r .= 'disabled="disabled" ';
 				$r .= '>';
 				foreach($this->options as $ovalue => $option)
 				{

@@ -664,8 +664,12 @@ function pmprorh_rf_show_extra_profile_fields($user, $withlocations = false)
 		foreach($profile_fields as $where => $fields)
 		{						
 			$box = pmprorh_getCheckoutBoxByName($where);			
-			?>
-			<h3><?php echo $box->label;?></h3>
+			
+			if ( !empty($box->label) ) 
+			{ ?>
+				<h3><?php echo $box->label; ?></h3><?php
+			} ?>
+			
 			<table class="form-table">
 			<?php
 			//cycle through groups			

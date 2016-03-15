@@ -658,7 +658,6 @@ function pmprorh_rf_show_extra_profile_fields($user, $withlocations = false)
 	$profile_fields = pmprorh_getProfileFields($user->ID, $withlocations);
 	
 	//show the fields
-	//show the fields
 	if(!empty($profile_fields) && $withlocations)
 	{			
 		foreach($profile_fields as $where => $fields)

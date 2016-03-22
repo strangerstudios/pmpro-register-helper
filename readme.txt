@@ -112,6 +112,9 @@ Note that the "checkout_boxes" location is now just the first checkout_box in th
 Please post it in the issues section of GitHub and we'll fix it as soon as we can. Thanks for helping. https://github.com/strangerstudios/pmpro-register-helper/issues
 
 == Changelog ==
+= 1.2.1 =
+* BUG: Now using $pmpro_level global to check for level fields in case the site uses default level post meta or otherwise filters the level.
+
 = 1.2 =
 * BUG: Fixing conflicts that arise when field names overlap with public query vars. For example in WP 4.4 "title" was added as a public query var, which was often used as a field/usermeta name.
 * BUG: Fixed bug where fields were sometimes showing up for levels they weren't set for.

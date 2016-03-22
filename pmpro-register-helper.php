@@ -1029,11 +1029,12 @@ function pmprorh_checkFieldForLevel($field, $scope = "default", $args = NULL)
 		else
 		{
 			//check against $_REQUEST
-			if(!empty($_REQUEST['level']))
+			global $pmpro_level;
+			if(!empty($pmpro_level) && !empty($pmpro_level->id))
 			{
-				if(is_array($field->levels) && in_array($_REQUEST['level'], $field->levels))
+				if(is_array($field->levels) && in_array($pmpro_level->id, $field->levels))
 					return true;
-				elseif(!is_array($field->levels) && (intval($_REQUEST['level']) == intval($field->levels)))
+				elseif(!is_array($field->levels) && ($pmpro_level->id == intval($field->levels)))
 					return true;
 				else
 					return false;

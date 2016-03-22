@@ -388,7 +388,10 @@
 			elseif($this->type == "html")
 			{
 				//arbitrary html/etc
-				$r = $this->html;
+				if(!empty($this->html))
+					$r = $this->html;
+				else
+					$r = "";
 			}
 			elseif($this->type == "file")
 			{

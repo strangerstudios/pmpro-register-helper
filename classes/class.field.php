@@ -415,7 +415,10 @@
 				//show name of existing file
 				if(!empty($value))
 				{
-					$r_end .= '<div class="leftmar"><small class="lite">Current File: <a target="_blank" href="' . $this->file['fullurl'] . '">' . basename($value) . '</a></small></div>';
+					if(!empty($this->file['fullurl']))
+						$r_end .= '<div class="leftmar"><small class="lite">Current File: <a target="_blank" href="' . $this->file['fullurl'] . '">' . basename($value) . '</a></small></div>';
+					else
+						$r_end .= '<div class="leftmar"><small class="lite">Current File: ' . basename($value) . '</small></div>';
 				}
 			
 				if(!empty($this->readonly))
@@ -574,7 +577,7 @@
 			elseif(isset($_SESSION[$this->name]))
 			{
 				//file or value?
-				if(is_array($_SESSION[$this->name]))
+				if(is_array($_SESSION[$this->name]) && !empty($_SESSION[$this->name]['name']))
 				{
 					$_FILES[$this->name] = $_SESSION[$this->name];
 					$this->file = $_SESSION[$this->name]['name'];

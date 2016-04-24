@@ -2,8 +2,8 @@
 Contributors: strangerstudios
 Tags: users, user meta, meta, memberships, registration
 Requires at least: 3.5
-Tested up to: 4.4
-Stable tag: 1.2
+Tested up to: 4.5
+Stable tag: 1.2.1
 
 Add extra fields to your checkout page. Works with Paid Memberships Pro.
 
@@ -114,6 +114,7 @@ Please post it in the issues section of GitHub and we'll fix it as soon as we ca
 == Changelog ==
 = 1.2.1 =
 * BUG: Now using $pmpro_level global to check for level fields in case the site uses default level post meta or otherwise filters the level.
+* BUG: Fixed bug with select2 and multiselect fields when checking out with PayPal Express. (Thanks, samkam)
 
 = 1.2 =
 * BUG: Fixing conflicts that arise when field names overlap with public query vars. For example in WP 4.4 "title" was added as a public query var, which was often used as a field/usermeta name.

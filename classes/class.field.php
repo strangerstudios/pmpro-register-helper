@@ -401,6 +401,8 @@
 				$r .= '<input type="file" id="' . $this->id . '" ';
 				if(!empty($this->accept))
 					$r .= 'accept="' . esc_attr($this->accept) . '" ';
+				if(!empty($this->class))
+					$r .= 'class="' . $this->class . '" ';
 				$r .= 'name="' . $this->name . '" />';								
 				
 				//old value

@@ -746,9 +746,42 @@ function pmprorh_pmpro_add_member_fields($user)
 }
 add_action( 'pmpro_add_member_fields', 'pmprorh_pmpro_add_member_fields', 10, 1 );
 
-function pmprorh_pmpro_add_member_added()
+function pmprorh_pmpro_add_member_added( $uid = null, $user = null )
 {
-    $user_id = get_user_by('login', $_REQUEST['user_login'])->ID;
+	/**
+	 * BUG: Incorrectly assumed that the user_login $_REQUEST[] variable exists
+	 *
+	 * @since 1.3
+	 */
+	if ( ! is_null( $user ) ) {
+		$user_id = $user->ID;
+	}
+
+	if ( ! is_null( $uid ) && is_null( $user ) ) {
+		$user_id = $uid;
+	}
+
+	if (is_null($uid) && is_null($user)) {
+
+		$user_login = isset( $_REQUEST['user_login'] ) ? $_REQUEST['user_login'] : null;
+
+		if (!is_null($user_login)) {
+			$user_id = get_user_by('login', $_REQUEST['user_login'])->ID;
+		}
+
+	}
+	
+	// check whether the user login variable contains something useful
+	if (is_null($user_id)) {
+
+		global $pmpro_msgt;
+		global $pmpro_msg;
+
+		$pmpro_msg = __("Unable to add/update PMPro Register Helper registration fields for this member", "pmprorh");
+		$pmpro_msgt = "pmpro_error";
+
+		return false;
+	}
 
     global $pmprorh_registration_fields;
 
@@ -800,7 +833,7 @@ function pmprorh_pmpro_add_member_added()
     }
 
 }
-add_action( 'pmpro_add_member_added', 'pmprorh_pmpro_add_member_added' );
+add_action( 'pmpro_add_member_added', 'pmprorh_pmpro_add_member_added', 10, 2 );
 
 /*
 	Get RH fields which are set to showup in the Members List CSV Export.	

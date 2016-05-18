@@ -25,7 +25,7 @@ function pmprorh_signup_shortcode($atts, $content=null, $code="")
 	), $atts));
 	
 	// set title
-	if (empty($title))
+	if (isset($title))
 		if(!empty($level))
 			$title = 'Register For ' . pmpro_getLevel($level)->name;
 		else

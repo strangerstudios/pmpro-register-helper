@@ -3,12 +3,42 @@
 	{
 		function __construct($name = NULL, $type = NULL, $attr = NULL)
 		{
+			$this->defaults();
+
 			if(!empty($name))
 				return $this->set($name, $type, $attr);
 			else
 				return true;
 		}
-		
+
+		function defaults() {
+
+			// create default setting variables
+			$this->addmember = false;
+			$this->id = null;
+			$this->label = null;
+			$this->levels = null;
+			$this->memberlistcsv = false;
+			$this->readonly = false;
+			$this->depends = array();
+			$this->showrequired = true;
+			$this->showmainlabel = true;
+			$this->divclass = null;
+			$this->hint = null;
+			$this->size = null;
+			$this->rows = 5;
+			$this->cols = 80;
+			$this->required = false;
+			$this->options = array();
+			$this->multiple = false;
+			$this->text = null;
+			$this->file = null;
+			$this->html = null;
+			$this->profile = null;
+			$this->just_profile = false;
+			$this->class = null;
+		}
+
 		/*
 			setup field based on passed values
 			attr is array of one or more of the following:
@@ -16,6 +46,7 @@
 			- required = bool (require this field at registration?)
 			- options = array of strings (e.g. array("value"=>"option name", "value2" = "option 2 name"))
 			- profile = mixed (show field in profile page? true for both, "admins" for admins only)
+			- just_profile = bool (not required. true means only show field in profile)
 			- class = string (class to add to html element)
 		*/
 		function set($name, $type, $attr = array())
@@ -301,11 +332,11 @@
 				if(!is_array($value))
 					$value = array($value);
 				
-				$r = '<select id="' . $this->id . '" name="' . $this->name . '[]" multiple="multiple"';
+				$r = '<select id="' . $this->id . '" name="' . $this->name . '[]" multiple="multiple" ';
 				if(!empty($this->class))
 					$r .= 'class="' . $this->class . '" ';
 				if(!empty($this->readonly))
-					$r .= 'readonly="readonly" ';
+					$r .= 'disabled="disabled" ';
 				$r .= ">\n";
 				foreach($this->options as $ovalue => $option)
 				{
@@ -327,7 +358,7 @@
 				if(!empty($this->class))
 					$r .= 'class="' . $this->class . '" ';
 				if(!empty($this->readonly))
-					$r .= 'readonly="readonly" ';
+					$r .= 'disabled="disabled" ';
 				$r .= '>';
 				foreach($this->options as $ovalue => $option)
 				{
@@ -401,6 +432,8 @@
 				$r .= '<input type="file" id="' . $this->id . '" ';
 				if(!empty($this->accept))
 					$r .= 'accept="' . esc_attr($this->accept) . '" ';
+				if(!empty($this->class))
+					$r .= 'class="' . $this->class . '" ';
 				$r .= 'name="' . $this->name . '" />';								
 				
 				//old value

@@ -212,7 +212,7 @@ function pmprorh_default_register_form()
 	{
 		foreach($pmprorh_registration_fields["register_form"] as $field)
 		{					
-			if(pmprorh_checkFieldForLevel($field) && $field->profile !== "only" && $field->profile !== "only_admin")
+			if(pmprorh_checkFieldForLevel($field) && $field->profile !== "only" && $field->profile !== "only_admin" && $field->profile_only != true )
 				$field->displayAtCheckout();		
 		}
 	}
@@ -311,7 +311,7 @@ function pmprorh_pmpro_checkout_after_email()
 	{
 		foreach($pmprorh_registration_fields["after_email"] as $field)
 		{			
-			if(pmprorh_checkFieldForLevel($field) && $field->profile !== "only" && $field->profile !== "only_admin")
+			if(pmprorh_checkFieldForLevel($field) && isset($field->profile) && $field->profile !== "only" && $field->profile !== "only_admin")
 				$field->displayAtCheckout();		
 		}
 	}
@@ -664,8 +664,12 @@ function pmprorh_rf_show_extra_profile_fields($user, $withlocations = false)
 		foreach($profile_fields as $where => $fields)
 		{						
 			$box = pmprorh_getCheckoutBoxByName($where);			
-			?>
-			<h3><?php echo $box->label;?></h3>
+			
+			if ( !empty($box->label) ) 
+			{ ?>
+				<h3><?php echo $box->label; ?></h3><?php
+			} ?>
+			
 			<table class="form-table">
 			<?php
 			//cycle through groups			
@@ -746,9 +750,42 @@ function pmprorh_pmpro_add_member_fields($user)
 }
 add_action( 'pmpro_add_member_fields', 'pmprorh_pmpro_add_member_fields', 10, 1 );
 
-function pmprorh_pmpro_add_member_added()
+function pmprorh_pmpro_add_member_added( $uid = null, $user = null )
 {
-    $user_id = get_user_by('login', $_REQUEST['user_login'])->ID;
+	/**
+	 * BUG: Incorrectly assumed that the user_login $_REQUEST[] variable exists
+	 *
+	 * @since 1.3
+	 */
+	if ( ! is_null( $user ) ) {
+		$user_id = $user->ID;
+	}
+
+	if ( ! is_null( $uid ) && is_null( $user ) ) {
+		$user_id = $uid;
+	}
+
+	if (is_null($uid) && is_null($user)) {
+
+		$user_login = isset( $_REQUEST['user_login'] ) ? $_REQUEST['user_login'] : null;
+
+		if (!is_null($user_login)) {
+			$user_id = get_user_by('login', $_REQUEST['user_login'])->ID;
+		}
+
+	}
+	
+	// check whether the user login variable contains something useful
+	if (is_null($user_id)) {
+
+		global $pmpro_msgt;
+		global $pmpro_msg;
+
+		$pmpro_msg = __("Unable to add/update PMPro Register Helper registration fields for this member", "pmprorh");
+		$pmpro_msgt = "pmpro_error";
+
+		return false;
+	}
 
     global $pmprorh_registration_fields;
 
@@ -800,7 +837,7 @@ function pmprorh_pmpro_add_member_added()
     }
 
 }
-add_action( 'pmpro_add_member_added', 'pmprorh_pmpro_add_member_added' );
+add_action( 'pmpro_add_member_added', 'pmprorh_pmpro_add_member_added', 10, 2 );
 
 /*
 	Get RH fields which are set to showup in the Members List CSV Export.	
@@ -1103,8 +1140,11 @@ function pmproh_pmpro_checkout_confirm_email($show)
 function pmprorh_enqueue_select2()
 {
 	//should check for cases when this is needed instead of always including.
-	wp_enqueue_style('select2', plugins_url('css/select2.css', __FILE__), '', '3.1', 'screen');
-	wp_enqueue_script('select2', plugins_url('js/select2.js', __FILE__), array( 'jquery' ), '3.1' );
+	// only inlcude on frontend
+	if( !is_admin() ) {
+		wp_enqueue_style('select2', plugins_url('css/select2.css', __FILE__), '', '3.1', 'screen');
+		wp_enqueue_script('select2', plugins_url('js/select2.js', __FILE__), array( 'jquery' ), '3.1' );
+	}
 }
 add_action("init", "pmprorh_enqueue_select2");
 

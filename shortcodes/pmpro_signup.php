@@ -14,12 +14,6 @@ function pmprorh_signup_shortcode($atts, $content=null, $code="")
 	if(!function_exists('pmpro_getLevel'))
 		return "Paid Memberships Pro must be installed to use the pmpro_signup shortcode.";
 
-	//default title
-	if(!empty($level))
-		$default_title = 'Register For ' . pmpro_getLevel($level)->name;
-	else
-		$default_title = 'Register For ' . get_option('blogname');
-
 	//set defaults
 	extract(shortcode_atts(array(
 		'button' => "Sign Up Now",
@@ -27,9 +21,17 @@ function pmprorh_signup_shortcode($atts, $content=null, $code="")
 		'level' => NULL,
 		'login' => true,
 		'short' => NULL,
-		'title' => $default_title,
+		'title' => NULL,
 	), $atts));
-
+	
+	// set title
+	if (isset($title))
+		if(!empty($level))
+			$title = 'Register For ' . pmpro_getLevel($level)->name;
+		else
+			
+			$title = 'Register For ' . get_option('blogname');
+	
 	//turn 0's into falses
 	if($login === "0" || $login === "false" || $login === "no")
 		$login = false;

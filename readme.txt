@@ -2,7 +2,7 @@
 Contributors: strangerstudios
 Tags: users, user meta, meta, memberships, registration
 Requires at least: 3.5
-Tested up to: 4.5
+Tested up to: 4.5.2
 Stable tag: 1.2.1
 
 Add extra fields to your checkout page. Works with Paid Memberships Pro.
@@ -112,6 +112,14 @@ Note that the "checkout_boxes" location is now just the first checkout_box in th
 Please post it in the issues section of GitHub and we'll fix it as soon as we can. Thanks for helping. https://github.com/strangerstudios/pmpro-register-helper/issues
 
 == Changelog ==
+= 1.3 =
+* BUG: Fixed warnings. (Thanks, Harsha and Thomas)
+* BUG: Now using disabled=disabled on select fields instead of readonly=readonly.
+* BUG: Fixed issues when the "profile" option of a field was set to "profile_only".
+* BUG/ENHANCEMENT: Now only loading the select2 CSS and JS on the frontend to avoid conflicts with other plugins using select2 in the backend. (Thanks, Justin/defunctl on GitHub)
+* BUG/ENHANCEMENT: Add handle to wp_enqueue_style() for templates.
+* ENHANCEMENT: Added CSS classes to file fields. (Thanks, Ted Barnett)
+
 = 1.2.1 =
 * BUG: Now using $pmpro_level global to check for level fields in case the site uses default level post meta or otherwise filters the level.
 * BUG: Fixed bug with select2 and multiselect fields when checking out with PayPal Express. (Thanks, samkam)

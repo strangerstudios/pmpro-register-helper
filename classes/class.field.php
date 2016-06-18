@@ -284,6 +284,8 @@
 					$r .= 'class="' . $this->class . '" ';
 				if(!empty($this->readonly))
 					$r .= 'readonly="readonly" ';
+				if(!empty($this->html_attributes))
+					$r .= $this->getHTMLAttributes();
 				$r .= ' />';				
 			}
 			elseif($this->type == "password")
@@ -295,6 +297,8 @@
 					$r .= 'class="' . $this->class . '" ';
 				if(!empty($this->readonly))
 					$r .= 'readonly="readonly" ';
+				if(!empty($this->html_attributes))
+					$r .= $this->getHTMLAttributes();
 				$r .= ' />';				
 			}
 			elseif($this->type == "select")
@@ -314,6 +318,8 @@
 					$r .= 'disabled="disabled" ';
 				if(!empty($this->multiple))
 					$r .= 'multiple="multiple" ';
+				if(!empty($this->html_attributes))
+					$r .= $this->getHTMLAttributes();
 				$r .= ">\n";
 				foreach($this->options as $ovalue => $option)
 				{
@@ -337,6 +343,8 @@
 					$r .= 'class="' . $this->class . '" ';
 				if(!empty($this->readonly))
 					$r .= 'disabled="disabled" ';
+				if(!empty($this->html_attributes))
+					$r .= $this->getHTMLAttributes();
 				$r .= ">\n";
 				foreach($this->options as $ovalue => $option)
 				{
@@ -359,6 +367,8 @@
 					$r .= 'class="' . $this->class . '" ';
 				if(!empty($this->readonly))
 					$r .= 'disabled="disabled" ';
+				if(!empty($this->html_attributes))
+					$r .= $this->getHTMLAttributes();
 				$r .= '>';
 				foreach($this->options as $ovalue => $option)
 				{
@@ -386,6 +396,8 @@
 						$r .= 'checked="checked"';
 					if(!empty($this->readonly))
 						$r .= 'readonly="readonly" ';
+					if(!empty($this->html_attributes))
+						$r .= $this->getHTMLAttributes();
 					$r .= ' /> ';
 					$r .= '<label class="pmprorh_radio_label" for="pmprorh_field_' . $this->name . $count . '">' . $option . '</label> &nbsp; ';
 				}
@@ -395,7 +407,9 @@
 				$r = '<input name="'.$this->name.'"' .' type="checkbox" value="1"'.' id="'.$this->id.'"';
 				$r.=checked( $value, 1,false);		
 				if(!empty($this->readonly))
-					$r .= 'readonly="readonly" ';		
+					$r .= 'readonly="readonly" ';
+				if(!empty($this->html_attributes))
+					$r .= $this->getHTMLAttributes();		
 				$r .= ' /> ';
 				$r .= '<label class="pmprorh_checkbox_label" for="' . $this->name . '">' . $this->text . '</label> &nbsp; ';
 				$r .= '<input type="hidden" name="'.$this->name.'_checkbox" value="1" />';	//extra field so we can track unchecked boxes
@@ -407,6 +421,8 @@
 					$r .= 'class="' . $this->class . '" ';
 				if(!empty($this->readonly))
 					$r .= 'readonly="readonly" ';
+				if(!empty($this->html_attributes))
+					$r .= $this->getHTMLAttributes();
 				$r .= '>' . esc_textarea($value) . '</textarea>';				
 			}
 			elseif($this->type == "hidden")
@@ -414,6 +430,8 @@
 				$r = '<input type="hidden" id="' . $this->id . '" name="' . $this->name . '" value="' . esc_attr($value) . '" ';
 				if(!empty($this->readonly))
 					$r .= 'readonly="readonly" ';
+				if(!empty($this->html_attributes))
+					$r .= $this->getHTMLAttributes();
 				$r .= '/>';						
 			}
 			elseif($this->type == "html")
@@ -434,6 +452,8 @@
 					$r .= 'accept="' . esc_attr($this->accept) . '" ';
 				if(!empty($this->class))
 					$r .= 'class="' . $this->class . '" ';
+				if(!empty($this->html_attributes))
+					$r .= $this->getHTMLAttributes();
 				$r .= 'name="' . $this->name . '" />';								
 				
 				//old value
@@ -475,6 +495,9 @@
 
                 if(!empty($this->readonly))
                     $r .= 'disabled="disabled"';
+
+                if(!empty($this->html_attributes))
+					$r .= $this->getHTMLAttributes();
 
                 $r .= ' >';
 
@@ -541,6 +564,16 @@
 			$r = apply_filters('pmprorh_get_html', $r, $this);
 
 			return $r;
+		}
+
+		function getHTMLAttributes() {
+			$astring = "";
+			if(!empty($this->html_attributes)) {
+				foreach($this->html_attributes as $name => $value)
+					$astring .= '"' . $name . '"="' . $value . '" ';
+			}
+
+			return $astring;
 		}	
 		
 		function getDependenciesJS()
@@ -555,7 +588,7 @@
 					if(!empty($check['id']))
 					{
 						$checks[] = "((jQuery('#" . $check['id']."')".".is(':checkbox')) "
-						 ."? jQuery('#" . $check['id'] . ":checked').length == ".$check['value']
+						 ."? jQuery('#" . $check['id'] . ":checked').length > 1"
 						 .":(jQuery('#" . $check['id'] . "').val() == " . json_encode($check['value']) . " || jQuery.inArray(" . json_encode($check['value']) . ", jQuery('#" . $check['id'] . "').val()) > -1)) ||"."(jQuery(\"input:radio[name='".$check['id']."']:checked\").val() == '".$check['value']."' || jQuery.inArray('".$check['value']."', jQuery(\"input:radio[name='".$check['id']."']:checked\").val()) > -1)";
 					
 						$binds[] = "#" . $check['id'].",input:radio[name=".$check['id']."]";

@@ -3,7 +3,7 @@ Contributors: strangerstudios
 Tags: users, user meta, meta, memberships, registration
 Requires at least: 3.5
 Tested up to: 4.5.2
-Stable tag: 1.3.1
+Stable tag: 1.3.2
 
 Add extra fields to your checkout page. Works with Paid Memberships Pro.
 
@@ -112,6 +112,9 @@ Note that the "checkout_boxes" location is now just the first checkout_box in th
 Please post it in the issues section of GitHub and we'll fix it as soon as we can. Thanks for helping. https://github.com/strangerstudios/pmpro-register-helper/issues
 
 == Changelog ==
+= 1.3.2=
+* BUG: Fixed a bug with dependency fields.
+
 = 1.3.1 =
 * ENHANCEMENT: Added an option html_attributes to fields that can be used to add arbitrary attributes to the HTML elements. e.g. set it to => array('placeholder'=>'Your Company') to set the placeholder attribute.
 

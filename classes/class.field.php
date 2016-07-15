@@ -589,7 +589,7 @@
 					{
 						$checks[] = "((jQuery('#" . $check['id']."')".".is(':checkbox')) "
 						 ."? jQuery('#" . $check['id'] . ":checked').length > 1"
-						 .":(jQuery('#" . $check['id'] . "').val() == " . json_encode($check['value']) . " || jQuery.inArray(" . json_encode($check['value']) . ", jQuery('#" . $check['id'] . "').val()) > -1)) ||"."(jQuery(\"input:radio[name='".$check['id']."']:checked\").val() == '".json_encode($check['value'])."' || jQuery.inArray('".json_encode($check['value'])."', jQuery(\"input:radio[name='".$check['id']."']:checked\").val()) > -1)";
+						 .":(jQuery('#" . $check['id'] . "').val() == " . json_encode($check['value']) . " || jQuery.inArray(" . json_encode($check['value']) . ", jQuery('#" . $check['id'] . "').val()) > -1)) ||"."(jQuery(\"input:radio[name='".$check['id']."']:checked\").val() == ".json_encode($check['value'])." || jQuery.inArray(".json_encode($check['value']).", jQuery(\"input:radio[name='".$check['id']."']:checked\").val()) > -1)";
 					
 						$binds[] = "#" . $check['id'].",input:radio[name=".$check['id']."]";
 					}				

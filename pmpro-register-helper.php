@@ -706,7 +706,7 @@ add_action( 'edit_user_profile', 'pmprorh_rf_show_extra_profile_fields_withlocat
 /*
     Integrate with PMPro Add Member Admin addon
  */
-function pmprorh_pmpro_add_member_fields($user)
+function pmprorh_pmpro_add_member_fields( $user = null)
 {
     global $pmprorh_registration_fields;
 
@@ -719,14 +719,9 @@ function pmprorh_pmpro_add_member_fields($user)
             //cycle through fields
             foreach($fields as $field)
             {
-                if(!empty($field->addmember))
+	            if(isset($field->addmember) && !empty($field->addmember) && ( in_array( strtolower( $field->addmember ), array( 'true', 'yes' ) ) || true == $field->addmember ) )
                 {
-                    if(current_user_can("manage_options", $user->ID) || current_user_can(apply_filters('pmpro_add_member_cap', 'edit_users')))
                         $addmember_fields[] = $field;
-                }
-                elseif(!empty($field->addmember))
-                {
-                    $addmember_fields[] = $field;
                 }
             }
         }
@@ -797,14 +792,9 @@ function pmprorh_pmpro_add_member_added( $uid = null, $user = null )
             //cycle through fields
             foreach($fields as $field)
             {
-                if(!empty($field->addmember))
+	            if(isset($field->addmember) && !empty($field->addmember) && ( in_array( strtolower( $field->addmember ), array( 'true', 'yes' ) ) || true == $field->addmember ) )
                 {
-                    if(current_user_can("manage_options", $user_id) || current_user_can(apply_filters('pmpro_add_member_cap', 'edit_users')))
                         $addmember_fields[] = $field;
-                }
-                elseif(!empty($field->addmember))
-                {
-                    $addmember_fields[] = $field;
                 }
             }
         }

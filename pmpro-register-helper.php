@@ -1126,16 +1126,16 @@ function pmproh_pmpro_checkout_confirm_email($show)
 /*
 	Enqueue Select2 JS
 */
-function pmprorh_enqueue_select2()
+function pmprorh_enqueue_select2($hook)
 {
-	//should check for cases when this is needed instead of always including.
-	// only inlcude on frontend
-	if( !is_admin() ) {
+	// only include on front end and user profiles
+	if( !is_admin() || $hook == 'profile.php' || $hook == 'user-edit.php') {
 		wp_enqueue_style('select2', plugins_url('css/select2.css', __FILE__), '', '3.1', 'screen');
 		wp_enqueue_script('select2', plugins_url('js/select2.js', __FILE__), array( 'jquery' ), '3.1' );
 	}
 }
-add_action("init", "pmprorh_enqueue_select2");
+add_action("wp_enqueue_scripts", "pmprorh_enqueue_select2");
+add_action("admin_enqueue_scripts", "pmprorh_enqueue_select2");
 
 
 /*

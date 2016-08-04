@@ -1130,8 +1130,8 @@ function pmprorh_enqueue_select2($hook)
 {
 	// only include on front end and user profiles
 	if( !is_admin() || $hook == 'profile.php' || $hook == 'user-edit.php') {
-		wp_enqueue_style('select2', plugins_url('css/select2.css', __FILE__), '', '3.1', 'screen');
-		wp_enqueue_script('select2', plugins_url('js/select2.js', __FILE__), array( 'jquery' ), '3.1' );
+		wp_enqueue_style('select2', plugins_url('css/select2.min.css', __FILE__), '', '4.0.3', 'screen');
+		wp_enqueue_script('select2', plugins_url('js/select2.min.js', __FILE__), array( 'jquery' ), '4.0.3' );
 	}
 }
 add_action("wp_enqueue_scripts", "pmprorh_enqueue_select2");

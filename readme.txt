@@ -3,7 +3,7 @@ Contributors: strangerstudios
 Tags: users, user meta, meta, memberships, registration
 Requires at least: 3.5
 Tested up to: 4.5.3
-Stable tag: 1.3.3
+Stable tag: 1.3.4
 
 Add extra fields to your checkout page. Works with Paid Memberships Pro.
 
@@ -112,6 +112,11 @@ Note that the "checkout_boxes" location is now just the first checkout_box in th
 Please post it in the issues section of GitHub and we'll fix it as soon as we can. Thanks for helping. https://github.com/strangerstudios/pmpro-register-helper/issues
 
 == Changelog ==
+= 1.3.4 =
+* ENHANCEMENT: Updated select2 to the latest version and using minimized files.
+* ENHANCEMENT: Now loading select2 on front end pages and user profiles.
+* BUG: Fixed display of fields with multiple values in Members List CSV.
+
 = 1.3.3 =
 * BUG: Still fixing the bug with dependency fields with labels with quotes in them.
 

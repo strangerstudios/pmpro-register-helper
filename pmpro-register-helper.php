@@ -1193,7 +1193,7 @@ function pmprorh_pmpro_members_list_csv_extra_columns($columns)
 	{		
 		$columns[$value->meta_key] = "pmprorh_csv_columns";
 	}
-	
+
 	return $columns;
 }
 add_filter("pmpro_members_list_csv_extra_columns", "pmprorh_pmpro_members_list_csv_extra_columns", 10);
@@ -1243,8 +1243,13 @@ add_action('pmprorh_cron_delete_tmp', 'pmprorh_cron_delete_tmp');
 function pmprorh_csv_columns($user, $column)
 {
 	if(!empty($user->metavalues->$column))
-	{		
-		return $user->metavalues->$column;
+	{
+		// check for multiple values
+		$value = maybe_unserialize($user->metavalues->$column);
+		if(is_array($value))
+			$value = join(',', $value);
+
+		return $value;
 	}
 	else
 	{

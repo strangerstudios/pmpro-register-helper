@@ -638,25 +638,7 @@
 			global $current_user;
 			
 			//value passed yet?
-			if($this->type == "date") {
-				if(isset($_REQUEST[$this->name."[m]"])) {
-					$tempstr = $_REQUEST[$this->name."[m]"]." ";
-					$tempstr .= intval($_REQUEST[$this->name."[d]"]).", ";
-					$tempstr .= intval($_REQUEST[$this->name."[y]"]);
-					$value = $tempstr; // will be modified by strtotime later.
-				} elseif(isset($_SESSION[$this->name."[m]"])) {
-					$tempstr = $_SESSION[$this->name."[m]"]." ";
-					$tempstr .= intval($_SESSION[$this->name."[d]"]).", ";
-					$tempstr .= intval($_SESSION[$this->name."[y]"]);
-					$value = $tempstr; // will be modified by strtotime later.
-				} elseif(!empty($current_user->ID) && metadata_exists("user", $current_user->ID, $this->meta_key)) {
-					$meta = get_user_meta($current_user->ID, $this->meta_key, true);
-					$value = $meta;
-				} elseif(!empty($this->value))
-					$value = $this->value;
-				else
-					$value = "";
-			} elseif(isset($_REQUEST[$this->name]))
+			if(isset($_REQUEST[$this->name]))
 				$value = $_REQUEST[$this->name];
 			elseif(isset($_SESSION[$this->name]))
 			{

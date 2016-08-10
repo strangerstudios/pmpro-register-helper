@@ -503,7 +503,7 @@
 
                 //setup date vars
                 if(!empty($value))
-		    $value = strtotime(implode("-", $value), current_time('timestamp'));
+		    $value = strtotime(implode("/", $value), current_time('timestamp'));
 		else
         	    $value = strtotime(date('Y-m-d'), current_time('timestamp'));
 

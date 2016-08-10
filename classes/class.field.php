@@ -503,9 +503,9 @@
 
                 //setup date vars
                 if(!empty($value))
-                    $value = strtotime($value);
-                else
-                    $value = strtotime(date('Y-m-d'));
+		    $value = strtotime(implode("-", $value), current_time('timestamp'));
+		else
+        	    $value = strtotime(date('Y-m-d'), current_time('timestamp'));
 
                 $year = date("Y", $value);
                 $month = date("n", $value);

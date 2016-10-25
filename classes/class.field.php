@@ -362,7 +362,7 @@
 					$value = array($value);
 					
 				//build multi select
-				$r = '<select id="' . $this->id . '" name="' . $this->name . '[]" multiple="multiple" placeholder="Choose one or more." ';
+				$r = '<select id="' . $this->id . '" name="' . $this->name . '[]" multiple="multiple" placeholder='.__('"Choose one or more."', 'pmprorh');
 				if(!empty($this->class))
 					$r .= 'class="' . $this->class . '" ';
 				if(!empty($this->readonly))

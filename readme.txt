@@ -116,8 +116,11 @@ Please post it in the issues section of GitHub and we'll fix it as soon as we ca
 = 1.3.4 =
 * BUG: Fixed bug where checkbox values weren't updated if they were changed from checked to unchecked during a renewal checkout. (Thanks, stevep2000)
 * BUG: Fixed display of fields with multiple values in Members List CSV.
+* BUG: Fixed JS logic for conditional checkbox fields. (Thanks, jslootbeek)
+* BUG: Fixes for date fields.
 * ENHANCEMENT: Updated select2 to the latest version and using minimized files.
 * ENHANCEMENT: Now loading select2 on front end pages and user profiles.
+* ENHANCEMENT: Made the multiselect "Choose one or more" instruction translatable.
 
 = 1.3.3 =
 * BUG: Still fixing the bug with dependency fields with labels with quotes in them.

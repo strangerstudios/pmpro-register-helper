@@ -502,10 +502,13 @@
                 $r .= ' >';
 
                 //setup date vars
-                if(!empty($value))
-                    $value = strtotime($value);
-                else
-                    $value = strtotime(date('Y-m-d'));
+                if(is_array($value) && !empty($value)){
+		    $value = strtotime(implode("/", $value), current_time('timestamp'));
+		}elseif(!is_array($value) && !empty($value)){
+		    $value = strtotime($value, current_time('timestamp'));
+		}else{
+		    $value = strtotime(date('Y-m-d'), current_time('timestamp'));
+		}
 
                 $year = date("Y", $value);
                 $month = date("n", $value);

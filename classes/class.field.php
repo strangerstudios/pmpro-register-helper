@@ -573,7 +573,7 @@
 			$astring = "";
 			if(!empty($this->html_attributes)) {
 				foreach($this->html_attributes as $name => $value)
-					$astring .= '"' . $name . '"="' . $value . '" ';
+					$astring .= "{$name}=\"{$value}\"";
 			}
 
 			return $astring;

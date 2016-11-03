@@ -3,7 +3,7 @@
 Plugin Name: Paid Memberships Pro - Register Helper Add On
 Plugin URI: http://www.paidmembershipspro.com/pmpro-register-helper/
 Description: Custom fields, shortcodes, and other functions to help customize your Paid Memberships Pro checkout process.
-Version: 1.3.3
+Version: 1.3.4
 Author: Stranger Studios
 Author URI: http://www.strangerstudios.com
 */
@@ -1131,16 +1131,16 @@ function pmproh_pmpro_checkout_confirm_email($show)
 /*
 	Enqueue Select2 JS
 */
-function pmprorh_enqueue_select2()
+function pmprorh_enqueue_select2($hook)
 {
-	//should check for cases when this is needed instead of always including.
-	// only inlcude on frontend
-	if( !is_admin() ) {
-		wp_enqueue_style('select2', plugins_url('css/select2.css', __FILE__), '', '3.1', 'screen');
-		wp_enqueue_script('select2', plugins_url('js/select2.js', __FILE__), array( 'jquery' ), '3.1' );
+	// only include on front end and user profiles
+	if( !is_admin() || $hook == 'profile.php' || $hook == 'user-edit.php') {
+		wp_enqueue_style('select2', plugins_url('css/select2.min.css', __FILE__), '', '4.0.3', 'screen');
+		wp_enqueue_script('select2', plugins_url('js/select2.min.js', __FILE__), array( 'jquery' ), '4.0.3' );
 	}
 }
-add_action("init", "pmprorh_enqueue_select2");
+add_action("wp_enqueue_scripts", "pmprorh_enqueue_select2");
+add_action("admin_enqueue_scripts", "pmprorh_enqueue_select2");
 
 
 /*
@@ -1198,7 +1198,7 @@ function pmprorh_pmpro_members_list_csv_extra_columns($columns)
 	{		
 		$columns[$value->meta_key] = "pmprorh_csv_columns";
 	}
-	
+
 	return $columns;
 }
 add_filter("pmpro_members_list_csv_extra_columns", "pmprorh_pmpro_members_list_csv_extra_columns", 10);
@@ -1248,8 +1248,13 @@ add_action('pmprorh_cron_delete_tmp', 'pmprorh_cron_delete_tmp');
 function pmprorh_csv_columns($user, $column)
 {
 	if(!empty($user->metavalues->$column))
-	{		
-		return $user->metavalues->$column;
+	{
+		// check for multiple values
+		$value = maybe_unserialize($user->metavalues->$column);
+		if(is_array($value))
+			$value = join(',', $value);
+
+		return $value;
 	}
 	else
 	{

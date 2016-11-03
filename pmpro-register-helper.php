@@ -450,6 +450,11 @@ function pmprorh_pmpro_after_checkout($user_id)
 					//request
 					$value = $_REQUEST[$field->name];
 				}
+				elseif(isset($_REQUEST[$field->name . '_checkbox']) && $field->type == 'checkbox')
+				{
+					//unchecked checkbox
+					$value = 0;
+				}
 				elseif(isset($_SESSION[$field->name]))
 				{					
 					//file or value?

@@ -123,7 +123,7 @@
 			elseif($this->type == "file")
 			{
 				//use the file save function
-				$this->save_function = array("PMProRH_Field", "saveFile");
+				$this->save_function = array($this, "saveFile");
 			}
 			elseif($this->type == "checkbox")
 			{
@@ -136,7 +136,7 @@
             elseif($this->type == "date")
             {
                 //use the save date function
-                $this->save_function = array("PMProRH_Field", "saveDate");
+                $this->save_function = array($this, "saveDate");
             }
 			
 			return true;

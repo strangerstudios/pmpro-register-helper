@@ -756,26 +756,26 @@ function pmprorh_pmpro_add_member_added( $uid = null, $user = null )
 	 *
 	 * @since 1.3
 	 */
-	if ( ! is_null( $user ) ) {
+	if ( ! empty( $user ) && is_object( $user ) ) {
 		$user_id = $user->ID;
 	}
 
-	if ( ! is_null( $uid ) && is_null( $user ) ) {
+	if ( !empty( $uid ) && ( empty( $user ) || !is_object( $user ) ) ) {
 		$user_id = $uid;
 	}
 
-	if (is_null($uid) && is_null($user)) {
+	if ( empty($uid) && ( empty( $user ) || !is_object( $user ) ) ) {
 
 		$user_login = isset( $_REQUEST['user_login'] ) ? $_REQUEST['user_login'] : null;
 
-		if (!is_null($user_login)) {
+		if (!empty($user_login)) {
 			$user_id = get_user_by('login', $_REQUEST['user_login'])->ID;
 		}
 
 	}
 	
 	// check whether the user login variable contains something useful
-	if (is_null($user_id)) {
+	if (empty($user_id)) {
 
 		global $pmpro_msgt;
 		global $pmpro_msg;

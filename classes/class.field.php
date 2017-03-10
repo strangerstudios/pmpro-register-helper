@@ -37,6 +37,7 @@
 			$this->profile = null;
 			$this->just_profile = false;
 			$this->class = null;
+			$this->sanitize = true;
 		}
 
 		/*
@@ -256,6 +257,11 @@
         //fix date then update user meta
         function saveDate($user_id, $name, $value)
         {
+	        if ( isset( $this->sanitize ) && true === $this->sanitize ) {
+
+		        $value = pmprorh_sanitize( $value );
+	        }
+
         	$meta_key = str_replace("pmprorhprefix_", "", $name);
             $date = date('Y-m-d', strtotime(date($value['y'] . '-' . $value['m'] . '-' . $value['d'])));
         	update_user_meta($user_id, $meta_key, $date);

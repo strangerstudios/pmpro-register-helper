@@ -741,7 +741,8 @@ function pmprorh_pmpro_add_member_fields( $user = null)
             //cycle through groups
             foreach($addmember_fields as $field)
             {
-                $field->displayInProfile($user->ID);
+			if(!empty($user))
+				$field->displayInProfile($user->ID);
             }
             ?>
     <?php

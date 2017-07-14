@@ -414,6 +414,33 @@
 				$r .= '<label class="pmprorh_checkbox_label" for="' . $this->name . '">' . $this->text . '</label> &nbsp; ';
 				$r .= '<input type="hidden" name="'.$this->name.'_checkbox" value="1" />';	//extra field so we can track unchecked boxes
 			}
+			
+			elseif($this->type == "checkbox_grouped")
+			{
+				//value must be an array
+				if(!is_array($value))
+					$value = array($value);
+				
+				$r = '';
+				foreach($this->options as $ovalue => $option)
+				{	
+					$r .= '<input name="'.$this->name.'[]"' .' type="checkbox" value='.$ovalue.' id="'.$this->id.'"  ';
+					
+					if(in_array($ovalue, $value))
+						$r.= 'checked="checked" ';
+					
+					if(!empty($this->readonly))
+						$r .= 'readonly="readonly" ';
+					if(!empty($this->html_attributes))
+						$r .= $this->getHTMLAttributes();	
+					
+					$r .= '/>';
+					$r .= '<label class="pmprorh_checkbox_label" for="' . $this->name . '">' . $option . '</label>';
+					$r .= '<input type="hidden" name="'.$this->name.'_checkbox[]" value='.$ovalue.' />';	//extra field so we can track unchecked boxes
+				}
+				
+			}
+			
 			elseif($this->type == "textarea")
 			{
 				$r = '<textarea id="' . $this->id . '" name="' . $this->name . '" rows="' . $this->rows . '" cols="' . $this->cols . '" ';

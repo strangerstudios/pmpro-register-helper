@@ -5,19 +5,48 @@ Requires at least: 3.5
 Tested up to: 4.6.1
 Stable tag: 1.3.4
 
-Add extra fields to your checkout page. Works with Paid Memberships Pro.
+Capture additional member information with custom fields at Membership Checkout with Paid Memberships Pro.
 
 == Description ==
-This plugin currently requires Paid Memberships Pro. 
+A robust add on to collect additional fields at membership signup. Fields can be collected at membership checkout, on the user's profile or for administrative view-only.
+
+You can also restrict membership registration for a list of approved email addresses.
+
+[Read the full documentation for the Register Helper Add On](https://www.paidmembershipspro.com/add-ons/free-add-ons/pmpro-register-helper-add-checkout-and-profile-fields/)
+
+= Supports Multiple Field Types =
+Using Register Helper, you can add a variety of field types to capture additional information about your members. Supported field types include:
+* Text and Textarea
+* Select and Select2 (multi-select)
+* Checkbox and Radio
+* File Upload
+* HTML (generates any desired HTML)
+* Hidden
+
+= Fields Per Levels and Conditional Fields =
+Fields can be added based on the member's selected level. This means that you can collect specific member information for one level and other unique member information for another level.
+
+Any registered field can be dynamically hidden or shown with JavaScript depending on another field’s value. To create a conditional field, pass an array of conditions as the depends option. 
+
+[Read the documentation on Adding Fields](https://www.paidmembershipspro.com/add-ons/free-add-ons/pmpro-register-helper-add-checkout-and-profile-fields/adding-fields/)
+
+= Adding Sections to Membership Checkout =
+Register Helper allows you to add fields to a variety of places within the Membership Checkout page using Paid Memberships Pro. Fields can be added to existing locations including:
+
+* after_username
+* after_password
+* after_email
+* after_captcha
+* after_billing_fields
+* before_submit_button
+* just_profile
+
+Or, you can add a new box or section to the Membership Checkout form using the 'checkout_boxes' feature. Your newly created box includes a title, description and specified location.
 
 == Installation ==
 
 1. Upload the `pmpro-register-helper` directory to the `/wp-content/plugins/` directory of your site.
 1. Activate the plugin through the 'Plugins' menu in WordPress.
-
-Add a sign up form to a post/widget/page using a shortcode:
-
-[pmpro_signup level="3" short="1" title="Sign Up for Gold Membership" intro="0" button="Signup Now"]
 
 Adding a field to your checkout page requires two steps: (1) create a field object, (2) call pmprorh_add_registration_field() to add the field to the checkout page. Optionally, you can create your own "checkout_box" or fieldset to the checkout page using pmprorh_add_checkout_box().
 
@@ -110,6 +139,12 @@ Note that the "checkout_boxes" location is now just the first checkout_box in th
 = I found a bug in the plugin. =
 
 Please post it in the issues section of GitHub and we'll fix it as soon as we can. Thanks for helping. https://github.com/strangerstudios/pmpro-register-helper/issues
+
+== Screenshots ==
+
+1. A simple example of collecting text and textarea fields at membership checkout.
+2. An example of using a new Checkout Box with conditional fields based on dropdown selection.
+3. Using Register Helper fields in conjuction with the [Member Directory and Profile Pages Add On](https://www.paidmembershipspro.com/add-ons/plus-add-ons/pmpro-member-directory/).
 
 == Changelog ==
 

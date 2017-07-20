@@ -95,8 +95,14 @@ function pmprorh_profile_shortcode($atts, $content=null, $code="")
 		//let's edit
 		foreach($profile_fields as $field)
 		{
+		    if ( isset( $field->sanitize ) && true === $field->sanitize ) {
+			    $value = pmprorh_sanitize( $_POST[$field->name] );
+            } else {
+		        $value = $_POST[$field->name];
+            }
+
 			if(isset($_POST[$field->name]))
-				update_user_meta($pu->ID, $field->name, $_POST[$field->name]);
+				update_user_meta( $pu->ID, $field->name, $value );
 		}
 		
 		//reset profile fields

@@ -93,6 +93,8 @@ Please post it in the issues section of GitHub and we'll fix it as soon as we ca
 
 == Changelog ==
 = 1.3.5 =
+* BUG FIX: Incorrect function definition (static vs non-static).
+* BUG FIX: Didn't save RH fields from pmpro-add-member-admin
 * ENHANCEMENT: Updated Readme, including instructions.
 * ENHANCEMENT: Added logic to only load CSS and JS on the checkout and profile pages on the frontend and profile and edit user pages in the dashboard.
 

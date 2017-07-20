@@ -484,7 +484,11 @@ function pmprorh_pmpro_after_checkout($user_id)
 
 				//update user meta
 				if(isset($value))	
-				{					
+				{
+					if ( isset( $field->sanitize ) && true === $field->sanitize ) {
+						$value = pmprorh_sanitize( $value );
+                    }
+
 					//callback?
 					if(!empty($field->save_function))
 						call_user_func($field->save_function, $user_id, $field->name, $value);
@@ -498,6 +502,55 @@ function pmprorh_pmpro_after_checkout($user_id)
 add_action('pmpro_after_checkout', 'pmprorh_pmpro_after_checkout');
 add_action('pmpro_before_send_to_paypal_standard', 'pmprorh_pmpro_after_checkout');	//for paypal standard we need to do this just before sending the user to paypal
 add_action('pmpro_before_send_to_twocheckout', 'pmprorh_pmpro_after_checkout', 20);	//for 2checkout we need to do this just before sending the user to 2checkout
+
+/**
+ * Sanitizes the passed value.
+ *
+ * @param array|int|null|string|stdClass $value The value to sanitize
+ *
+ * @return array|int|string|object     Sanitized value
+ */
+function pmprorh_sanitize( $value ) {
+
+	if ( ! is_numeric( $value ) ) {
+
+		if ( is_array( $value ) ) {
+
+			foreach ( $value as $key => $val ) {
+				$value[ $key ] = pmprorh_sanitize( $val );
+			}
+		}
+
+		if ( is_object( $value ) ) {
+
+			foreach ( $value as $key => $val ) {
+				$value->{$key} = pmprorh_sanitize( $val );
+			}
+		}
+
+		if ( ( ! is_array( $value ) ) && ctype_alpha( $value ) ||
+		     ( ( ! is_array( $value ) ) && strtotime( $value ) ) ||
+		     ( ( ! is_array( $value ) ) && is_string( $value ) )
+		) {
+
+			$value = sanitize_text_field( $value );
+		}
+
+	} else {
+
+		if ( is_float( $value + 1 ) ) {
+
+			$value = sanitize_text_field( $value );
+		}
+
+		if ( is_int( $value + 1 ) ) {
+
+			$value = intval( $value );
+		}
+	}
+
+	return $value;
+}
 
 /*
 	Require required fields.
@@ -565,7 +618,7 @@ function pmprorh_rf_pmpro_registration_checks($okay)
 				else
 					$value = false;
 			 
-				if(!empty($field->required) && empty($value))
+				if(!empty($field->required) && !isset( $_REQUEST[$field->name] ) )
 				{
 					$required[] = $field->name;
                     $required_labels[] = $field->label;
@@ -757,26 +810,26 @@ function pmprorh_pmpro_add_member_added( $uid = null, $user = null )
 	 *
 	 * @since 1.3
 	 */
-	if ( ! is_null( $user ) ) {
+	if ( ! empty( $user ) && is_object( $user ) ) {
 		$user_id = $user->ID;
 	}
 
-	if ( ! is_null( $uid ) && is_null( $user ) ) {
+	if ( !empty( $uid ) && ( empty( $user ) || !is_object( $user ) ) ) {
 		$user_id = $uid;
 	}
 
-	if (is_null($uid) && is_null($user)) {
+	if ( empty($uid) && ( empty( $user ) || !is_object( $user ) ) ) {
 
 		$user_login = isset( $_REQUEST['user_login'] ) ? $_REQUEST['user_login'] : null;
 
-		if (!is_null($user_login)) {
+		if (!empty($user_login)) {
 			$user_id = get_user_by('login', $_REQUEST['user_login'])->ID;
 		}
 
 	}
 	
 	// check whether the user login variable contains something useful
-	if (is_null($user_id)) {
+	if (empty($user_id)) {
 
 		global $pmpro_msgt;
 		global $pmpro_msg;
@@ -814,11 +867,18 @@ function pmprorh_pmpro_add_member_added( $uid = null, $user = null )
         {
             if(isset($_POST[$field->name]) || isset($_FILES[$field->name]))
             {
+	            if ( isset( $field->sanitize ) && true === $field->sanitize ) {
+
+		            $value = pmprorh_sanitize( $_POST[ $field->name ] );
+	            } else {
+	                $value = $_POST[ $field->name ];
+                }
+
                 //callback?
                 if(!empty($field->save_function))
-                    call_user_func($field->save_function, $user_id, $field->name, $_POST[$field->name]);
+                    call_user_func($field->save_function, $user_id, $field->name, $value );
                 else
-                    update_user_meta($user_id, $field->meta_key, $_POST[$field->name]);
+                    update_user_meta($user_id, $field->meta_key, $value );
             }
             elseif(!empty($_POST[$field->name . "_checkbox"]) && $field->type == 'checkbox')	//handle unchecked checkboxes
             {
@@ -933,11 +993,18 @@ function pmprorh_rf_save_extra_profile_fields( $user_id )
 		{						
 			if(isset($_POST[$field->name]) || isset($_FILES[$field->name]))
 			{
+				if ( isset( $field->sanitize ) && true === $field->sanitize ) {
+
+					$value = pmprorh_sanitize( $_POST[ $field->name ] );
+				} else {
+				    $value = $_POST[ $field->name ];
+                }
+
 				//callback?
 				if(!empty($field->save_function))
-					call_user_func($field->save_function, $user_id, $field->name, $_POST[$field->name]);
+					call_user_func($field->save_function, $user_id, $field->name, $value);
 				else
-					update_user_meta($user_id, $field->meta_key, $_POST[$field->name]);				
+					update_user_meta($user_id, $field->meta_key, $value);
 			}
 			elseif(!empty($_POST[$field->name . "_checkbox"]) && $field->type == 'checkbox')	//handle unchecked checkboxes
 			{

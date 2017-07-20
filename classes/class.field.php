@@ -37,6 +37,7 @@
 			$this->profile = null;
 			$this->just_profile = false;
 			$this->class = null;
+			$this->sanitize = true;
 		}
 
 		/*
@@ -123,7 +124,7 @@
 			elseif($this->type == "file")
 			{
 				//use the file save function
-				$this->save_function = array("PMProRH_Field", "saveFile");
+				$this->save_function = array($this, "saveFile");
 			}
 			elseif($this->type == "checkbox")
 			{
@@ -136,7 +137,7 @@
             elseif($this->type == "date")
             {
                 //use the save date function
-                $this->save_function = array("PMProRH_Field", "saveDate");
+                $this->save_function = array($this, "saveDate");
             }
 			
 			return true;
@@ -256,6 +257,11 @@
         //fix date then update user meta
         function saveDate($user_id, $name, $value)
         {
+	        if ( isset( $this->sanitize ) && true === $this->sanitize ) {
+
+		        $value = pmprorh_sanitize( $value );
+	        }
+
         	$meta_key = str_replace("pmprorhprefix_", "", $name);
             $date = date('Y-m-d', strtotime(date($value['y'] . '-' . $value['m'] . '-' . $value['d'])));
         	update_user_meta($user_id, $meta_key, $date);

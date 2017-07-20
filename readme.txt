@@ -94,6 +94,7 @@ Please post it in the issues section of GitHub and we'll fix it as soon as we ca
 == Changelog ==
 = 1.3.5 =
 * ENHANCEMENT: Updated Readme, including instructions.
+* ENHANCEMENT: Added logic to only load CSS and JS on the checkout and profile pages on the frontend and profile and edit user pages in the dashboard.
 
 = 1.3.4 =
 * BUG: Fixed bug where checkbox values weren't updated if they were changed from checked to unchecked during a renewal checkout. (Thanks, stevep2000)

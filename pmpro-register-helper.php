@@ -174,7 +174,8 @@ function pmprorh_sortByOrder($a, $b)
 */
 function pmprorh_scripts()
 {
-	if( !is_admin() && !empty( $_REQUEST['level'] ) )
+	global $pmpro_level;
+	if( !is_admin() && ( !empty( $_REQUEST['level'] ) || !empty( $pmpro_level ) ) )
 	{
 		if(!defined("PMPRO_VERSION"))
 		{
@@ -1133,8 +1134,13 @@ function pmproh_pmpro_checkout_confirm_email($show)
 */
 function pmprorh_enqueue_select2($hook)
 {
-	// only include on front end and user profiles
-	if( !is_admin() || $hook == 'profile.php' || $hook == 'user-edit.php') {
+	// only include on front end and user profiles	
+	if( ( !is_admin() && ( 
+			!empty( $_REQUEST['level'] ) || 
+			!empty( $pmpro_level ) ||
+			class_exists("Theme_My_Login") && method_exists('Theme_My_Login', 'is_tml_page') && Theme_My_Login::is_tml_page("profile") ) ) || 
+		$hook == 'profile.php' || 
+		$hook == 'user-edit.php' ) {
 		wp_enqueue_style('select2', plugins_url('css/select2.min.css', __FILE__), '', '4.0.3', 'screen');
 		wp_enqueue_script('select2', plugins_url('js/select2.min.js', __FILE__), array( 'jquery' ), '4.0.3' );
 	}

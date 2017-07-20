@@ -174,7 +174,7 @@ function pmprorh_sortByOrder($a, $b)
 */
 function pmprorh_scripts()
 {
-	if(!is_admin())
+	if( !is_admin() && !empty( $_REQUEST['level'] ) )
 	{
 		if(!defined("PMPRO_VERSION"))
 		{

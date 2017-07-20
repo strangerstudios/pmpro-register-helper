@@ -3,7 +3,7 @@ Contributors: strangerstudios
 Tags: users, user meta, meta, memberships, registration
 Requires at least: 3.5
 Tested up to: 4.6.1
-Stable tag: 1.3.4
+Stable tag: 1.3.5
 
 Capture additional member information with custom fields at Membership Checkout with Paid Memberships Pro.
 
@@ -92,6 +92,8 @@ Please post it in the issues section of GitHub and we'll fix it as soon as we ca
 1. Using Register Helper fields in conjuction with the [Member Directory and Profile Pages Add On](https://www.paidmembershipspro.com/add-ons/plus-add-ons/pmpro-member-directory/).
 
 == Changelog ==
+= 1.3.5 =
+* ENHANCEMENT: Updated Readme, including instructions.
 
 = 1.3.4 =
 * BUG: Fixed bug where checkbox values weren't updated if they were changed from checked to unchecked during a renewal checkout. (Thanks, stevep2000)

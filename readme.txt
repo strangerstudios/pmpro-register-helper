@@ -12,7 +12,7 @@ A robust add on to collect additional fields at membership signup. Fields can be
 
 You can also restrict membership registration for a list of approved email addresses.
 
-[Read the full documentation for the Register Helper Add On](https://www.paidmembershipspro.com/add-ons/free-add-ons/pmpro-register-helper-add-checkout-and-profile-fields/)
+[Read the full documentation for the Register Helper Add On](https://www.paidmembershipspro.com/add-ons/pmpro-register-helper-add-checkout-and-profile-fields/)
 
 = Supports Multiple Field Types =
 Using Register Helper, you can add a variety of field types to capture additional information about your members. Supported field types include:
@@ -28,7 +28,7 @@ Fields can be added based on the member's selected level. This means that you ca
 
 Any registered field can be dynamically hidden or shown with JavaScript depending on another field’s value. To create a conditional field, pass an array of conditions as the depends option. 
 
-[Read the documentation on Adding Fields](https://www.paidmembershipspro.com/add-ons/free-add-ons/pmpro-register-helper-add-checkout-and-profile-fields/adding-fields/)
+[Read the documentation on Adding Fields](https://www.paidmembershipspro.com/documentation/register-helper-documentation/adding-fields/)
 
 = Adding Sections to Membership Checkout =
 Register Helper allows you to add fields to a variety of places within the Membership Checkout page using Paid Memberships Pro. Fields can be added to existing locations including:
@@ -47,7 +47,7 @@ Or, you can add a new box or section to the Membership Checkout form using the '
 
 1. Upload the `pmpro-register-helper` directory to the `/wp-content/plugins/` directory of your site.
 1. Activate the plugin through the 'Plugins' menu in WordPress.
-1. Configure your fields using custom code. [View the full documentation on adding fields](https://www.paidmembershipspro.com/add-ons/free-add-ons/pmpro-register-helper-add-checkout-and-profile-fields/adding-fields/)
+1. Configure your fields using custom code. [View the full documentation on adding fields](https://www.paidmembershipspro.com/documentation/register-helper-documentation/adding-fields/)
 
 = Example Code for adding a Company field =
 Below is a sample code that adds a "Company" field. Custom code for your fields should be placed in your active theme's functions.php file or [a plugin for customizations](https://www.paidmembershipspro.com/create-a-plugin-for-pmpro-customizations/) (our recommended method). 
@@ -89,7 +89,7 @@ Please post it in the issues section of GitHub and we'll fix it as soon as we ca
 
 1. A simple example of collecting text and textarea fields at membership checkout.
 1. An example of using a new Checkout Box with conditional fields based on dropdown selection.
-1. Using Register Helper fields in conjuction with the [Member Directory and Profile Pages Add On](https://www.paidmembershipspro.com/add-ons/plus-add-ons/pmpro-member-directory/).
+1. Using Register Helper fields in conjuction with the [Member Directory and Profile Pages Add On](https://www.paidmembershipspro.com/add-ons/pmpro-member-directory/).
 
 == Changelog ==
 = 1.3.5 =

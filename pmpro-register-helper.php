@@ -1,11 +1,11 @@
 <?php
 /*
 Plugin Name: Paid Memberships Pro - Register Helper Add On
-Plugin URI: http://www.paidmembershipspro.com/pmpro-register-helper/
+Plugin URI: https://www.paidmembershipspro.com/add-ons/pmpro-register-helper-add-checkout-and-profile-fields/
 Description: Capture additional member information with custom fields at Membership Checkout with Paid Memberships Pro.
 Version: 1.3.5
 Author: Stranger Studios
-Author URI: http://www.strangerstudios.com
+Author URI: https://www.paidmembershipspro.com
 */
 
 define('PMPRORH_DIR', dirname(__FILE__) );

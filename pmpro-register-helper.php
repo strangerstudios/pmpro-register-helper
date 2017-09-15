@@ -3,14 +3,14 @@
 Plugin Name: Paid Memberships Pro - Register Helper Add On
 Plugin URI: https://www.paidmembershipspro.com/add-ons/pmpro-register-helper-add-checkout-and-profile-fields/
 Description: Capture additional member information with custom fields at Membership Checkout with Paid Memberships Pro.
-Version: 1.3.5
+Version: 1.3.6
 Author: Stranger Studios
 Author URI: https://www.paidmembershipspro.com
 */
 
 define('PMPRORH_DIR', dirname(__FILE__) );
 define('PMPRORH_URL', WP_PLUGIN_URL . "/pmpro-register-helper");
-define('PMPRORH_VERSION', '1.3.5');
+define('PMPRORH_VERSION', '1.3.6');
 
 /*
 	options - just defaults for now, will be in settings eventually
@@ -765,7 +765,7 @@ add_action( 'edit_user_profile', 'pmprorh_rf_show_extra_profile_fields_withlocat
 /*
     Integrate with PMPro Add Member Admin addon
  */
-function pmprorh_pmpro_add_member_fields( $user = null)
+function pmprorh_pmpro_add_member_fields( $user = null, $user_id = null)
 {
     global $pmprorh_registration_fields;
 
@@ -795,13 +795,15 @@ function pmprorh_pmpro_add_member_fields( $user = null)
             //cycle through groups
             foreach($addmember_fields as $field)
             {
-                $field->displayInProfile($user->ID);
+                if(empty($user_id) && !empty($user) && !empty($user->ID))
+                	$user_id = $user->ID;
+                $field->displayInProfile($user_id);
             }
             ?>
     <?php
     }
 }
-add_action( 'pmpro_add_member_fields', 'pmprorh_pmpro_add_member_fields', 10, 1 );
+add_action( 'pmpro_add_member_fields', 'pmprorh_pmpro_add_member_fields', 10, 2 );
 
 function pmprorh_pmpro_add_member_added( $uid = null, $user = null )
 {

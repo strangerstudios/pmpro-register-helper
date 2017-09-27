@@ -61,7 +61,7 @@
 
 			//add attributes as properties of this class
 			if(!empty($attr))
-			{				
+			{
 				foreach($attr as $key=>$value)
 				{
 					$this->$key = $value;
@@ -76,9 +76,9 @@
 			if(empty($this->class))
 				$this->class = "input";
 			else
-				$this->class .= " input";			
+				$this->class .= " input";
 			
-			//default label			
+			//default label
 			if(isset($this->label) && $this->label === false)
 				$this->label = false;	//still false
 			elseif(empty($this->label))
@@ -92,12 +92,12 @@
 			if(in_array($this->name, $public_query_vars))
 				$this->name = "pmprorhprefix_" . $this->name;
 
-			//default fields						
+			//default fields
 			if($this->type == "text")
 			{
 				if(empty($this->size))
 					$this->size = 30;
-			}			
+			}
 			elseif($this->type == "select" || $type == "multiselect" || $type == "select2" || $type == "radio")
 			{
 				//default option
@@ -105,7 +105,7 @@
 					$this->options = array("", "- choose one -");
 				
 				//is a non associative array is passed, set values to labels
-				$repair_non_associative_options = apply_filters("pmprorh_repair_non_associative_options", true);			
+				$repair_non_associative_options = apply_filters("pmprorh_repair_non_associative_options", true);
 				if($repair_non_associative_options && !$this->is_assoc($this->options))
 				{
 					$newoptions = array();
@@ -120,7 +120,7 @@
 					$this->rows = 5;
 				if(empty($this->cols))
 					$this->cols = 80;
-			}	
+			}
 			elseif($this->type == "file")
 			{
 				//use the file save function
@@ -145,7 +145,7 @@
 		
 		//save function for files
 		function saveFile($user_id, $name, $value)
-		{			
+		{
 			//setup some vars
 			$file = $_FILES[$name];
 			$user = get_userdata($user_id);
@@ -156,9 +156,9 @@
 				return;
 			
 			//check extension against allowed extensions
-			$filetype = wp_check_filetype_and_ext($file['tmp_name'], $file['name']);									
+			$filetype = wp_check_filetype_and_ext($file['tmp_name'], $file['name']);
 			if((!$filetype['type'] || !$filetype['ext'] ) && !current_user_can( 'unfiltered_upload' ))
-			{			
+			{
 				//we throw an error earlier, but this just bails on the upload just in case
 				return false;
 			}
@@ -174,7 +174,7 @@
 				}
 				else
 				{
-					global $pmprorh_registration_fields;					
+					global $pmprorh_registration_fields;
 					foreach($pmprorh_registration_fields as $checkout_box)
 					{
 						foreach($checkout_box as $field)
@@ -212,46 +212,46 @@
 			{
 				wp_mkdir_p($pmprorh_dir);
 			}
-						
+			
 			//if we already have a file for this field, delete it
-			$old_file = get_user_meta($user->ID, $meta_key, true);			
+			$old_file = get_user_meta($user->ID, $meta_key, true);
 			if(!empty($old_file) && !empty($old_file['fullpath']) && file_exists($old_file['fullpath']))
-			{				
-				unlink($old_file['fullpath']);				
+			{
+				unlink($old_file['fullpath']);
 			}
 			
 			//figure out new filename
 			$filename = $file['name'];
 			$count = 0;
-						
+			
 			while(file_exists($pmprorh_dir . $filename))
 			{
 				if($count)
 					$filename = str_lreplace("-" . $count . "." . $filetype['ext'], "-" . strval($count+1) . "." . $filetype['ext'], $filename);
 				else
 					$filename = str_lreplace("." . $filetype['ext'], "-1." . $filetype['ext'], $filename);
-								
+					
 				$count++;
 				
 				//let's not expect more than 50 files with the same name
 				if($count > 50)
-					die("Error uploading file. Too many files with the same name.");									
+					die("Error uploading file. Too many files with the same name.");
 			}
-						
+			
 			//save file
 			if(strpos($file['tmp_name'], $upload_dir['basedir']) !== false)
 			{
 				//was uploaded and saved to $_SESSION
-				rename($file['tmp_name'], $pmprorh_dir . $filename);			
+				rename($file['tmp_name'], $pmprorh_dir . $filename);
 			}
 			else
 			{
 				//it was just uploaded
-				move_uploaded_file($file['tmp_name'], $pmprorh_dir . $filename);				
+				move_uploaded_file($file['tmp_name'], $pmprorh_dir . $filename);
 			}
 			
 			//save filename in usermeta
-			update_user_meta($user_id, $meta_key, array("original_filename"=>$file['name'], "filename"=>$filename, "fullpath"=> $pmprorh_dir . $filename, "fullurl"=>content_url("/uploads/pmpro-register-helper/" . $user->user_login . "/" . $filename), "size"=>$file['size']));			
+			update_user_meta($user_id, $meta_key, array("original_filename"=>$file['name'], "filename"=>$filename, "fullpath"=> $pmprorh_dir . $filename, "fullurl"=>content_url("/uploads/pmpro-register-helper/" . $user->user_login . "/" . $filename), "size"=>$file['size']));
 		}
 
         //fix date then update user meta
@@ -276,7 +276,7 @@
 		
 		//get HTML for the field
 		function getHTML($value = "")
-		{			
+		{
 			//vars to store HTML to be added to the beginning or end
 			$r_beginning = "";
 			$r_end = "";
@@ -292,7 +292,7 @@
 					$r .= 'readonly="readonly" ';
 				if(!empty($this->html_attributes))
 					$r .= $this->getHTMLAttributes();
-				$r .= ' />';				
+				$r .= ' />';
 			}
 			elseif($this->type == "password")
 			{
@@ -305,14 +305,14 @@
 					$r .= 'readonly="readonly" ';
 				if(!empty($this->html_attributes))
 					$r .= $this->getHTMLAttributes();
-				$r .= ' />';				
+				$r .= ' />';
 			}
 			elseif($this->type == "select")
 			{
 				//if multiple is set, value must be an array
-				if(!empty($this->multiple) && !is_array($value))				
+				if(!empty($this->multiple) && !is_array($value))
 					$value = array($value);
-								
+					
 				if(!empty($this->multiple))
 					$r = '<select id="' . $this->id . '" name="' . $this->name . '[]" ';	//multiselect
 				else
@@ -411,11 +411,11 @@
 			elseif($this->type == "checkbox")
 			{
 				$r = '<input name="'.$this->name.'"' .' type="checkbox" value="1"'.' id="'.$this->id.'"';
-				$r.=checked( $value, 1,false);		
+				$r.=checked( $value, 1,false);
 				if(!empty($this->readonly))
 					$r .= 'readonly="readonly" ';
 				if(!empty($this->html_attributes))
-					$r .= $this->getHTMLAttributes();		
+					$r .= $this->getHTMLAttributes();
 				$r .= ' /> ';
 				$r .= '<label class="pmprorh_checkbox_label" for="' . $this->name . '">' . $this->text . '</label> &nbsp; ';
 				$r .= '<input type="hidden" name="'.$this->name.'_checkbox" value="1" />';	//extra field so we can track unchecked boxes
@@ -427,24 +427,31 @@
 				if(!is_array($value))
 					$value = array($value);
 				
-				$r = '';
+				$r = sprintf( '<div class="pmprorh_grouped_checkboxes">' );
+				$counter = 1;
 				foreach($this->options as $ovalue => $option)
-				{	
-					$r .= '<input name="'.$this->name.'[]"' .' type="checkbox" value='.$ovalue.' id="'.$this->id.'"  ';
+				{
+				 
+				    $r .= sprintf( '<li style="list-style: none;"><span class="pmprorh_checkbox_span">' );
+					$r .= sprintf(
+                        '<input name="%1$s[]" type="checkbox" value="%2$s" id="%3$s" class="%4$s" %5$s %6$s %7$s />',
+                         $this->name,
+                        $ovalue,
+						"{$this->id}_{$counter}",
+                        $this->id,
+                        ( in_array($ovalue, $value) ? 'checked="checked"' : null ),
+                        ( !empty( $this->readonly ) ? 'readonly="readonly"' : null ),
+                        $this->getHTMLAttributes()
+                    );
+     
 					
-					if(in_array($ovalue, $value))
-						$r.= 'checked="checked" ';
-					
-					if(!empty($this->readonly))
-						$r .= 'readonly="readonly" ';
-					if(!empty($this->html_attributes))
-						$r .= $this->getHTMLAttributes();	
-					
-					$r .= '/>';
-					$r .= '<label class="pmprorh_checkbox_label" for="' . $this->name . '">' . $option . '</label>';
-					$r .= '<input type="hidden" name="'.$this->name.'_checkbox[]" value='.$ovalue.' />';	//extra field so we can track unchecked boxes
+					$r .= sprintf( '<label class="pmprorh_checkbox_label" for="%1$s">%2$s</label>', "{$this->id}_{$counter}",$option );
+					$r .= sprintf( '<input type="hidden" name="%1$s_checkbox[]" value="%2$s" />', $this->name, $ovalue );	//extra field so we can track unchecked boxes
+                    $counter++;
+					$r .= sprintf( '</span></li>' );
 				}
 				
+				$r .= sprintf( '</div>' );
 			}
 			
 			elseif($this->type == "textarea")
@@ -456,7 +463,7 @@
 					$r .= 'readonly="readonly" ';
 				if(!empty($this->html_attributes))
 					$r .= $this->getHTMLAttributes();
-				$r .= '>' . esc_textarea($value) . '</textarea>';				
+				$r .= '>' . esc_textarea($value) . '</textarea>';
 			}
 			elseif($this->type == "hidden")
 			{
@@ -465,7 +472,7 @@
 					$r .= 'readonly="readonly" ';
 				if(!empty($this->html_attributes))
 					$r .= $this->getHTMLAttributes();
-				$r .= '/>';						
+				$r .= '/>';
 			}
 			elseif($this->type == "html")
 			{
@@ -478,7 +485,7 @@
 			elseif($this->type == "file")
 			{
 				$r = '';
-								
+				
 				//file input
 				$r .= '<input type="file" id="' . $this->id . '" ';
 				if(!empty($this->accept))
@@ -487,7 +494,7 @@
 					$r .= 'class="' . $this->class . '" ';
 				if(!empty($this->html_attributes))
 					$r .= $this->getHTMLAttributes();
-				$r .= 'name="' . $this->name . '" />';								
+				$r .= 'name="' . $this->name . '" />';
 				
 				//old value
 				if(is_user_logged_in())
@@ -569,7 +576,7 @@
                 $r .= '/>';
             }
             elseif($this->type == "readonly")
-			{				
+			{
 				$r = $value;
 			}
 			else
@@ -610,13 +617,13 @@
 			}
 
 			return $astring;
-		}	
+		}
 		
 		function getDependenciesJS()
 		{
 			//dependencies
 			if(!empty($this->depends))
-			{					
+			{
 				//build the checks
 				$checks = array();
 				foreach($this->depends as $check)
@@ -628,16 +635,16 @@
 						 .":(jQuery('#" . $check['id'] . "').val() == " . json_encode($check['value']) . " || jQuery.inArray(" . json_encode($check['value']) . ", jQuery('#" . $check['id'] . "').val()) > -1)) ||"."(jQuery(\"input:radio[name='".$check['id']."']:checked\").val() == ".json_encode($check['value'])." || jQuery.inArray(".json_encode($check['value']).", jQuery(\"input:radio[name='".$check['id']."']:checked\").val()) > -1)";
 					
 						$binds[] = "#" . $check['id'].",input:radio[name=".$check['id']."]";
-					}				
+					}
 				}
-								
+				
 				if(!empty($checks) && !empty($binds))
 				{
 				?>
 				<script>
 					//function to check and hide/show
 					function pmprorh_<?php echo $this->id;?>_hideshow()
-					{						
+					{
 						if(
 							<?php echo implode(" && ", $checks); ?>
 						)
@@ -654,7 +661,7 @@
 						}
 					}
 					
-					jQuery(document).ready(function() {											
+					jQuery(document).ready(function() {
 							//run on page load
 							pmprorh_<?php echo $this->id;?>_hideshow();
 							
@@ -707,15 +714,15 @@
 					$value = $_SESSION[$this->name];
 			}
 			elseif(!empty($current_user->ID) && metadata_exists("user", $current_user->ID, $this->meta_key))
-			{				
-				$meta = get_user_meta($current_user->ID, $this->meta_key, true);				
+			{
+				$meta = get_user_meta($current_user->ID, $this->meta_key, true);
 				if(is_array($meta) && !empty($meta['filename']))
 				{
 					$this->file = get_user_meta($current_user->ID, $this->meta_key, true);
 					$value = $this->file['filename'];
 				}
 				else
-					$value = $meta;									
+					$value = $meta;
 			}
 			elseif(!empty($this->value))
 				$value = $this->value;
@@ -728,7 +735,7 @@
 			<div id="<?php echo $this->id;?>_div" class="pmpro_checkout-field<?php if(!empty($this->divclass)) echo ' ' . $this->divclass; ?>">
 				<?php if(!empty($this->showmainlabel)) { ?>
 					<label for="<?php echo esc_attr($this->name);?>"><?php echo $this->label;?></label>
-					<?php 
+					<?php
 						if(!empty($this->required) && !empty($this->showrequired) && $this->showrequired === 'label')
 						{
 						?><span class="pmpro_asterisk"> *</span><?php
@@ -744,7 +751,7 @@
 				<?php if(!empty($this->hint)) { ?>
 					<div class="leftmar"><small class="lite"><?php echo $this->hint;?></small></div>
 				<?php } ?>
-			</div>	
+			</div>
 			<?php
 			
 			$this->getDependenciesJS();
@@ -755,7 +762,7 @@
 			global $current_user;
 			if(metadata_exists("user", $user_id, $this->meta_key))
 			{
-				$meta = get_user_meta($user_id, $this->name, true);				
+				$meta = get_user_meta($user_id, $this->name, true);
 				if(is_array($meta) && !empty($meta['filename']))
 				{
 					$this->file = get_user_meta($user_id, $this->meta_key, true);
@@ -767,7 +774,7 @@
 			elseif(!empty($this->value))
 				$value = $this->value;
 			else
-				$value = "";				
+				$value = "";
 			?>
 			<tr id="<?php echo $this->id;?>_tr">
 				<th>
@@ -776,27 +783,27 @@
 					<?php } ?>
 				</th>
 				<td>
-					<?php 						
+					<?php
 						if(current_user_can("edit_user", $current_user->ID) && $edit !== false)
-							$this->display($value); 
+							$this->display($value);
 						else
-							echo "<div>" . $this->displayValue($value) . "</div>";						
+							echo "<div>" . $this->displayValue($value) . "</div>";
 					?>
 					<?php if(!empty($this->hint)) { ?>
 						<div class="leftmar"><small class="lite"><?php echo $this->hint;?></small></div>
 					<?php } ?>
 				</td>
-			</tr>			
+			</tr>
 			<?php
 			
 			$this->getDependenciesJS();
-		}		
+		}
 		
 		//checks for array values and values from fields with options
 		function displayValue($value)
 		{
 			if(is_array($value) && !empty($this->options))
-			{							
+			{
 				$labels = array();
 				foreach($value as $item)
 				{
@@ -814,7 +821,7 @@
 		}
 		
 		//from: http://stackoverflow.com/questions/173400/php-arrays-a-good-way-to-check-if-an-array-is-associative-or-numeric/4254008#4254008
-		function is_assoc($array) {			
+		function is_assoc($array) {
 			return (bool)count(array_filter(array_keys($array), 'is_string'));
 		}
 	}

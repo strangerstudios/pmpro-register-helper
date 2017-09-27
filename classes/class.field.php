@@ -430,7 +430,7 @@
 				$r = '';
 				foreach($this->options as $ovalue => $option)
 				{	
-					$r .= '<input name="'.$this->name.'[]"' .' type="checkbox" value='.$ovalue.' id="'.$this->id.'"  ';
+					$r .= '<input name="'.$this->name.'[]"' .' type="checkbox" value='.$ovalue.' class="'.$this->id.'"  ';
 					
 					if(in_array($ovalue, $value))
 						$r.= 'checked="checked" ';

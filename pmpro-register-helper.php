@@ -618,10 +618,10 @@ function pmprorh_rf_pmpro_registration_checks($okay)
 				else
 					$value = false;
 			 
-				if(!empty($field->required) && !isset( $_REQUEST[$field->name] ) )
+				if(!empty($field->required) && empty( $_REQUEST[$field->name] ) )
 				{
 					$required[] = $field->name;
-                    $required_labels[] = $field->label;
+					$required_labels[] = $field->label;
 				}
 			}
 		}

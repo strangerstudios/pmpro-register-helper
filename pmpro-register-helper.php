@@ -1322,10 +1322,10 @@ add_action('pmprorh_cron_delete_tmp', 'pmprorh_cron_delete_tmp');
 //function to pull meta for the added CSV columns
 function pmprorh_csv_columns($user, $column)
 {
-	if(!empty($user->metavalues->$column))
+	if(!empty($user->metavalues->{$column}))
 	{
 		// check for multiple values
-		$value = maybe_unserialize($user->metavalues->$column);
+		$value = maybe_unserialize($user->metavalues->{$column});
 		if(is_array($value))
 			$value = join(',', $value);
 

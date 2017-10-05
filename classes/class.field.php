@@ -590,7 +590,7 @@
 				if(is_string($this->showrequired))
 					$r .= $this->showrequired;
 				else
-					$r .= '<span class="pmpro_asterisk"> *</span>';
+					$r .= '<span class="pmpro_asterisk"><abbr title="Required Field">*</abbr></span>';
 			}
 
 			//anything meant to be added to the beginning or end?

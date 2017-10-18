@@ -397,15 +397,17 @@
 				foreach($this->options as $ovalue => $option)
 				{
 					$count++;
+					$r .= '<div class="pmpro_checkout-field-radio-item">';
 					$r .= '<input type="radio" id="pmprorh_field_' . $this->name . $count . '" name="' . $this->name . '" value="' . esc_attr($ovalue) . '" ';
 					if(!empty($ovalue) && $ovalue == $value)
 						$r .= 'checked="checked"';
 					if(!empty($this->readonly))
-						$r .= 'readonly="readonly" ';
+						$r .= 'disabled="disabled" ';
 					if(!empty($this->html_attributes))
 						$r .= $this->getHTMLAttributes();
 					$r .= ' /> ';
 					$r .= '<label class="pmprorh_radio_label" for="pmprorh_field_' . $this->name . $count . '">' . $option . '</label> &nbsp; ';
+					$r .= '</div> <!-- end pmpro_checkout-field-radio-item -->';
 				}
 			}
 			elseif($this->type == "checkbox")
@@ -502,9 +504,9 @@
 				if(!empty($value))
 				{
 					if(!empty($this->file['fullurl']))
-						$r_end .= '<div class="leftmar"><small class="lite">Current File: <a target="_blank" href="' . $this->file['fullurl'] . '">' . basename($value) . '</a></small></div>';
+						$r_end .= '<small class="lite">Current File: <a target="_blank" href="' . $this->file['fullurl'] . '">' . basename($value) . '</a></small>';
 					else
-						$r_end .= '<div class="leftmar"><small class="lite">Current File: ' . basename($value) . '</small></div>';
+						$r_end .= '<small class="lite">Current File: ' . basename($value) . '</small>';
 				}
 			
 				if(!empty($this->readonly))
@@ -590,7 +592,7 @@
 				if(is_string($this->showrequired))
 					$r .= $this->showrequired;
 				else
-					$r .= '<span class="pmpro_asterisk"> *</span>';
+					$r .= '<span class="pmpro_asterisk"> <abbr title="Required Field">*</abbr></span></span>';
 			}
 
 			//anything meant to be added to the beginning or end?
@@ -722,8 +724,9 @@
 			else
 				$value = "";
 
-			//update class value
+			//update class value for div and field element
 			$this->class .= " " . pmpro_getClassForField($this->name);
+			$this->divclass .= " pmpro_checkout-field-" . $this->type;
 			?>
 			<div id="<?php echo $this->id;?>_div" class="pmpro_checkout-field<?php if(!empty($this->divclass)) echo ' ' . $this->divclass; ?>">
 				<?php if(!empty($this->showmainlabel)) { ?>
@@ -736,13 +739,11 @@
 					?>
 					<?php $this->display($value); ?>
 				<?php } else { ?>
-					<div class="leftmar">
-						<?php $this->display($value); ?>
-					</div>
+					<?php $this->display($value); ?>
 				<?php } ?>
 				
 				<?php if(!empty($this->hint)) { ?>
-					<div class="leftmar"><small class="lite"><?php echo $this->hint;?></small></div>
+					<p><small class="lite"><?php echo $this->hint;?></small></p>
 				<?php } ?>
 			</div>	
 			<?php
@@ -783,7 +784,7 @@
 							echo "<div>" . $this->displayValue($value) . "</div>";						
 					?>
 					<?php if(!empty($this->hint)) { ?>
-						<div class="leftmar"><small class="lite"><?php echo $this->hint;?></small></div>
+						<small class="lite"><?php echo $this->hint;?></small>
 					<?php } ?>
 				</td>
 			</tr>			

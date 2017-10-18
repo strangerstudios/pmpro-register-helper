@@ -15,3 +15,5 @@
 .pmpro_success a {color: #208A1B; }
 .pmpro_error a {color: #E36154; }
 .pmpro_alert a {color: #CF8516; }
+
+form.pmpro_form .pmpro_checkout-field-checkbox label {display: inline-block; cursor: pointer; width: auto; }

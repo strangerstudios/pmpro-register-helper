@@ -1,16 +1,16 @@
 <?php
 /*
 Plugin Name: Paid Memberships Pro - Register Helper Add On
-Plugin URI: http://www.paidmembershipspro.com/pmpro-register-helper/
+Plugin URI: https://www.paidmembershipspro.com/add-ons/pmpro-register-helper-add-checkout-and-profile-fields/
 Description: Capture additional member information with custom fields at Membership Checkout with Paid Memberships Pro.
-Version: 1.3.5
-Author: Stranger Studios
-Author URI: http://www.strangerstudios.com
+Version: 1.3.7
+Author: Paid Memberships Pro
+Author URI: https://www.paidmembershipspro.com
 */
 
 define('PMPRORH_DIR', dirname(__FILE__) );
 define('PMPRORH_URL', WP_PLUGIN_URL . "/pmpro-register-helper");
-define('PMPRORH_VERSION', '1.3.5');
+define('PMPRORH_VERSION', '1.3.7');
 
 /*
 	options - just defaults for now, will be in settings eventually
@@ -348,21 +348,24 @@ function pmprorh_pmpro_checkout_boxes()
 			foreach($pmprorh_registration_fields[$cb->name] as $field)				
 				if(pmprorh_checkFieldForLevel($field) && (!isset($field->profile) || (isset($field->profile) && $field->profile !== "only" && $field->profile !== "only_admin")))		$n++;
 
-		if($n > 0)
-		{
+		if($n > 0) {
 			?>
 			<div id="pmpro_checkout_box-<?php echo $cb->name; ?>" class="pmpro_checkout">
-				<h2>	
-					<span class="pmpro_thead-name"><?php echo $cb->label;?></span>
-				</h2>
+				<hr />
+				<h3>	
+					<span class="pmpro_checkout-h3-name"><?php echo $cb->label;?></span>
+				</h3>
 				<div class="pmpro_checkout-fields">
-				<?php if(!empty($cb->description)) {  ?><div class="pmpro_checkout_decription"><?php echo $cb->description; ?></div><?php } ?>
+				<?php if(!empty($cb->description)) { ?>
+					<div class="pmpro_checkout_decription"><?php echo $cb->description; ?></div>
+				<?php } ?>
+				
 				<?php
-				foreach($pmprorh_registration_fields[$cb->name] as $field)
-				{			
-					if(pmprorh_checkFieldForLevel($field) && (!isset($field->profile) || (isset($field->profile) && $field->profile !== "only" && $field->profile !== "only_admin")))
-						$field->displayAtCheckout();		
-				}
+					foreach($pmprorh_registration_fields[$cb->name] as $field) {			
+						if(pmprorh_checkFieldForLevel($field) && (!isset($field->profile) || (isset($field->profile) && $field->profile !== "only" && $field->profile !== "only_admin"))) {
+							$field->displayAtCheckout();
+						}							
+					} 
 				?>
 				</div> <!-- end pmpro_checkout-fields -->
 			</div> <!-- end pmpro_checkout_box-name -->
@@ -1362,7 +1365,7 @@ function pmprorh_plugin_row_meta($links, $file) {
 	{
 		$new_links = array(
 			'<a href="' . esc_url('https://www.paidmembershipspro.com/add-ons/pmpro-register-helper-add-checkout-and-profile-fields/')  . '" title="' . esc_attr( __( 'View Documentation', 'pmpro' ) ) . '">' . __( 'Docs', 'pmpro' ) . '</a>',
-			'<a href="' . esc_url('http://paidmembershipspro.com/support/') . '" title="' . esc_attr( __( 'Visit Customer Support Forum', 'pmpro' ) ) . '">' . __( 'Support', 'pmpro' ) . '</a>',
+			'<a href="' . esc_url('https://paidmembershipspro.com/support/') . '" title="' . esc_attr( __( 'Visit Customer Support Forum', 'pmpro' ) ) . '">' . __( 'Support', 'pmpro' ) . '</a>',
 		);
 		$links = array_merge($links, $new_links);
 	}

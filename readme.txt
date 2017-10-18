@@ -95,6 +95,9 @@ Please post it in the issues section of GitHub and we'll fix it as soon as we ca
 = 1.3.7 =
 * ENHANCEMENT: Improved display of field elements and checkout boxes for compatibility for 1.9.4.
 
+= 1.3.6 =
+* BUG FIX: Fixed some warnings when fields are added to the Add Member Admin form.
+
 = 1.3.5 =
 * BUG FIX: Incorrect function definition (static vs non-static).
 * BUG FIX: Didn't save RH fields from pmpro-add-member-admin

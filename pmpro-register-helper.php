@@ -768,7 +768,7 @@ add_action( 'edit_user_profile', 'pmprorh_rf_show_extra_profile_fields_withlocat
 /*
     Integrate with PMPro Add Member Admin addon
  */
-function pmprorh_pmpro_add_member_fields( $user = null)
+function pmprorh_pmpro_add_member_fields( $user = null, $user_id = null)
 {
     global $pmprorh_registration_fields;
 
@@ -798,13 +798,16 @@ function pmprorh_pmpro_add_member_fields( $user = null)
             //cycle through groups
             foreach($addmember_fields as $field)
             {
-                $field->displayInProfile($user->ID);
+				if(empty($user_id) && !empty($user) && !empty($user->ID)) {
+					$user_id = $user->ID;
+				}
+				$field->displayInProfile($user_id);
             }
             ?>
     <?php
     }
 }
-add_action( 'pmpro_add_member_fields', 'pmprorh_pmpro_add_member_fields', 10, 1 );
+add_action( 'pmpro_add_member_fields', 'pmprorh_pmpro_add_member_fields', 10, 2 );
 
 function pmprorh_pmpro_add_member_added( $uid = null, $user = null )
 {

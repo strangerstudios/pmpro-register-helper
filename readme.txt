@@ -93,7 +93,9 @@ Please post it in the issues section of GitHub and we'll fix it as soon as we ca
 
 == Changelog ==
 = 1.3.7 =
+* BUG FIX: Required File Upload was not recognized. (Thanks, contemplate on GitHub)
 * ENHANCEMENT: Improved display of field elements and checkout boxes for compatibility for 1.9.4.
+* ENHANCEMENT: Improved UI of the checkbox_grouped field type.
 
 = 1.3.6 =
 * BUG FIX: Fixed some warnings when fields are added to the Add Member Admin form.

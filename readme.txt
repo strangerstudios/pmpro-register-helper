@@ -93,7 +93,11 @@ Please post it in the issues section of GitHub and we'll fix it as soon as we ca
 
 == Changelog ==
 = 1.3.7 =
+* BUG FIX: Some required fields could be left empty at checkout.
 * BUG FIX: Required File Upload was not recognized. (Thanks, contemplate on GitHub)
+* BUG FIX: Slight fix for already uploaded docs. (Thanks, contemplate on GitHub)
+* BUG FIX: Leading zeros were being removed from numeric values.
+* BUG FIX: RH Field CSV export failure under PHP7.
 * ENHANCEMENT: Improved display of field elements and checkout boxes for compatibility for 1.9.4.
 * ENHANCEMENT: Improved UI of the checkbox_grouped field type.
 

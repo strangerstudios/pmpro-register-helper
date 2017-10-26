@@ -515,41 +515,27 @@ add_action('pmpro_before_send_to_twocheckout', 'pmprorh_pmpro_after_checkout', 2
  */
 function pmprorh_sanitize( $value ) {
 
-	if ( ! is_numeric( $value ) ) {
+	if ( is_array( $value ) ) {
 
-		if ( is_array( $value ) ) {
-
-			foreach ( $value as $key => $val ) {
-				$value[ $key ] = pmprorh_sanitize( $val );
-			}
+		foreach ( $value as $key => $val ) {
+			$value[ $key ] = pmprorh_sanitize( $val );
 		}
+	}
 
-		if ( is_object( $value ) ) {
+	if ( is_object( $value ) ) {
 
-			foreach ( $value as $key => $val ) {
-				$value->{$key} = pmprorh_sanitize( $val );
-			}
+		foreach ( $value as $key => $val ) {
+			$value->{$key} = pmprorh_sanitize( $val );
 		}
+	}
 
-		if ( ( ! is_array( $value ) ) && ctype_alpha( $value ) ||
-		     ( ( ! is_array( $value ) ) && strtotime( $value ) ) ||
-		     ( ( ! is_array( $value ) ) && is_string( $value ) )
-		) {
+	if ( ( ! is_array( $value ) ) && ctype_alpha( $value ) ||
+	     ( ( ! is_array( $value ) ) && strtotime( $value ) ) ||
+	     ( ( ! is_array( $value ) ) && is_string( $value ) ) ||
+	     ( ( ! is_array( $value ) ) && is_numeric( $value) )
+	) {
 
-			$value = sanitize_text_field( $value );
-		}
-
-	} else {
-
-		if ( is_float( $value + 1 ) ) {
-
-			$value = sanitize_text_field( $value );
-		}
-
-		if ( is_int( $value + 1 ) ) {
-
-			$value = intval( $value );
-		}
+		$value = sanitize_text_field( $value );
 	}
 
 	return $value;

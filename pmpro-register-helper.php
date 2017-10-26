@@ -607,7 +607,7 @@ function pmprorh_rf_pmpro_registration_checks($okay)
 				else
 					$value = false;
 			 
-				if(!empty($field->required) && empty( $_REQUEST[$field->name] ) )
+				if(!empty($field->required) && empty( $_REQUEST[$field->name] ) && empty( $_FILES[$field->name]['name'] ) && empty( $_REQUEST[$field->name.'_old'] ) )
 				{
 					$required[] = $field->name;
                     $required_labels[] = $field->label;
@@ -862,8 +862,10 @@ function pmprorh_pmpro_add_member_added( $uid = null, $user = null )
 	            if ( isset( $field->sanitize ) && true === $field->sanitize ) {
 
 		            $value = pmprorh_sanitize( $_POST[ $field->name ] );
-	            } else {
+	            } elseif( isset($_POST[$field->name]) ) {
 	                $value = $_POST[ $field->name ];
+                } else {
+                	$value = $_FILES[$field->name];
                 }
 
                 //callback?
@@ -988,8 +990,10 @@ function pmprorh_rf_save_extra_profile_fields( $user_id )
 				if ( isset( $field->sanitize ) && true === $field->sanitize ) {
 
 					$value = pmprorh_sanitize( $_POST[ $field->name ] );
-				} else {
+				} elseif( isset($_POST[$field->name]) ) {
 				    $value = $_POST[ $field->name ];
+                } else {
+                	$value = $_FILES[$field->name];
                 }
 
 				//callback?

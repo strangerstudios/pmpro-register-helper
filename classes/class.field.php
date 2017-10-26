@@ -428,24 +428,32 @@
 				//value must be an array
 				if(!is_array($value))
 					$value = array($value);
-				
-				$r = '';
+
+				$r = sprintf( '<div class="pmprorh_grouped_checkboxes">' );
+				$counter = 1;
 				foreach($this->options as $ovalue => $option)
-				{	
-					$r .= '<input name="'.$this->name.'[]"' .' type="checkbox" value='.$ovalue.' id="'.$this->id.'"  ';
+				{
+				 
+				    $r .= sprintf( '<li style="list-style: none;"><span class="pmprorh_checkbox_span">' );
+					$r .= sprintf(
+                        '<input name="%1$s[]" type="checkbox" value="%2$s" id="%3$s" class="%4$s" %5$s %6$s %7$s />',
+                         $this->name,
+                        $ovalue,
+						"{$this->id}_{$counter}",
+                        $this->id,
+                        ( in_array($ovalue, $value) ? 'checked="checked"' : null ),
+                        ( !empty( $this->readonly ) ? 'readonly="readonly"' : null ),
+                        $this->getHTMLAttributes()
+                    );
+     
 					
-					if(in_array($ovalue, $value))
-						$r.= 'checked="checked" ';
-					
-					if(!empty($this->readonly))
-						$r .= 'readonly="readonly" ';
-					if(!empty($this->html_attributes))
-						$r .= $this->getHTMLAttributes();	
-					
-					$r .= '/>';
-					$r .= '<label class="pmprorh_checkbox_label" for="' . $this->name . '">' . $option . '</label>';
-					$r .= '<input type="hidden" name="'.$this->name.'_checkbox[]" value='.$ovalue.' />';	//extra field so we can track unchecked boxes
+					$r .= sprintf( ' <label class="pmprorh_checkbox_label pmpro_label-inline pmpro_clickable" for="%1$s">%2$s</label>', "{$this->id}_{$counter}",$option );
+					$r .= sprintf( '<input type="hidden" name="%1$s_checkbox[]" value="%2$s" />', $this->name, $ovalue );	//extra field so we can track unchecked boxes
+                    $counter++;
+					$r .= sprintf( '</span></li>' );
 				}
+				
+				$r .= sprintf( '</div>' );
 				
 			}
 			

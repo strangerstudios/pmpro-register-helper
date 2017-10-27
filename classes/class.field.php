@@ -386,9 +386,9 @@
 				$r .= '</select>';
 				
 				if(!empty($this->select2options))
-					$r .= '<script>jQuery("#' . $this->id . '").select2({' . $this->select2options . '});</script>';
+					$r .= '<script>jQuery(document).ready(function($){ $("#' . $this->id . '").select2({' . $this->select2options . '}); });</script>';
 				else
-					$r .= '<script>jQuery("#' . $this->id . '").select2();</script>';
+					$r .= '<script>jQuery(document).ready(function($){ $("#' . $this->id . '").select2(); });</script>';
 			}
 			elseif($this->type == "radio")
 			{

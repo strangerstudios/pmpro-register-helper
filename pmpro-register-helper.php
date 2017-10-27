@@ -107,11 +107,15 @@ pmprorh_add_registration_field("after_billing_fields", $text);
 function pmprorh_add_registration_field($where, $field)
 {
 	global $pmprorh_registration_fields;
-	if(empty($pmprorh_registration_fields[$where]))
-		$pmprorh_registration_fields[$where] = array($field);
-	else	
+	if(empty($pmprorh_registration_fields[$where])) {
+		$pmprorh_registration_fields[$where] = array();
+	}
+	if ( !empty($field) && is_a( $field, 'PMProRH_Field') ) {
 		$pmprorh_registration_fields[$where][] = $field;
-	return true;
+		return true;
+	}
+	
+	return false;
 }
 
 /*

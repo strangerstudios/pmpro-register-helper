@@ -91,7 +91,7 @@ global $pmprorh_registration_fields, $pmprorh_checkout_boxes;
 $pmprorh_registration_fields = array();
 $cb = new stdClass();
 $cb->name = "checkout_boxes";
-$cb->label = apply_filters("pmprorh_section_header", __("More Information",'pmprorh');
+$cb->label = apply_filters("pmprorh_section_header", __('More Information','pmprorh') );
 $cb->order = 0;
 $pmprorh_checkout_boxes = array("checkout_boxes" => $cb);
 

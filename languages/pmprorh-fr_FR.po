@@ -1,0 +1,80 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PMPro Register Helper\n"
+"POT-Creation-Date: 2018-02-19 15:52+0100\n"
+"PO-Revision-Date: 2018-02-19 15:52+0100\n"
+"Last-Translator: Alfonso Sánchez Uzábal <skotperez@voragine.net>\n"
+"Language-Team: Montera34 <info@montera34.com>\n"
+"Language: fr_FR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.0.3\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Poedit-KeywordsList: __;_e;_x\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: languages\n"
+"X-Poedit-SearchPathExcluded-1: .git\n"
+
+#: classes/class.field.php:198 pmpro-register-helper.php:601
+#: pmpro-register-helper.php:610
+#, php-format
+msgid "Sorry, the file type for %s is not permitted for security reasons."
+msgstr ""
+"Désolé, le type de fichier pour %s n'est pas autorisé pour des raisons de "
+"sécurité."
+
+#: classes/class.field.php:371
+msgid "\"Choose one or more.\""
+msgstr "\"Choisissez un ou plusieurs.\""
+
+#: modules/register-form.php:202
+msgid "Full Name"
+msgstr "Nom et prénom"
+
+#: modules/register-form.php:203
+msgid "LEAVE THIS BLANK"
+msgstr "NE PAS REMPLIR"
+
+#: pmpro-register-helper.php:94
+msgid "More Information"
+msgstr "Plus d'information"
+
+#: pmpro-register-helper.php:838
+msgid ""
+"Unable to add/update PMPro Register Helper registration fields for this "
+"member"
+msgstr ""
+"Impossible d'ajouter / de mettre à jour les champs d'inscription de PMPro "
+"Register Helper pour ce membre"
+
+#: pmpro-register-helper.php:1369
+msgid "View Documentation"
+msgstr "Afficher la documentation"
+
+#: pmpro-register-helper.php:1369
+msgid "Docs"
+msgstr "Documentation"
+
+#: pmpro-register-helper.php:1370
+msgid "Visit Customer Support Forum"
+msgstr "Visitez le forum de support client"
+
+#: pmpro-register-helper.php:1370
+msgid "Support"
+msgstr "Support"
+
+#: shortcodes/pmpro_signup.php:68
+#, php-format
+msgid ""
+"You are logged in as <strong>%s</strong>. If you would like to use a "
+"different account for this membership, <a href=\"%s\">log out now</a>."
+msgstr ""
+"Vous êtes connecté en tant que <strong>%s</strong>. Si vous souhaitez "
+"utiliser un compte différent pour cette adhésion, <a href=\"%s\"> "
+"déconnectez-vous maintenant </a>."
+
+#: shortcodes/pmpro_signup.php:131
+msgid "Log In"
+msgstr "Se connecter"

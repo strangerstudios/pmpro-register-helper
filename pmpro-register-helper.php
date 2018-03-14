@@ -1220,7 +1220,7 @@ function pmprorh_pmpro_email_filter($email)
 	global $wpdb;
  
 	//only update admin confirmation emails
-	if(strpos($email->template, "checkout") !== false && strpos($email->template, "admin") !== false)
+	if(!empty($email) && strpos($email->template, "checkout") !== false && strpos($email->template, "admin") !== false)
 	{ 
 		//get the user_id from the email
 		$user_id = $wpdb->get_var("SELECT ID FROM $wpdb->users WHERE user_email = '" . $email->data['user_email'] . "' LIMIT 1");

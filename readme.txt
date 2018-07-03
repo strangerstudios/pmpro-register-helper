@@ -3,107 +3,81 @@ Contributors: strangerstudios
 Tags: users, user meta, meta, memberships, registration
 Requires at least: 3.5
 Tested up to: 4.9.6
-Stable tag: 1.3.4
+Stable tag: 1.3.7
 
-Add extra fields to your checkout page. Works with Paid Memberships Pro.
+Capture additional member information with custom fields at Membership Checkout with Paid Memberships Pro.
 
 == Description ==
-This plugin currently requires Paid Memberships Pro.
+A robust add on to collect additional fields at membership signup. Fields can be collected at membership checkout, on the user's profile or for administrative view-only.
+
+You can also restrict membership registration for a list of approved email addresses.
+
+[Read the full documentation for the Register Helper Add On](https://www.paidmembershipspro.com/add-ons/pmpro-register-helper-add-checkout-and-profile-fields/)
+
+= Supports Multiple Field Types =
+Using Register Helper, you can add a variety of field types to capture additional information about your members. Supported field types include:
+* Text and Textarea
+* Select and Select2 (multi-select)
+* Checkbox and Radio
+* File Upload
+* HTML (generates any desired HTML)
+* Hidden
+
+= Fields Per Levels and Conditional Fields =
+Fields can be added based on the member's selected level. This means that you can collect specific member information for one level and other unique member information for another level.
+
+Any registered field can be dynamically hidden or shown with JavaScript depending on another field’s value. To create a conditional field, pass an array of conditions as the depends option.
+
+[Read the documentation on Adding Fields](https://www.paidmembershipspro.com/documentation/register-helper-documentation/adding-fields/)
+
+= Adding Sections to Membership Checkout =
+Register Helper allows you to add fields to a variety of places within the Membership Checkout page using Paid Memberships Pro. Fields can be added to existing locations including:
+
+* after_username
+* after_password
+* after_email
+* after_captcha
+* after_billing_fields
+* before_submit_button
+* just_profile
+
+Or, you can add a new box or section to the Membership Checkout form using the 'checkout_boxes' feature. Your newly created box includes a title, description and specified location.
 
 == Installation ==
 
 1. Upload the `pmpro-register-helper` directory to the `/wp-content/plugins/` directory of your site.
 1. Activate the plugin through the 'Plugins' menu in WordPress.
+1. Configure your fields using custom code. [View the full documentation on adding fields](https://www.paidmembershipspro.com/documentation/register-helper-documentation/adding-fields/)
 
-Add a sign up form to a post/widget/page using a shortcode:
+= Example Code for adding a Company field =
+Below is a sample code that adds a "Company" field. Custom code for your fields should be placed in your active theme's functions.php file or [a plugin for customizations](https://www.paidmembershipspro.com/create-a-plugin-for-pmpro-customizations/) (our recommended method).
 
-[pmpro_signup level="3" short="1" title="Sign Up for Gold Membership" intro="0" button="Signup Now"]
+`function my_pmprorh_init( ) {
+	//don't break if Register Helper is not loaded
+	if( ! function_exists ( 'pmprorh_add_registration_field' ) ) {
+		return false;
+	}
 
-Adding a field to your checkout page requires two steps: (1) create a field object, (2) call pmprorh_add_registration_field() to add the field to the checkout page. Optionally, you can create your own "checkout_box" or fieldset to the checkout page using pmprorh_add_checkout_box().
+	//define the fields
+	$fields = array();
 
-e.g.
-$text = new PMProRH_Field("company", "text", array("size"=>40, "class"=>"company", "profile"=>true, "required"=>true));
-pmprorh_add_registration_field("after_billing_fields", $text);
+	$fields[] = new PMProRH_Field (
+		'company',
+		'text',
+		array(
+			'label' => 'Company',
+			'profile' => true,
+	));
 
-The first parameter of the pmprorh_add_registration_field designates where the field will show up. Here are the current options:
-- after_username
-- after_password
-- after_email
-- after_captcha
-- checkout_boxes
-- after_billing_fields
-- before_submit_button
-- just_profile (make sure you set the profile attr of the field to true or admins)
-
-NOTE: The first parameter of the PMProRH_Field function must contain no spaces or special characters other than _ or -.
-
-Here are some examples of fields:
-//company field is required and editable by admins and users in the profile page
-$text = new PMProRH_Field("company", "text", array("size"=>40, "class"=>"company", "profile"=>true, "required"=>true));
-
-//referral id is not required and only editable by admins. Includes an updated label.
-$referral = new PMProRH_Field("referral", "text", array("label"=>"Referral Code", "profile"=>"admins"));
-
-//dropdown, includes a blank option
-$dropdown = new PMProRH_Field("gender", "select", array("options"=>array("" => "", "male"=>"Male", "female"=>"Female")));
-
-//select2 dropdown
-$select2 = new PMProRH_Field("category", "select2", array("profile"=>"only", "required"=>true, "options"=>array("cat1"=>"Category 1", "cat2"=>"Category 2", "cat3"=>"Category 3"), "select2options"=>"maximumSelectionSize: 2"));
-
-//radio
-$radio = new PMProRH_Field("gender", "radio", array("options"=>array("male"=>"Male", "female"=>"Female")));
-
-//checkbox
-$checkbox = new PMProRH_Field("agree", "checkbox", array("profile"=>true));
-
-//textarea
-$history = new PMProRH_Field("history", "textarea", array("rows"=>10, "label"=>"Tell us a little about your history."));
-
-//hidden
-$secret = new PMProRH_Field("secret", "hidden", array("value"=>"this is the secret"));
-
-//any html
-$html = new PMProRH_Field("htmlsection", "html", array("html"=>"<p>You can put any HTML here, and it will be <strong>added</strong> to your form.</p>"));
-
-//readonly field
-$readonly = new PMProRH_Field("r1", "readonly", array("value"=>"Readonly value"));
-
-//readonly property on other field type
-$readonly_text = new PMProRH_Field("r2", "text", array("value"=>"Readonly value", "readonly"=>true));
-
-//file uploads
-$resume = new PMProRH_Field("resume", "file", array("profile"=>true, "options"=>array()));
-
-//date fields
-$date = new PMProRH_Field("date", "date", array("profile"=>true));
-
-//Dependent fields. Add a "depends" value to the params array. Value should be an array of arrays. The inner array should be of the form array("id"=>{field id}, "value"=>{field value})
-$category = new PMProRH_Field("category", "select", array("options"=>array("cat1"=>"Category 1", "cat2"=>"Category 2")));
-$subcat1 = new PMProRH_Field("subcat", "select", array("options"=>array(1=>"Subcat 1.1", 2=>"Subcat 1.2", 3=>"Subcat 1.3"), "depends"=>array(array("id"=>"category", "value"=>"cat1"))));
-$subcat2 = new PMProRH_Field("subcat", "select", array("options"=>array(1=>"Subcat 2.1", 2=>"Subcat 2.2", 3=>"Subcat 2.3"), "depends"=>array(array("id"=>"category", "value"=>"cat2"))));
-
-In can be helpful to store the fields in an array use a loop to add the fields. e.g.
-
-$fields = array();
-$fields[] = new PMProRH_Field("company", "text", array("size"=>40, "class"=>"company", "profile"=>true, "required"=>true));
-$fields[] = new PMProRH_Field("referral", "text", array("label"=>"Referral Code", "profile"=>"admins"));
-$fields[] = new PMProRH_Field("gender", "select", array("options"=>array("" => "", "male"=>"Male", "female"=>"Female")));
-foreach($fields as $field)
-	pmprorh_add_registration_field("checkout_boxes", $field);
-
-Adding a checkout box.
-
-pmprorh_add_checkout_box("personal", "Personal Information");	//order parameter defaults to one more than the last checkout box
-pmprorh_add_checkout_box("business", "Business Information", "Fields below are optional but will help us in verifying your account.");
-
-Then add fields to these boxes.
-$field = new PMProRH_Field("gender", "select", array("options"=>array("" => "", "male"=>"Male", "female"=>"Female")));
-pmprorh_add_registration_field("personal", $field);
-
-$field = PMProRH_Field("company", "text", array("size"=>40, "class"=>"company", "profile"=>true, "required"=>true));
-pmprorh_add_registration_field("business", $field);
-
-Note that the "checkout_boxes" location is now just the first checkout_box in the list with order = 0.
+	//add the fields into a new checkout_boxes are of the checkout page
+	foreach( $fields as $field ) {
+		pmprorh_add_registration_field(
+			'checkout_boxes', // location on checkout page
+			$field            // PMProRH_Field object
+		);
+	}
+}
+add_action( 'init', 'my_pmprorh_init' );`
 
 == Frequently Asked Questions ==
 
@@ -111,7 +85,30 @@ Note that the "checkout_boxes" location is now just the first checkout_box in th
 
 Please post it in the issues section of GitHub and we'll fix it as soon as we can. Thanks for helping. https://github.com/strangerstudios/pmpro-register-helper/issues
 
+== Screenshots ==
+
+1. A simple example of collecting text and textarea fields at membership checkout.
+1. An example of using a new Checkout Box with conditional fields based on dropdown selection.
+1. Using Register Helper fields in conjuction with the [Member Directory and Profile Pages Add On](https://www.paidmembershipspro.com/add-ons/pmpro-member-directory/).
+
 == Changelog ==
+= 1.3.7 =
+* BUG FIX: Some required fields could be left empty at checkout.
+* BUG FIX: Required File Upload was not recognized. (Thanks, contemplate on GitHub)
+* BUG FIX: Slight fix for already uploaded docs. (Thanks, contemplate on GitHub)
+* BUG FIX: Leading zeros were being removed from numeric values.
+* BUG FIX: RH Field CSV export failure under PHP7.
+* ENHANCEMENT: Improved display of field elements and checkout boxes for compatibility for 1.9.4.
+* ENHANCEMENT: Improved UI of the checkbox_grouped field type.
+
+= 1.3.6 =
+* BUG FIX: Fixed some warnings when fields are added to the Add Member Admin form.
+
+= 1.3.5 =
+* BUG FIX: Incorrect function definition (static vs non-static).
+* BUG FIX: Didn't save RH fields from pmpro-add-member-admin
+* ENHANCEMENT: Updated Readme, including instructions.
+* ENHANCEMENT: Added logic to only load CSS and JS on the checkout and profile pages on the frontend and profile and edit user pages in the dashboard.
 
 = 1.3.4 =
 * BUG: Fixed bug where checkbox values weren't updated if they were changed from checked to unchecked during a renewal checkout. (Thanks, stevep2000)

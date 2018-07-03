@@ -1,4 +1,5 @@
-form.pmpro_form label.pmprorh_radio_label {float: none; font-weight: normal; cursor: pointer;}
-form.pmpro_form label.pmprorh_checkbox_label {float: none; font-weight: normal; cursor: pointer;}
+form.pmpro_form .pmpro_checkout-fields div.pmpro_checkout-field-radio-item {display: inline-block; margin: 0 1em 0 0; }
+form.pmpro_form .pmpro_checkout-field-radio-item label {display: inline-block; cursor: pointer; width: auto; }
 form.pmpro_form input[type=checkbox] {cursor: pointer;}
 form.pmpro_form input[readonly], form.pmpro_form select[readonly], form.pmpro_form textarea[readonly] {opacity:0.5; filter:alpha(opacity=50);}
+form.pmpro_form .select2-container {min-width: 240px;}

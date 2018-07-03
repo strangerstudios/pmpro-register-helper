@@ -2,13 +2,13 @@
 Contributors: strangerstudios
 Tags: users, user meta, meta, memberships, registration
 Requires at least: 3.5
-Tested up to: 4.6.1
+Tested up to: 4.9.6
 Stable tag: 1.3.4
 
 Add extra fields to your checkout page. Works with Paid Memberships Pro.
 
 == Description ==
-This plugin currently requires Paid Memberships Pro. 
+This plugin currently requires Paid Memberships Pro.
 
 == Installation ==
 
@@ -40,25 +40,25 @@ NOTE: The first parameter of the PMProRH_Field function must contain no spaces o
 Here are some examples of fields:
 //company field is required and editable by admins and users in the profile page
 $text = new PMProRH_Field("company", "text", array("size"=>40, "class"=>"company", "profile"=>true, "required"=>true));
-	
+
 //referral id is not required and only editable by admins. Includes an updated label.
 $referral = new PMProRH_Field("referral", "text", array("label"=>"Referral Code", "profile"=>"admins"));
-	
+
 //dropdown, includes a blank option
 $dropdown = new PMProRH_Field("gender", "select", array("options"=>array("" => "", "male"=>"Male", "female"=>"Female")));
-	
+
 //select2 dropdown
-$select2 = new PMProRH_Field("category", "select2", array("profile"=>"only", "required"=>true, "options"=>array("cat1"=>"Category 1", "cat2"=>"Category 2", "cat3"=>"Category 3"), "select2options"=>"maximumSelectionSize: 2"));  
+$select2 = new PMProRH_Field("category", "select2", array("profile"=>"only", "required"=>true, "options"=>array("cat1"=>"Category 1", "cat2"=>"Category 2", "cat3"=>"Category 3"), "select2options"=>"maximumSelectionSize: 2"));
 
 //radio
-$radio = new PMProRH_Field("gender", "radio", array("options"=>array("male"=>"Male", "female"=>"Female"))); 
+$radio = new PMProRH_Field("gender", "radio", array("options"=>array("male"=>"Male", "female"=>"Female")));
 
 //checkbox
 $checkbox = new PMProRH_Field("agree", "checkbox", array("profile"=>true));
 
 //textarea
 $history = new PMProRH_Field("history", "textarea", array("rows"=>10, "label"=>"Tell us a little about your history."));
-	
+
 //hidden
 $secret = new PMProRH_Field("secret", "hidden", array("value"=>"this is the secret"));
 
@@ -78,8 +78,8 @@ $resume = new PMProRH_Field("resume", "file", array("profile"=>true, "options"=>
 $date = new PMProRH_Field("date", "date", array("profile"=>true));
 
 //Dependent fields. Add a "depends" value to the params array. Value should be an array of arrays. The inner array should be of the form array("id"=>{field id}, "value"=>{field value})
-$category = new PMProRH_Field("category", "select", array("options"=>array("cat1"=>"Category 1", "cat2"=>"Category 2")));  
-$subcat1 = new PMProRH_Field("subcat", "select", array("options"=>array(1=>"Subcat 1.1", 2=>"Subcat 1.2", 3=>"Subcat 1.3"), "depends"=>array(array("id"=>"category", "value"=>"cat1"))));  
+$category = new PMProRH_Field("category", "select", array("options"=>array("cat1"=>"Category 1", "cat2"=>"Category 2")));
+$subcat1 = new PMProRH_Field("subcat", "select", array("options"=>array(1=>"Subcat 1.1", 2=>"Subcat 1.2", 3=>"Subcat 1.3"), "depends"=>array(array("id"=>"category", "value"=>"cat1"))));
 $subcat2 = new PMProRH_Field("subcat", "select", array("options"=>array(1=>"Subcat 2.1", 2=>"Subcat 2.2", 3=>"Subcat 2.3"), "depends"=>array(array("id"=>"category", "value"=>"cat2"))));
 
 In can be helpful to store the fields in an array use a loop to add the fields. e.g.
@@ -104,7 +104,7 @@ $field = PMProRH_Field("company", "text", array("size"=>40, "class"=>"company", 
 pmprorh_add_registration_field("business", $field);
 
 Note that the "checkout_boxes" location is now just the first checkout_box in the list with order = 0.
-	
+
 == Frequently Asked Questions ==
 
 = I found a bug in the plugin. =

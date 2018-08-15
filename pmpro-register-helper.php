@@ -260,7 +260,7 @@ function pmprorh_register_form_after_password()
 	{
 		foreach($pmprorh_registration_fields["pmprorh_after_password"] as $field)
 		{			
-			if( if(is_a($field, 'PMProRH_Field') && pmprorh_checkFieldForLevel($field) && ( !isset( $field->profile ) || $field->profile !== "only" && $field->profile !== "only_admin" ) ) {
+			if(is_a($field, 'PMProRH_Field') && pmprorh_checkFieldForLevel($field) && ( !isset( $field->profile ) || $field->profile !== "only" && $field->profile !== "only_admin" ) ) {
 				$field->displayAtCheckout();		
 			}
 		}

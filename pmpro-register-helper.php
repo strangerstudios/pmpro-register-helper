@@ -116,11 +116,15 @@ pmprorh_add_registration_field("after_billing_fields", $text);
 function pmprorh_add_registration_field($where, $field)
 {
 	global $pmprorh_registration_fields;
-	if(empty($pmprorh_registration_fields[$where]))
-		$pmprorh_registration_fields[$where] = array($field);
-	else	
+	if(empty($pmprorh_registration_fields[$where])) {
+		$pmprorh_registration_fields[$where] = array();
+	}
+	if ( !empty($field) && is_a( $field, 'PMProRH_Field') ) {
 		$pmprorh_registration_fields[$where][] = $field;
-	return true;
+		return true;
+	}
+	
+	return false;
 }
 
 /*
@@ -221,8 +225,8 @@ function pmprorh_default_register_form()
 	if(!empty($pmprorh_registration_fields["register_form"]))
 	{
 		foreach($pmprorh_registration_fields["register_form"] as $field)
-		{					
-			if( pmprorh_checkFieldForLevel($field) && ( !isset( $field->profile ) || $field->profile !== "only" && $field->profile !== "only_admin" && $field->profile_only != true ) ) {
+		{
+			if( is_a($field, 'PMProRH_Field') && pmprorh_checkFieldForLevel($field) && ( !isset( $field->profile ) || $field->profile !== "only" && $field->profile !== "only_admin" && $field->profile_only != true ) ) {
 				$field->displayAtCheckout();		
 			}
 		}
@@ -239,7 +243,7 @@ function pmprorh_register_form_after_email()
 	{		
 		foreach($pmprorh_registration_fields["pmprorh_after_email"] as $field)
 		{			
-			if( pmprorh_checkFieldForLevel($field) && ( !isset( $field->profile ) || $field->profile !== "only" && $field->profile !== "only_admin") ) {
+			if( is_a($field, 'PMProRH_Field') && pmprorh_checkFieldForLevel($field) && ( !isset( $field->profile ) || $field->profile !== "only" && $field->profile !== "only_admin") ) {
 				$field->displayAtCheckout();		
 			}
 		}
@@ -256,7 +260,7 @@ function pmprorh_register_form_after_password()
 	{
 		foreach($pmprorh_registration_fields["pmprorh_after_password"] as $field)
 		{			
-			if( pmprorh_checkFieldForLevel($field) && ( !isset( $field->profile ) || $field->profile !== "only" && $field->profile !== "only_admin" ) ) {
+			if( if(is_a($field, 'PMProRH_Field') && pmprorh_checkFieldForLevel($field) && ( !isset( $field->profile ) || $field->profile !== "only" && $field->profile !== "only_admin" ) ) {
 				$field->displayAtCheckout();		
 			}
 		}
@@ -272,8 +276,8 @@ function pmprorh_register_form()
 	if(!empty($pmprorh_registration_fields["pmprorh_register_form"]))
 	{
 		foreach($pmprorh_registration_fields["pmprorh_register_form"] as $field)
-		{			
-			if( pmprorh_checkFieldForLevel($field) && ( !isset( $field->profile ) || $field->profile !== "only" && $field->profile !== "only_admin" ) ) {
+		{
+			if( is_a($field, 'PMProRH_Field') && pmprorh_checkFieldForLevel($field) && ( !isset( $field->profile ) || $field->profile !== "only" && $field->profile !== "only_admin" ) ) {
 				$field->displayAtCheckout();		
 			}
 		}
@@ -293,7 +297,7 @@ function pmprorh_pmpro_checkout_after_username()
 	{
 		foreach($pmprorh_registration_fields["after_username"] as $field)
 		{						
-			if( pmprorh_checkFieldForLevel($field) && ( !isset( $field->profile ) || $field->profile !== "only" && $field->profile !== "only_admin" ) ) {
+			if( is_a($field, 'PMProRH_Field') && pmprorh_checkFieldForLevel($field) && ( !isset( $field->profile ) || $field->profile !== "only" && $field->profile !== "only_admin" ) ) {
 				$field->displayAtCheckout();
 			}
 		}
@@ -310,7 +314,7 @@ function pmprorh_pmpro_checkout_after_password()
 	{
 		foreach($pmprorh_registration_fields["after_password"] as $field)
 		{			
-			if( pmprorh_checkFieldForLevel($field) && ( !isset( $field->profile ) || $field->profile !== "only" && $field->profile !== "only_admin" ) ) {
+			if( is_a($field, 'PMProRH_Field') && pmprorh_checkFieldForLevel($field) && ( !isset( $field->profile ) || $field->profile !== "only" && $field->profile !== "only_admin" ) ) {
 				$field->displayAtCheckout();		
 			}
 		}
@@ -326,8 +330,8 @@ function pmprorh_pmpro_checkout_after_email()
 	if(!empty($pmprorh_registration_fields["after_email"]))
 	{
 		foreach($pmprorh_registration_fields["after_email"] as $field)
-		{			
-			if( pmprorh_checkFieldForLevel($field) && ( !isset( $field->profile ) || $field->profile !== "only" && $field->profile !== "only_admin" ) ) {
+		{
+			if( is_a($field, 'PMProRH_Field') && pmprorh_checkFieldForLevel($field) && ( !isset( $field->profile ) || $field->profile !== "only" && $field->profile !== "only_admin" ) ) {
 				$field->displayAtCheckout();		
 			}
 		}
@@ -343,8 +347,8 @@ function pmprorh_pmpro_checkout_after_captcha()
 	if(!empty($pmprorh_registration_fields["after_captcha"]))
 	{
 		foreach($pmprorh_registration_fields["after_captcha"] as $field)
-		{			
-			if( pmprorh_checkFieldForLevel($field) && ( !isset( $field->profile ) || $field->profile !== "only" && $field->profile !== "only_admin" ) ) {
+		{
+			if( is_a($field, 'PMProRH_Field') && pmprorh_checkFieldForLevel($field) && ( !isset( $field->profile ) || $field->profile !== "only" && $field->profile !== "only_admin" ) ) {
 				$field->displayAtCheckout();		
 			}
 		}
@@ -363,7 +367,7 @@ function pmprorh_pmpro_checkout_boxes()
 		$n = 0;		
 		if(!empty($pmprorh_registration_fields[$cb->name]))
 			foreach($pmprorh_registration_fields[$cb->name] as $field)				
-				if(pmprorh_checkFieldForLevel($field) && (!isset($field->profile) || (isset($field->profile) && $field->profile !== "only" && $field->profile !== "only_admin")))		$n++;
+				if(is_a($field, 'PMProRH_Field') && pmprorh_checkFieldForLevel($field) && (!isset($field->profile) || (isset($field->profile) && $field->profile !== "only" && $field->profile !== "only_admin")))		$n++;
 
 		if($n > 0) {
 			?>
@@ -379,7 +383,7 @@ function pmprorh_pmpro_checkout_boxes()
 				
 				<?php
 					foreach($pmprorh_registration_fields[$cb->name] as $field) {			
-						if(pmprorh_checkFieldForLevel($field) && (!isset($field->profile) || (isset($field->profile) && $field->profile !== "only" && $field->profile !== "only_admin"))) {
+						if( is_a($field, 'PMProRH_Field') && pmprorh_checkFieldForLevel($field) && (!isset($field->profile) || (isset($field->profile) && $field->profile !== "only" && $field->profile !== "only_admin"))) {
 							$field->displayAtCheckout();
 						}							
 					} 
@@ -400,8 +404,8 @@ function pmprorh_pmpro_checkout_after_pricing_fields()
 	if(!empty($pmprorh_registration_fields["after_pricing_fields"]))
 	{
 		foreach($pmprorh_registration_fields["after_pricing_fields"] as $field)
-		{			
-			if( pmprorh_checkFieldForLevel($field) && ( !isset( $field->profile ) || $field->profile !== "only" && $field->profile !== "only_admin" ) ) {
+    {
+			if( is_a($field, 'PMProRH_Field') && pmprorh_checkFieldForLevel($field) && ( !isset( $field->profile ) || $field->profile !== "only" && $field->profile !== "only_admin" ) ) {
 				$field->displayAtCheckout();		
 			}
 		}
@@ -417,8 +421,8 @@ function pmprorh_pmpro_checkout_after_billing_fields()
 	if(!empty($pmprorh_registration_fields["after_billing_fields"]))
 	{
 		foreach($pmprorh_registration_fields["after_billing_fields"] as $field)
-		{			
-			if( pmprorh_checkFieldForLevel($field) && ( !isset( $field->profile ) || $field->profile !== "only" && $field->profile !== "only_admin" ) ) {
+		{
+			if( is_a($field, 'PMProRH_Field') && pmprorh_checkFieldForLevel($field) && ( !isset( $field->profile ) || $field->profile !== "only" && $field->profile !== "only_admin" ) ) {
 				$field->displayAtCheckout();		
 			}
 		}
@@ -434,8 +438,8 @@ function pmprorh_pmpro_checkout_before_submit_button()
 	if(!empty($pmprorh_registration_fields["before_submit_button"]))
 	{
 		foreach($pmprorh_registration_fields["before_submit_button"] as $field)
-		{			
-			if( pmprorh_checkFieldForLevel($field) && ( !isset( $field->profile ) || $field->profile !== "only" && $field->profile !== "only_admin" ) ) {
+		{
+			if( is_a($field, 'PMProRH_Field') && pmprorh_checkFieldForLevel($field) && ( !isset( $field->profile ) || $field->profile !== "only" && $field->profile !== "only_admin" ) ) {
 				$field->displayAtCheckout();		
 			}
 		}
@@ -459,6 +463,9 @@ function pmprorh_pmpro_after_checkout($user_id)
 			//cycle through fields
 			foreach($fields as $field)
 			{
+				if ( !is_a($field, 'PMProRH_Field') )
+					continue;
+				
 				if(!pmprorh_checkFieldForLevel($field))
 					continue;
 				
@@ -587,7 +594,7 @@ function pmprorh_rf_pmpro_registration_checks($okay)
                 $field->name = preg_replace('/\[\]$/', '', $field->name);
 
 				//if the field is not for this level, skip it
-				if(!pmprorh_checkFieldForLevel($field))
+				if(!is_a($field, 'PMProRH_Field') || !pmprorh_checkFieldForLevel($field))
 					continue;
 				
 				if(!empty($field->profile) && ($field->profile === "only" || $field->profile === "only_admin"))
@@ -677,7 +684,7 @@ function pmprorh_rf_pmpro_paypalexpress_session_vars()
 			//cycle through fields
 			foreach($fields as $field)
 			{
-                if(!pmprorh_checkFieldForLevel($field))
+                if( !is_a($field, 'PMProRH_Field') || !pmprorh_checkFieldForLevel($field))
 					continue;
 
                 if(isset($_REQUEST[$field->name]))
@@ -741,8 +748,9 @@ function pmprorh_rf_show_extra_profile_fields($user, $withlocations = false)
 			<?php
 			//cycle through groups			
 			foreach($fields as $field)
-			{			
-				$field->displayInProfile($user->ID);			
+			{	
+				if ( is_a($field, 'PMProRH_Field') ) 
+					$field->displayInProfile($user->ID);			
 			}
 			?>
 			</table>
@@ -757,7 +765,8 @@ function pmprorh_rf_show_extra_profile_fields($user, $withlocations = false)
 		//cycle through groups
 		foreach($profile_fields as $field)
 		{
-			$field->displayInProfile($user->ID);			
+			if ( is_a($field, 'PMProRH_Field') ) 
+				$field->displayInProfile($user->ID);			
 		}
 		?>
 		</table>
@@ -787,7 +796,7 @@ function pmprorh_pmpro_add_member_fields( $user = null, $user_id = null)
             //cycle through fields
             foreach($fields as $field)
             {
-	            if(isset($field->addmember) && !empty($field->addmember) && ( in_array( strtolower( $field->addmember ), array( 'true', 'yes' ) ) || true == $field->addmember ) )
+	            if(is_a($field, 'PMProRH_Field') && isset($field->addmember) && !empty($field->addmember) && ( in_array( strtolower( $field->addmember ), array( 'true', 'yes' ) ) || true == $field->addmember ) )
                 {
                         $addmember_fields[] = $field;
                 }
@@ -807,7 +816,9 @@ function pmprorh_pmpro_add_member_fields( $user = null, $user_id = null)
 				if(empty($user_id) && !empty($user) && !empty($user->ID)) {
 					$user_id = $user->ID;
 				}
-				$field->displayInProfile($user_id);
+		    
+		    		if (is_a($field, 'PMProRH_Field'))
+					$field->displayInProfile($user_id);
             }
             ?>
     <?php
@@ -863,7 +874,7 @@ function pmprorh_pmpro_add_member_added( $uid = null, $user = null )
             //cycle through fields
             foreach($fields as $field)
             {
-	            if(isset($field->addmember) && !empty($field->addmember) && ( in_array( strtolower( $field->addmember ), array( 'true', 'yes' ) ) || true == $field->addmember ) )
+	            if(is_a($field, 'PMProRH_Field') && isset($field->addmember) && !empty($field->addmember) && ( in_array( strtolower( $field->addmember ), array( 'true', 'yes' ) ) || true == $field->addmember ) )
                 {
                         $addmember_fields[] = $field;
                 }
@@ -877,7 +888,7 @@ function pmprorh_pmpro_add_member_added( $uid = null, $user = null )
         //cycle through fields
         foreach($addmember_fields as $field)
         {
-            if(isset($_POST[$field->name]) || isset($_FILES[$field->name]))
+            if(is_a($field, 'PMProRH_Field') && isset($_POST[$field->name]) || isset($_FILES[$field->name]))
             {
 	            if ( isset( $field->sanitize ) && true === $field->sanitize ) {
 
@@ -894,7 +905,7 @@ function pmprorh_pmpro_add_member_added( $uid = null, $user = null )
                 else
                     update_user_meta($user_id, $field->meta_key, $value );
             }
-            elseif(!empty($_POST[$field->name . "_checkbox"]) && $field->type == 'checkbox')	//handle unchecked checkboxes
+            elseif(is_a($field, 'PMProRH_Field') && !empty($_POST[$field->name . "_checkbox"]) && $field->type == 'checkbox')	//handle unchecked checkboxes
             {
                 //callback?
                 if(!empty($field->save_function))
@@ -924,7 +935,7 @@ function pmprorh_getCSVFields()
 			//cycle through fields
 			foreach($fields as $field)
 			{				
-				if(!empty($field->memberslistcsv) && ($field->memberslistcsv == "true"))
+				if(is_a($field, 'PMProRH_Field') && !empty($field->memberslistcsv) && ($field->memberslistcsv == "true"))
 				{	
 					$csv_fields[] = $field;
 				}
@@ -953,7 +964,7 @@ function pmprorh_getProfileFields($user_id, $withlocations = false)
 			//cycle through fields
 			foreach($fields as $field)
 			{				
-				if(!pmprorh_checkFieldForLevel($field, "profile", $user_id))
+				if(!is_a($field, 'PMProRH_Field') || !pmprorh_checkFieldForLevel($field, "profile", $user_id))
 					continue;				
 				
 				if(!empty($field->profile) && ($field->profile === "admins" || $field->profile === "admin" || $field->profile === "only_admin"))
@@ -1004,7 +1015,10 @@ function pmprorh_rf_save_extra_profile_fields( $user_id )
 	{		
 		//cycle through fields
 		foreach($profile_fields as $field)
-		{						
+		{
+			if (!is_a($field, 'PMProRH_Field'))
+				continue;
+			
 			if(isset($_POST[$field->name]) || isset($_FILES[$field->name]))
 			{
 				if ( isset( $field->sanitize ) && true === $field->sanitize ) {
@@ -1255,7 +1269,10 @@ function pmprorh_pmpro_email_filter($email)
 			{
 				$email->body .= "<p>Extra Fields:<br />";
 				foreach($fields as $field)
-				{					
+				{	
+					if ( !is_a($field, 'PMProRH_Field') )
+						continue;
+					
 					$email->body .= "- " . $field->label . ": ";
 				
 					$value = get_user_meta($user_id, $field->meta_key, true);

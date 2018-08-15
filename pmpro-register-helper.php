@@ -6,11 +6,20 @@ Description: Capture additional member information with custom fields at Members
 Version: 1.3.7
 Author: Paid Memberships Pro
 Author URI: https://www.paidmembershipspro.com
+Text Domain: pmprorh
 */
 
 define('PMPRORH_DIR', dirname(__FILE__) );
 define('PMPRORH_URL', WP_PLUGIN_URL . "/pmpro-register-helper");
 define('PMPRORH_VERSION', '1.3.7');
+
+/*
+	Load plugin textdomain.
+*/
+function pmprorh_load_textdomain() {
+  load_plugin_textdomain( 'pmprorh', false, plugin_basename( dirname( __FILE__ ) ) . '/languages' ); 
+}
+add_action( 'plugins_loaded', 'pmprorh_load_textdomain' );
 
 /*
 	options - just defaults for now, will be in settings eventually
@@ -82,7 +91,7 @@ global $pmprorh_registration_fields, $pmprorh_checkout_boxes;
 $pmprorh_registration_fields = array();
 $cb = new stdClass();
 $cb->name = "checkout_boxes";
-$cb->label = apply_filters("pmprorh_section_header", "More Information");
+$cb->label = apply_filters("pmprorh_section_header", __('More Information','pmprorh') );
 $cb->order = 0;
 $pmprorh_checkout_boxes = array("checkout_boxes" => $cb);
 
@@ -216,9 +225,10 @@ function pmprorh_default_register_form()
 	if(!empty($pmprorh_registration_fields["register_form"]))
 	{
 		foreach($pmprorh_registration_fields["register_form"] as $field)
-		{					
-			if(is_a($field, 'PMProRH_Field') && pmprorh_checkFieldForLevel($field) && $field->profile !== "only" && $field->profile !== "only_admin" && $field->profile_only != true )
+		{
+			if( is_a($field, 'PMProRH_Field') && pmprorh_checkFieldForLevel($field) && ( !isset( $field->profile ) || $field->profile !== "only" && $field->profile !== "only_admin" && $field->profile_only != true ) ) {
 				$field->displayAtCheckout();		
+			}
 		}
 	}
 }
@@ -233,8 +243,9 @@ function pmprorh_register_form_after_email()
 	{		
 		foreach($pmprorh_registration_fields["pmprorh_after_email"] as $field)
 		{			
-			if(is_a($field, 'PMProRH_Field') && pmprorh_checkFieldForLevel($field) && $field->profile !== "only" && $field->profile !== "only_admin")
+			if( is_a($field, 'PMProRH_Field') && pmprorh_checkFieldForLevel($field) && ( !isset( $field->profile ) || $field->profile !== "only" && $field->profile !== "only_admin") ) {
 				$field->displayAtCheckout();		
+			}
 		}
 	}
 }
@@ -249,8 +260,9 @@ function pmprorh_register_form_after_password()
 	{
 		foreach($pmprorh_registration_fields["pmprorh_after_password"] as $field)
 		{			
-			if(is_a($field, 'PMProRH_Field') &&  pmprorh_checkFieldForLevel($field) && $field->profile !== "only" && $field->profile !== "only_admin")
+			if( if(is_a($field, 'PMProRH_Field') && pmprorh_checkFieldForLevel($field) && ( !isset( $field->profile ) || $field->profile !== "only" && $field->profile !== "only_admin" ) ) {
 				$field->displayAtCheckout();		
+			}
 		}
 	}
 }
@@ -264,9 +276,10 @@ function pmprorh_register_form()
 	if(!empty($pmprorh_registration_fields["pmprorh_register_form"]))
 	{
 		foreach($pmprorh_registration_fields["pmprorh_register_form"] as $field)
-		{			
-			if( is_a($field, 'PMProRH_Field') && pmprorh_checkFieldForLevel($field) && $field->profile !== "only" && $field->profile !== "only_admin")
+		{
+			if( is_a($field, 'PMProRH_Field') && pmprorh_checkFieldForLevel($field) && ( !isset( $field->profile ) || $field->profile !== "only" && $field->profile !== "only_admin" ) ) {
 				$field->displayAtCheckout();		
+			}
 		}
 	}
 }
@@ -284,8 +297,9 @@ function pmprorh_pmpro_checkout_after_username()
 	{
 		foreach($pmprorh_registration_fields["after_username"] as $field)
 		{						
-			if( is_a($field, 'PMProRH_Field') && pmprorh_checkFieldForLevel($field) && $field->profile !== "only" && $field->profile !== "only_admin")
-				$field->displayAtCheckout();		
+			if( is_a($field, 'PMProRH_Field') && pmprorh_checkFieldForLevel($field) && ( !isset( $field->profile ) || $field->profile !== "only" && $field->profile !== "only_admin" ) ) {
+				$field->displayAtCheckout();
+			}
 		}
 	}
 }
@@ -300,8 +314,9 @@ function pmprorh_pmpro_checkout_after_password()
 	{
 		foreach($pmprorh_registration_fields["after_password"] as $field)
 		{			
-			if( is_a($field, 'PMProRH_Field') &&  pmprorh_checkFieldForLevel($field) && $field->profile !== "only" && $field->profile !== "only_admin")
+			if( is_a($field, 'PMProRH_Field') && pmprorh_checkFieldForLevel($field) && ( !isset( $field->profile ) || $field->profile !== "only" && $field->profile !== "only_admin" ) ) {
 				$field->displayAtCheckout();		
+			}
 		}
 	}
 }
@@ -315,9 +330,10 @@ function pmprorh_pmpro_checkout_after_email()
 	if(!empty($pmprorh_registration_fields["after_email"]))
 	{
 		foreach($pmprorh_registration_fields["after_email"] as $field)
-		{			
-			if( is_a($field, 'PMProRH_Field') &&  pmprorh_checkFieldForLevel($field) && isset($field->profile) && $field->profile !== "only" && $field->profile !== "only_admin")
+		{
+			if( is_a($field, 'PMProRH_Field') && pmprorh_checkFieldForLevel($field) && ( !isset( $field->profile ) || $field->profile !== "only" && $field->profile !== "only_admin" ) ) {
 				$field->displayAtCheckout();		
+			}
 		}
 	}
 }
@@ -331,9 +347,10 @@ function pmprorh_pmpro_checkout_after_captcha()
 	if(!empty($pmprorh_registration_fields["after_captcha"]))
 	{
 		foreach($pmprorh_registration_fields["after_captcha"] as $field)
-		{			
-			if( is_a($field, 'PMProRH_Field') && pmprorh_checkFieldForLevel($field) && $field->profile !== "only" && $field->profile !== "only_admin")
+		{
+			if( is_a($field, 'PMProRH_Field') && pmprorh_checkFieldForLevel($field) && ( !isset( $field->profile ) || $field->profile !== "only" && $field->profile !== "only_admin" ) ) {
 				$field->displayAtCheckout();		
+			}
 		}
 	}
 }
@@ -387,9 +404,10 @@ function pmprorh_pmpro_checkout_after_pricing_fields()
 	if(!empty($pmprorh_registration_fields["after_pricing_fields"]))
 	{
 		foreach($pmprorh_registration_fields["after_pricing_fields"] as $field)
-		{			
-			if( is_a($field, 'PMProRH_Field') && pmprorh_checkFieldForLevel($field) && $field->profile !== "only" && $field->profile !== "only_admin")
+    {
+			if( is_a($field, 'PMProRH_Field') && pmprorh_checkFieldForLevel($field) && ( !isset( $field->profile ) || $field->profile !== "only" && $field->profile !== "only_admin" ) ) {
 				$field->displayAtCheckout();		
+			}
 		}
 	}
 }
@@ -403,9 +421,10 @@ function pmprorh_pmpro_checkout_after_billing_fields()
 	if(!empty($pmprorh_registration_fields["after_billing_fields"]))
 	{
 		foreach($pmprorh_registration_fields["after_billing_fields"] as $field)
-		{			
-			if( is_a($field, 'PMProRH_Field') && pmprorh_checkFieldForLevel($field) && $field->profile !== "only" && $field->profile !== "only_admin")
+		{
+			if( is_a($field, 'PMProRH_Field') && pmprorh_checkFieldForLevel($field) && ( !isset( $field->profile ) || $field->profile !== "only" && $field->profile !== "only_admin" ) ) {
 				$field->displayAtCheckout();		
+			}
 		}
 	}
 }
@@ -419,9 +438,10 @@ function pmprorh_pmpro_checkout_before_submit_button()
 	if(!empty($pmprorh_registration_fields["before_submit_button"]))
 	{
 		foreach($pmprorh_registration_fields["before_submit_button"] as $field)
-		{			
-			if(is_a($field, 'PMProRH_Field') && pmprorh_checkFieldForLevel($field) && $field->profile !== "only" && $field->profile !== "only_admin")
+		{
+			if( is_a($field, 'PMProRH_Field') && pmprorh_checkFieldForLevel($field) && ( !isset( $field->profile ) || $field->profile !== "only" && $field->profile !== "only_admin" ) ) {
 				$field->displayAtCheckout();		
+			}
 		}
 	}
 }
@@ -596,7 +616,7 @@ function pmprorh_rf_pmpro_registration_checks($okay)
 						if((!$filetype['type'] || !$filetype['ext'] ) && !current_user_can( 'unfiltered_upload' ))
 						{			
 							if($okay)	//only want to update message if there is no previous error
-								pmpro_setMessage(sprintf(__("Sorry, the file type for %s is not permitted for security reasons.", "pmpro"), $_FILES[$field->name]['name']), "pmpro_error");
+								pmpro_setMessage(sprintf(__("Sorry, the file type for %s is not permitted for security reasons.", "pmprorh"), $_FILES[$field->name]['name']), "pmpro_error");
 							return false;
 						}
 						else
@@ -605,7 +625,7 @@ function pmprorh_rf_pmpro_registration_checks($okay)
 							if(!empty($field->ext) && !in_array($filetype['ext'], $field->ext))
 							{
 								if($okay)	//only want to update message if there is no previous error
-									pmpro_setMessage(sprintf(__("Sorry, the file type for %s is not permitted for security reasons.", "pmpro"), $_FILES[$field->name]['name']), "pmpro_error");
+									pmpro_setMessage(sprintf(__("Sorry, the file type for %s is not permitted for security reasons.", "pmprorh"), $_FILES[$field->name]['name']), "pmpro_error");
 								return false;
 							}
 						}
@@ -1234,7 +1254,7 @@ function pmprorh_pmpro_email_filter($email)
 	global $wpdb;
  
 	//only update admin confirmation emails
-	if(strpos($email->template, "checkout") !== false && strpos($email->template, "admin") !== false)
+	if(!empty($email) && strpos($email->template, "checkout") !== false && strpos($email->template, "admin") !== false)
 	{ 
 		//get the user_id from the email
 		$user_id = $wpdb->get_var("SELECT ID FROM $wpdb->users WHERE user_email = '" . $email->data['user_email'] . "' LIMIT 1");
@@ -1374,8 +1394,8 @@ function pmprorh_plugin_row_meta($links, $file) {
 	if(strpos($file, 'pmpro-register-helper.php') !== false)
 	{
 		$new_links = array(
-			'<a href="' . esc_url('https://www.paidmembershipspro.com/add-ons/pmpro-register-helper-add-checkout-and-profile-fields/')  . '" title="' . esc_attr( __( 'View Documentation', 'pmpro' ) ) . '">' . __( 'Docs', 'pmpro' ) . '</a>',
-			'<a href="' . esc_url('https://paidmembershipspro.com/support/') . '" title="' . esc_attr( __( 'Visit Customer Support Forum', 'pmpro' ) ) . '">' . __( 'Support', 'pmpro' ) . '</a>',
+			'<a href="' . esc_url('https://www.paidmembershipspro.com/add-ons/pmpro-register-helper-add-checkout-and-profile-fields/')  . '" title="' . esc_attr( __( 'View Documentation', 'pmprorh' ) ) . '">' . __( 'Docs', 'pmprorh' ) . '</a>',
+			'<a href="' . esc_url('https://paidmembershipspro.com/support/') . '" title="' . esc_attr( __( 'Visit Customer Support Forum', 'pmprorh' ) ) . '">' . __( 'Support', 'pmprorh' ) . '</a>',
 		);
 		$links = array_merge($links, $new_links);
 	}

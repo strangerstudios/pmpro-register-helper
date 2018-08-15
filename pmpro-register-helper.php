@@ -3,10 +3,10 @@
 Plugin Name: Paid Memberships Pro - Register Helper Add On
 Plugin URI: https://www.paidmembershipspro.com/add-ons/pmpro-register-helper-add-checkout-and-profile-fields/
 Description: Capture additional member information with custom fields at Membership Checkout with Paid Memberships Pro.
-Version: 1.3.7
+Version: 1.4
 Author: Paid Memberships Pro
 Author URI: https://www.paidmembershipspro.com
-Text Domain: pmprorh
+Text Domain: pmpro-register-helper
 */
 
 define('PMPRORH_DIR', dirname(__FILE__) );
@@ -17,7 +17,7 @@ define('PMPRORH_VERSION', '1.3.7');
 	Load plugin textdomain.
 */
 function pmprorh_load_textdomain() {
-  load_plugin_textdomain( 'pmprorh', false, plugin_basename( dirname( __FILE__ ) ) . '/languages' ); 
+  load_plugin_textdomain( 'pmpro-register-helper', false, plugin_basename( dirname( __FILE__ ) ) . '/languages' ); 
 }
 add_action( 'plugins_loaded', 'pmprorh_load_textdomain' );
 
@@ -91,7 +91,7 @@ global $pmprorh_registration_fields, $pmprorh_checkout_boxes;
 $pmprorh_registration_fields = array();
 $cb = new stdClass();
 $cb->name = "checkout_boxes";
-$cb->label = apply_filters("pmprorh_section_header", __('More Information','pmprorh') );
+$cb->label = apply_filters("pmprorh_section_header", __('More Information','pmpro-register-helper') );
 $cb->order = 0;
 $pmprorh_checkout_boxes = array("checkout_boxes" => $cb);
 
@@ -1394,8 +1394,8 @@ function pmprorh_plugin_row_meta($links, $file) {
 	if(strpos($file, 'pmpro-register-helper.php') !== false)
 	{
 		$new_links = array(
-			'<a href="' . esc_url('https://www.paidmembershipspro.com/add-ons/pmpro-register-helper-add-checkout-and-profile-fields/')  . '" title="' . esc_attr( __( 'View Documentation', 'pmprorh' ) ) . '">' . __( 'Docs', 'pmprorh' ) . '</a>',
-			'<a href="' . esc_url('https://paidmembershipspro.com/support/') . '" title="' . esc_attr( __( 'Visit Customer Support Forum', 'pmprorh' ) ) . '">' . __( 'Support', 'pmprorh' ) . '</a>',
+			'<a href="' . esc_url('https://www.paidmembershipspro.com/add-ons/pmpro-register-helper-add-checkout-and-profile-fields/')  . '" title="' . esc_attr( __( 'View Documentation', 'pmpro-register-helper' ) ) . '">' . __( 'Docs', 'pmpro-register-helper' ) . '</a>',
+			'<a href="' . esc_url('https://paidmembershipspro.com/support/') . '" title="' . esc_attr( __( 'Visit Customer Support Forum', 'pmpro-register-helper' ) ) . '">' . __( 'Support', 'pmpro-register-helper' ) . '</a>',
 		);
 		$links = array_merge($links, $new_links);
 	}

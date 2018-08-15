@@ -199,8 +199,8 @@ function pmprorh_register_form_shortcode($atts, $content=null, $code="")
 	</div>
 	<?php do_action("pmprorh_after_email"); ?>
 	<div class="pmpro_hidden">
-        	<label for="fullname"><?php _e('Full Name', 'pmprorh');?></label>
-        	<input id="fullname" name="fullname" type="text" class="input <?php echo pmpro_getClassForField("fullname");?>" size="30" value="" /> <strong><?php _e('LEAVE THIS BLANK', 'pmprorh');?></strong>
+        	<label for="fullname"><?php _e('Full Name', 'pmpro-register-helper');?></label>
+        	<input id="fullname" name="fullname" type="text" class="input <?php echo pmpro_getClassForField("fullname");?>" size="30" value="" /> <strong><?php _e('LEAVE THIS BLANK', 'pmpro-register-helper');?></strong>
     	</div>
 	<div id="div_pass1">
 		<label>Password</label>

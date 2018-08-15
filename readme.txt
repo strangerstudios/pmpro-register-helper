@@ -1,8 +1,8 @@
 === Paid Memberships Pro - Register Helper Add On ===
 Contributors: strangerstudios
 Tags: users, user meta, meta, memberships, registration
-Requires at least: 3.5
-Tested up to: 4.6.1
+Requires at least: 4.0
+Tested up to: 4.9.8
 Stable tag: 1.3.7
 
 Capture additional member information with custom fields at Membership Checkout with Paid Memberships Pro.
@@ -98,8 +98,11 @@ Please post it in the issues section of GitHub and we'll fix it as soon as we ca
 * BUG FIX: Slight fix for already uploaded docs. (Thanks, contemplate on GitHub)
 * BUG FIX: Leading zeros were being removed from numeric values.
 * BUG FIX: RH Field CSV export failure under PHP7.
+* BUG FIX: Removed redundant </span> tag. (Thanks, jbruggeling on GitHub)
+* BUG FIX: Fixed issue where 0 valued options were not being selected in dropdowns, multiselects, and radio fields.
 * ENHANCEMENT: Improved display of field elements and checkout boxes for compatibility for 1.9.4.
 * ENHANCEMENT: Improved UI of the checkbox_grouped field type.
+* ENHANCEMENT: Added French translation files. (Thanks, Alfonso Sánchez Uzábal)
 
 = 1.3.6 =
 * BUG FIX: Fixed some warnings when fields are added to the Add Member Admin form.

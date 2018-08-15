@@ -332,7 +332,7 @@
 					$r .= '<option value="' . esc_attr($ovalue) . '" ';
 					if(!empty($this->multiple) && in_array($ovalue, $value))
 						$r .= 'selected="selected" ';
-					elseif(!empty($ovalue) && $ovalue == $value)
+					elseif($ovalue == $value)
 						$r .= 'selected="selected" ';
 					$r .= '>' . $option . "</option>\n";
 				}
@@ -355,7 +355,7 @@
 				foreach($this->options as $ovalue => $option)
 				{
 					$r .= '<option value="' . esc_attr($ovalue) . '" ';
-					if(!empty($ovalue) && in_array($ovalue, $value))
+					if(in_array($ovalue, $value))
 						$r .= 'selected="selected" ';
 					$r .= '>' . $option . "</option>\n";
 				}
@@ -379,7 +379,7 @@
 				foreach($this->options as $ovalue => $option)
 				{
 					$r .= '<option value="' . esc_attr($ovalue) . '" ';
-					if(!empty($ovalue) && in_array($ovalue, $value))
+					if(in_array($ovalue, $value))
 						$r .= 'selected="selected" ';
 					$r .= '>' . $option . '</option>';
 				}

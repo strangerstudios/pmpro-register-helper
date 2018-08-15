@@ -213,8 +213,9 @@ function pmprorh_default_register_form()
 	{
 		foreach($pmprorh_registration_fields["register_form"] as $field)
 		{					
-			if(pmprorh_checkFieldForLevel($field) && $field->profile !== "only" && $field->profile !== "only_admin" && $field->profile_only != true )
+			if( pmprorh_checkFieldForLevel($field) && ( !isset( $field->profile ) || $field->profile !== "only" && $field->profile !== "only_admin" && $field->profile_only != true ) ) {
 				$field->displayAtCheckout();		
+			}
 		}
 	}
 }
@@ -229,8 +230,9 @@ function pmprorh_register_form_after_email()
 	{		
 		foreach($pmprorh_registration_fields["pmprorh_after_email"] as $field)
 		{			
-			if(pmprorh_checkFieldForLevel($field) && $field->profile !== "only" && $field->profile !== "only_admin")
+			if( pmprorh_checkFieldForLevel($field) && ( !isset( $field->profile ) || $field->profile !== "only" && $field->profile !== "only_admin") ) {
 				$field->displayAtCheckout();		
+			}
 		}
 	}
 }
@@ -245,8 +247,9 @@ function pmprorh_register_form_after_password()
 	{
 		foreach($pmprorh_registration_fields["pmprorh_after_password"] as $field)
 		{			
-			if(pmprorh_checkFieldForLevel($field) && $field->profile !== "only" && $field->profile !== "only_admin")
+			if( pmprorh_checkFieldForLevel($field) && ( !isset( $field->profile ) || $field->profile !== "only" && $field->profile !== "only_admin" ) ) {
 				$field->displayAtCheckout();		
+			}
 		}
 	}
 }
@@ -261,8 +264,9 @@ function pmprorh_register_form()
 	{
 		foreach($pmprorh_registration_fields["pmprorh_register_form"] as $field)
 		{			
-			if(pmprorh_checkFieldForLevel($field) && $field->profile !== "only" && $field->profile !== "only_admin")
+			if( pmprorh_checkFieldForLevel($field) && ( !isset( $field->profile ) || $field->profile !== "only" && $field->profile !== "only_admin" ) ) {
 				$field->displayAtCheckout();		
+			}
 		}
 	}
 }
@@ -280,8 +284,9 @@ function pmprorh_pmpro_checkout_after_username()
 	{
 		foreach($pmprorh_registration_fields["after_username"] as $field)
 		{						
-			if(pmprorh_checkFieldForLevel($field) && $field->profile !== "only" && $field->profile !== "only_admin")
-				$field->displayAtCheckout();		
+			if( pmprorh_checkFieldForLevel($field) && ( !isset( $field->profile ) || $field->profile !== "only" && $field->profile !== "only_admin" ) ) {
+				$field->displayAtCheckout();
+			}
 		}
 	}
 }
@@ -296,8 +301,9 @@ function pmprorh_pmpro_checkout_after_password()
 	{
 		foreach($pmprorh_registration_fields["after_password"] as $field)
 		{			
-			if(pmprorh_checkFieldForLevel($field) && $field->profile !== "only" && $field->profile !== "only_admin")
+			if( pmprorh_checkFieldForLevel($field) && ( !isset( $field->profile ) || $field->profile !== "only" && $field->profile !== "only_admin" ) ) {
 				$field->displayAtCheckout();		
+			}
 		}
 	}
 }
@@ -312,8 +318,9 @@ function pmprorh_pmpro_checkout_after_email()
 	{
 		foreach($pmprorh_registration_fields["after_email"] as $field)
 		{			
-			if(pmprorh_checkFieldForLevel($field) && isset($field->profile) && $field->profile !== "only" && $field->profile !== "only_admin")
+			if( pmprorh_checkFieldForLevel($field) && ( !isset( $field->profile ) || $field->profile !== "only" && $field->profile !== "only_admin" ) ) {
 				$field->displayAtCheckout();		
+			}
 		}
 	}
 }
@@ -328,8 +335,9 @@ function pmprorh_pmpro_checkout_after_captcha()
 	{
 		foreach($pmprorh_registration_fields["after_captcha"] as $field)
 		{			
-			if(pmprorh_checkFieldForLevel($field) && $field->profile !== "only" && $field->profile !== "only_admin")
+			if( pmprorh_checkFieldForLevel($field) && ( !isset( $field->profile ) || $field->profile !== "only" && $field->profile !== "only_admin" ) ) {
 				$field->displayAtCheckout();		
+			}
 		}
 	}
 }
@@ -384,8 +392,9 @@ function pmprorh_pmpro_checkout_after_pricing_fields()
 	{
 		foreach($pmprorh_registration_fields["after_pricing_fields"] as $field)
 		{			
-			if(pmprorh_checkFieldForLevel($field) && $field->profile !== "only" && $field->profile !== "only_admin")
+			if( pmprorh_checkFieldForLevel($field) && ( !isset( $field->profile ) || $field->profile !== "only" && $field->profile !== "only_admin" ) ) {
 				$field->displayAtCheckout();		
+			}
 		}
 	}
 }
@@ -400,8 +409,9 @@ function pmprorh_pmpro_checkout_after_billing_fields()
 	{
 		foreach($pmprorh_registration_fields["after_billing_fields"] as $field)
 		{			
-			if(pmprorh_checkFieldForLevel($field) && $field->profile !== "only" && $field->profile !== "only_admin")
+			if( pmprorh_checkFieldForLevel($field) && ( !isset( $field->profile ) || $field->profile !== "only" && $field->profile !== "only_admin" ) ) {
 				$field->displayAtCheckout();		
+			}
 		}
 	}
 }
@@ -416,8 +426,9 @@ function pmprorh_pmpro_checkout_before_submit_button()
 	{
 		foreach($pmprorh_registration_fields["before_submit_button"] as $field)
 		{			
-			if(pmprorh_checkFieldForLevel($field) && $field->profile !== "only" && $field->profile !== "only_admin")
+			if( pmprorh_checkFieldForLevel($field) && ( !isset( $field->profile ) || $field->profile !== "only" && $field->profile !== "only_admin" ) ) {
 				$field->displayAtCheckout();		
+			}
 		}
 	}
 }

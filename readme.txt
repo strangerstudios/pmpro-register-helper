@@ -2,7 +2,7 @@
 Contributors: strangerstudios
 Tags: users, user meta, meta, memberships, registration
 Requires at least: 3.5
-Tested up to: 4.6.1
+Tested up to: 4.9.6
 Stable tag: 1.3.7
 
 Capture additional member information with custom fields at Membership Checkout with Paid Memberships Pro.
@@ -26,7 +26,7 @@ Using Register Helper, you can add a variety of field types to capture additiona
 = Fields Per Levels and Conditional Fields =
 Fields can be added based on the member's selected level. This means that you can collect specific member information for one level and other unique member information for another level.
 
-Any registered field can be dynamically hidden or shown with JavaScript depending on another field’s value. To create a conditional field, pass an array of conditions as the depends option. 
+Any registered field can be dynamically hidden or shown with JavaScript depending on another field’s value. To create a conditional field, pass an array of conditions as the depends option.
 
 [Read the documentation on Adding Fields](https://www.paidmembershipspro.com/documentation/register-helper-documentation/adding-fields/)
 
@@ -50,17 +50,17 @@ Or, you can add a new box or section to the Membership Checkout form using the '
 1. Configure your fields using custom code. [View the full documentation on adding fields](https://www.paidmembershipspro.com/documentation/register-helper-documentation/adding-fields/)
 
 = Example Code for adding a Company field =
-Below is a sample code that adds a "Company" field. Custom code for your fields should be placed in your active theme's functions.php file or [a plugin for customizations](https://www.paidmembershipspro.com/create-a-plugin-for-pmpro-customizations/) (our recommended method). 
+Below is a sample code that adds a "Company" field. Custom code for your fields should be placed in your active theme's functions.php file or [a plugin for customizations](https://www.paidmembershipspro.com/create-a-plugin-for-pmpro-customizations/) (our recommended method).
 
 `function my_pmprorh_init( ) {
 	//don't break if Register Helper is not loaded
 	if( ! function_exists ( 'pmprorh_add_registration_field' ) ) {
 		return false;
 	}
-	
+
 	//define the fields
 	$fields = array();
-	
+
 	$fields[] = new PMProRH_Field (
 		'company',
 		'text',
@@ -68,7 +68,7 @@ Below is a sample code that adds a "Company" field. Custom code for your fields 
 			'label' => 'Company',
 			'profile' => true,
 	));
-	
+
 	//add the fields into a new checkout_boxes are of the checkout page
 	foreach( $fields as $field ) {
 		pmprorh_add_registration_field(

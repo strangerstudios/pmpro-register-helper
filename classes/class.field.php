@@ -301,7 +301,7 @@
 			}
 			elseif($this->type == "number")
 			{
-				$r = '<input type="number"  min="0" step="1" id="' . $this->id . '" name="' . $this->name . '" value="' . esc_attr($value) . '" ';
+				$r = '<input type="number"  min="0" step="1" pattern="\d+" id="' . $this->id . '" name="' . $this->name . '" value="' . esc_attr($value) . '" ';
 				if(!empty($this->size))
 					$r .= 'size="' . $this->size . '" ';
 				if(!empty($this->class))

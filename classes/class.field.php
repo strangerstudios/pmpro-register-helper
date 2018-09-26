@@ -283,7 +283,7 @@
 
 			if($this->type == "text")
 			{
-				$r = '<input type="text" id="' . $this->id . '" name="' . $this->name . '" value="' . esc_attr($value) . '" ';
+				$r = '<input type="text" id="' . $this->id . '" name="' . $this->name . '" value="' . esc_attr(wp_unslash($value)) . '" ';
 				if(!empty($this->size))
 					$r .= 'size="' . $this->size . '" ';
 				if(!empty($this->class))
@@ -296,7 +296,7 @@
 			}
 			elseif($this->type == "password")
 			{
-				$r = '<input type="password" id="' . $this->id . '" name="' . $this->name . '" value="' . esc_attr($value) . '" ';
+				$r = '<input type="password" id="' . $this->id . '" name="' . $this->name . '" value="' . esc_attr(wp_unslash($value)) . '" ';
 				if(!empty($this->size))
 					$r .= 'size="' . $this->size . '" ';
 				if(!empty($this->class))
@@ -329,7 +329,10 @@
 				$r .= ">\n";
 				foreach($this->options as $ovalue => $option)
 				{
-					$r .= '<option value="' . esc_attr($ovalue) . '" ';
+					$r .= '<option value="' . 
+						
+						
+						($ovalue) . '" ';
 					if(!empty($this->multiple) && in_array($ovalue, $value))
 						$r .= 'selected="selected" ';
 					elseif($ovalue == $value)
@@ -466,11 +469,11 @@
 					$r .= 'readonly="readonly" ';
 				if(!empty($this->html_attributes))
 					$r .= $this->getHTMLAttributes();
-				$r .= '>' . esc_textarea($value) . '</textarea>';				
+				$r .= '>' . esc_textarea(wp_unslash($value)) . '</textarea>';				
 			}
 			elseif($this->type == "hidden")
 			{
-				$r = '<input type="hidden" id="' . $this->id . '" name="' . $this->name . '" value="' . esc_attr($value) . '" ';
+				$r = '<input type="hidden" id="' . $this->id . '" name="' . $this->name . '" value="' . esc_attr(wp_unslash($value)) . '" ';
 				if(!empty($this->readonly))
 					$r .= 'readonly="readonly" ';
 				if(!empty($this->html_attributes))

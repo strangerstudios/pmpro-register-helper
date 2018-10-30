@@ -673,7 +673,7 @@ add_filter("pmpro_registration_checks", "pmprorh_rf_pmpro_registration_checks");
 /*
 	Sessions vars for PayPal Express
 */
-function pmprorh_rf_pmpro_paypalexpress_session_vars()
+function pmprorh_rf_pmpro_paypalexpress_session_vars( $user_id = NULL )
 {
 	global $pmprorh_registration_fields;
 

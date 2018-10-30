@@ -94,6 +94,7 @@ Please post it in the issues section of GitHub and we'll fix it as soon as we ca
 == Changelog ==
 = 1.4.1 =
 * ENHANCEMENT: Fixed integration with the GoURL Bitcoin Payment Gateway Add On
+* ENHANCEMENT: Fixed integration with the Payfast Payment Gateway Add On
 
 = 1.4 =
 * BUG FIX: Some required fields could be left empty at checkout.

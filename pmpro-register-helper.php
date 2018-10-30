@@ -533,6 +533,7 @@ add_action('pmpro_after_checkout', 'pmprorh_pmpro_after_checkout');
 add_action('pmpro_before_send_to_paypal_standard', 'pmprorh_pmpro_after_checkout');	//for paypal standard we need to do this just before sending the user to paypal
 add_action('pmpro_before_send_to_twocheckout', 'pmprorh_pmpro_after_checkout', 20);	//for 2checkout we need to do this just before sending the user to 2checkout
 add_action('pmpro_before_send_to_gourl', 'pmprorh_pmpro_after_checkout', 20);	//for the GoURL Bitcoin Gateway Add On
+add_action('pmpro_before_send_to_payfast', 'pmprorh_pmpro_after_checkout', 20);	//for the Payfast Gateway Add On
 
 /**
  * Sanitizes the passed value.

@@ -1,0 +1,24 @@
+{
+  "name": "pmpro-register-helper",
+  "version": "1.0.0",
+  "description": "=== Paid Memberships Pro - Register Helper Add On === Contributors: strangerstudios Tags: users, user meta, meta, memberships, registration Requires at least: 4.0 Tested up to: 4.9.8 Stable tag: 1.4",
+  "main": "index.js",
+  "scripts": {
+    "build": "wp-scripts build",
+    "start": "wp-scripts start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/strangerstudios/pmpro-register-helper.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/strangerstudios/pmpro-register-helper/issues"
+  },
+  "homepage": "https://github.com/strangerstudios/pmpro-register-helper#readme",
+  "dependencies": {
+    "@wordpress/scripts": "^3.1.0"
+  }
+}

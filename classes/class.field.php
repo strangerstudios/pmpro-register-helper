@@ -18,7 +18,7 @@
 			$this->id = null;
 			$this->label = null;
 			$this->levels = null;
-			$this->memberlistcsv = false;
+			$this->memberslistcsv = false;
 			$this->readonly = false;
 			$this->depends = array();
 			$this->showrequired = true;

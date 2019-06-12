@@ -2,7 +2,7 @@
 Contributors: strangerstudios
 Tags: users, user meta, meta, memberships, registration
 Requires at least: 4.0
-Tested up to: 4.9.8
+Tested up to: 5.2.1
 Stable tag: 1.4
 
 Capture additional member information with custom fields at Membership Checkout with Paid Memberships Pro.

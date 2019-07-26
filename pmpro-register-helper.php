@@ -1170,11 +1170,6 @@ function pmprorh_checkFieldForLevel($field, $scope = "default", $args = NULL)
 				else
 					return false;
 			}
-			//if only one level was passed and it was 0, check if they're a non-member
-			elseif( $field->levels === 0 || $field->levels === "0" )
-			{
-				return pmpro_hasMembershipLevel($field->levels, $args);
-			}
 			else
 				return false;
 		}

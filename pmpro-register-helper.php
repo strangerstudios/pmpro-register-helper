@@ -1069,7 +1069,7 @@ function pmprorh_pmpro_membership_level_after_other_settings()
 	$restrict_usernames = pmpro_getOption("level_" . $level . "_restrict_usernames");
 	?>
 	<h3 class="topborder">Restrict by Username</h3>
-	<p>To restrict signups to specific users or usernames, enter those email usernames below, one per line. If blank, signups will not be restricted.</p>
+	<p>To restrict signups to specific users or usernames, enter those usernames below, one per line. If blank, signups will not be restricted.</p>
 	<textarea rows="10" cols="80" name="restrict_usernames" id="restrict_usernames"><?php echo str_replace("\"", "&quot;", stripslashes($restrict_usernames))?></textarea>
 	<?php
 }
@@ -1169,6 +1169,11 @@ function pmprorh_checkFieldForLevel($field, $scope = "default", $args = NULL)
 					return true;
 				else
 					return false;
+			}
+			//if only one level was passed and it was 0, check if they're a non-member
+			elseif( $field->levels === 0 || $field->levels === "0" )
+			{
+				return pmpro_hasMembershipLevel($field->levels, $args);
 			}
 			else
 				return false;

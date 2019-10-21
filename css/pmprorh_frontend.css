@@ -3,3 +3,4 @@ form.pmpro_form .pmpro_checkout-field-radio-item label {display: inline-block; c
 form.pmpro_form input[type=checkbox] {cursor: pointer;}
 form.pmpro_form input[readonly], form.pmpro_form select[readonly], form.pmpro_form textarea[readonly] {opacity:0.5; filter:alpha(opacity=50);}
 form.pmpro_form .select2-container {min-width: 240px;}
+form.pmpro_form .pmpro_checkout-fields div.pmprorh_grouped_checkboxes ul {padding: 0; list-style-type: none; }

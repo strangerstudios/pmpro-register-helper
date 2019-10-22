@@ -1147,21 +1147,21 @@ add_filter("pmpro_registration_checks", "pmprorh_pmpro_registration_checks");
 
 function pmprorh_checkFieldForLevel( $field, $scope = 'default', $args = NULL ) {
 	if ( ! empty( $field->levels ) ) {
-    if ( 'profile' === $scope ) {
-      // Expecting the args to be the user id.
-      if ( pmpro_hasMembershipLevel( $field->levels, $args ) ) {
+		if ( 'profile' === $scope ) {
+			// Expecting the args to be the user id.
+			if ( pmpro_hasMembershipLevel( $field->levels, $args ) ) {
 				return true;
 			} else {
 				return false;
-      }
-    } elseif ( isset( $_REQUEST['level'] ) ) {
-      global $pmpro_checkout_level_ids;
+			}
+		} elseif ( isset( $_REQUEST['level'] ) ) {
+			global $pmpro_checkout_level_ids;
 			// Check against $_REQUEST.
-			if ( ! empty( $pmpro_checkout_level_ids) ) {
+			if ( ! empty( $pmpro_checkout_level_ids ) ) {
 				return ( ! empty( array_intersect( $field->levels, $pmpro_checkout_level_ids ) ) );
-		  }
-      return false;
-    }
+			}
+			return false;
+		}
 	}
 
 	return true;

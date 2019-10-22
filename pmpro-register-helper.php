@@ -1158,9 +1158,7 @@ function pmprorh_checkFieldForLevel( $field, $scope = 'default', $args = NULL ) 
 			global $pmpro_checkout_level_ids;
 			if ( ! empty( $pmpro_checkout_level_ids ) ) {
 				// Check against $_REQUEST.
-				if ( ! empty( $pmpro_checkout_level_ids ) ) {
-					return ( ! empty( array_intersect( $field->levels, $pmpro_checkout_level_ids ) ) );
-				}
+				return ( ! empty( array_intersect( $field->levels, $pmpro_checkout_level_ids ) ) );
 			}
 			return false;
 		}

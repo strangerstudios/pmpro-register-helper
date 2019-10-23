@@ -1397,7 +1397,7 @@ function pmprorh_plugin_row_meta($links, $file) {
 	{
 		$new_links = array(
 			'<a href="' . esc_url('https://www.paidmembershipspro.com/add-ons/pmpro-register-helper-add-checkout-and-profile-fields/')  . '" title="' . esc_attr( __( 'View Documentation', 'pmpro-register-helper' ) ) . '">' . __( 'Docs', 'pmpro-register-helper' ) . '</a>',
-			'<a href="' . esc_url('https://paidmembershipspro.com/support/') . '" title="' . esc_attr( __( 'Visit Customer Support Forum', 'pmpro-register-helper' ) ) . '">' . __( 'Support', 'pmpro-register-helper' ) . '</a>',
+			'<a href="' . esc_url('https://www.paidmembershipspro.com/support/') . '" title="' . esc_attr( __( 'Visit Customer Support Forum', 'pmpro-register-helper' ) ) . '">' . __( 'Support', 'pmpro-register-helper' ) . '</a>',
 		);
 		$links = array_merge($links, $new_links);
 	}

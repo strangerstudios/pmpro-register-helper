@@ -14,6 +14,10 @@ You can also restrict membership registration for a list of approved email addre
 
 [Read the full documentation for the Register Helper Add On](https://www.paidmembershipspro.com/add-ons/pmpro-register-helper-add-checkout-and-profile-fields/)
 
+= Official Paid Memberships Pro Add On =
+
+This is an official Add On for [Paid Memberships Pro](https://www.paidmembershipspro.com), the most complete member management and membership subscriptions plugin for WordPress.
+
 = Supports Multiple Field Types =
 Using Register Helper, you can add a variety of field types to capture additional information about your members. Supported field types include:
 * Text and Textarea

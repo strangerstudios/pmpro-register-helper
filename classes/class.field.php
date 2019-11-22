@@ -566,7 +566,7 @@
                     if($i == $month)
                         $r .= 'selected="selected"';
 
-                    $r .= '>' . date("M", strtotime($i . "/1/" . $year, current_time("timestamp"))) . '</option>';
+                    $r .= '>' . date("M", strtotime($i . "/15/" . $year, current_time("timestamp"))) . '</option>';
                 }
 
                 $r .= '</select><input id="' . $this->id . '_d" name="' . $this->name . '[d]" type="text" size="2" value="' . $day . '" ';

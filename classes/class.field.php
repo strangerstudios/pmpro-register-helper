@@ -98,6 +98,11 @@
 				if(empty($this->size))
 					$this->size = 30;
 			}			
+			elseif($this->type == "number")
+			{
+				if(empty($this->size))
+					$this->size = 5;
+			}			
 			elseif($this->type == "select" || $type == "multiselect" || $type == "select2" || $type == "radio")
 			{
 				//default option
@@ -284,6 +289,19 @@
 			if($this->type == "text")
 			{
 				$r = '<input type="text" id="' . $this->id . '" name="' . $this->name . '" value="' . esc_attr($value) . '" ';
+				if(!empty($this->size))
+					$r .= 'size="' . $this->size . '" ';
+				if(!empty($this->class))
+					$r .= 'class="' . $this->class . '" ';
+				if(!empty($this->readonly))
+					$r .= 'readonly="readonly" ';
+				if(!empty($this->html_attributes))
+					$r .= $this->getHTMLAttributes();
+				$r .= ' />';				
+			}
+			elseif($this->type == "number")
+			{
+				$r = '<input type="number"  min="0" step="1" pattern="\d+" id="' . $this->id . '" name="' . $this->name . '" value="' . esc_attr($value) . '" ';
 				if(!empty($this->size))
 					$r .= 'size="' . $this->size . '" ';
 				if(!empty($this->class))

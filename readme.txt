@@ -2,8 +2,8 @@
 Contributors: strangerstudios
 Tags: users, user meta, meta, memberships, registration
 Requires at least: 4.0
-Tested up to: 5.2.2
-Stable tag: 1.4
+Tested up to: 5.3
+Stable tag: 1.5
 
 Capture additional member information with custom fields at Membership Checkout with Paid Memberships Pro.
 
@@ -96,9 +96,14 @@ Please post it in the issues section of GitHub and we'll fix it as soon as we ca
 1. Using Register Helper fields in conjuction with the [Member Directory and Profile Pages Add On](https://www.paidmembershipspro.com/add-ons/pmpro-member-directory/).
 
 == Changelog ==
-= 1.4.1 =
+= 1.5 - 2019-11-22 =
+* FEATURE: Added number fields. (Thanks, William Crandell)
+* BUG FIX: Avoiding warnings when using 2Checkout.
+* BUG FIX: Now properly wrapping checkoutbox list items in a ul tag.
 * ENHANCEMENT: Fixed integration with the GoURL Bitcoin Payment Gateway Add On
 * ENHANCEMENT: Fixed integration with the Payfast Payment Gateway Add On
+* ENHANCEMENT: Added support for Multiple Memberships per User. Fields with levels parameters will show at checkout if ANY of those levels are included at checkout.
+* ENHANCEMENT: Fixed placeholders when used in select2 elements.
 
 = 1.4 =
 * BUG FIX: Some required fields could be left empty at checkout.

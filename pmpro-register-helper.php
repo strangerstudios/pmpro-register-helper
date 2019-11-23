@@ -3,7 +3,7 @@
 Plugin Name: Paid Memberships Pro - Register Helper Add On
 Plugin URI: https://www.paidmembershipspro.com/add-ons/pmpro-register-helper-add-checkout-and-profile-fields/
 Description: Capture additional member information with custom fields at Membership Checkout with Paid Memberships Pro.
-Version: 1.4
+Version: 1.5
 Author: Paid Memberships Pro
 Author URI: https://www.paidmembershipspro.com
 Text Domain: pmpro-register-helper
@@ -11,7 +11,7 @@ Text Domain: pmpro-register-helper
 
 define('PMPRORH_DIR', dirname(__FILE__) );
 define('PMPRORH_URL', WP_PLUGIN_URL . "/pmpro-register-helper");
-define('PMPRORH_VERSION', '1.3.7');
+define('PMPRORH_VERSION', '1.5');
 
 /*
 	Load plugin textdomain.

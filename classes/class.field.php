@@ -440,7 +440,7 @@
 				if(!is_array($value))
 					$value = array($value);
 
-				$r = sprintf( '<div class="pmprorh_grouped_checkboxes">' );
+				$r = sprintf( '<div class="pmprorh_grouped_checkboxes"><ul>' );
 				$counter = 1;
 				foreach($this->options as $ovalue => $option)
 				{
@@ -464,7 +464,7 @@
 					$r .= sprintf( '</span></li>' );
 				}
 				
-				$r .= sprintf( '</div>' );
+				$r .= sprintf( '</ul></div>' );
 				
 			}
 			

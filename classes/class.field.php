@@ -371,7 +371,15 @@
 					$value = array($value);
 					
 				//build multi select
-				$r = '<select id="' . $this->id . '" name="' . $this->name . '[]" multiple="multiple" placeholder='.__('"Choose one or more." ', 'pmpro-register-helper');
+				$r = '<select id="' . $this->id . '" name="' . $this->name . '[]" multiple="multiple" ';
+				if(isset($this->placeholder)) {
+					$r .= 'placeholder="' . esc_attr($this->placeholder) . '" ';
+					if(empty($this->select2options)) {
+						$this->select2options = 'placeholder: "' . esc_attr($this->placeholder) . '"';
+					}
+				} else {
+					$r .= 'placeholder="' . __('Choose one or more.', 'pmpro-register-helper') . '" ';
+				}				
 				if(!empty($this->class))
 					$r .= 'class="' . $this->class . '" ';
 				if(!empty($this->readonly))

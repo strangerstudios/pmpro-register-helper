@@ -1145,33 +1145,25 @@ function pmprorh_pmpro_registration_checks($okay)
 }
 add_filter("pmpro_registration_checks", "pmprorh_pmpro_registration_checks");
 
-function pmprorh_checkFieldForLevel($field, $scope = "default", $args = NULL)
-{
-	if(!empty($field->levels))
-	{
-		if($scope == "profile")
-		{
-			//expecting the args to be the user id
-			if(pmpro_hasMembershipLevel($field->levels, $args))
+function pmprorh_checkFieldForLevel( $field, $scope = 'default', $args = NULL ) {
+	if ( ! empty( $field->levels ) ) {
+		if ( 'profile' === $scope ) {
+			// Expecting the args to be the user id.
+			if ( pmpro_hasMembershipLevel( $field->levels, $args ) ) {
 				return true;
-			else
+			} else {
 				return false;
-		}
-		else
-		{
-			//check against $_REQUEST
-			global $pmpro_level;
-			if(!empty($pmpro_level) && !empty($pmpro_level->id))
-			{
-				if(is_array($field->levels) && in_array($pmpro_level->id, $field->levels))
-					return true;
-				elseif(!is_array($field->levels) && ($pmpro_level->id == intval($field->levels)))
-					return true;
-				else
-					return false;
 			}
-			else
-				return false;
+		} else {
+			global $pmpro_level, $pmpro_checkout_level_ids;
+			if ( empty( $pmpro_checkout_level_ids ) && ! empty( $pmpro_level ) && ! empty( $pmpro_level->id ) ) {
+				$pmpro_checkout_level_ids = array( $pmpro_level->id );
+			}
+			if ( ! empty( $pmpro_checkout_level_ids ) ) {
+				// Check against $_REQUEST.
+				return ( ! empty( array_intersect( $field->levels, $pmpro_checkout_level_ids ) ) );
+			}
+			return false;
 		}
 	}
 

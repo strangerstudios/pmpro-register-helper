@@ -18,7 +18,7 @@
 			$this->id = null;
 			$this->label = null;
 			$this->levels = null;
-			$this->memberlistcsv = false;
+			$this->memberslistcsv = false;
 			$this->readonly = false;
 			$this->depends = array();
 			$this->showrequired = true;
@@ -288,7 +288,7 @@
 
 			if($this->type == "text")
 			{
-				$r = '<input type="text" id="' . $this->id . '" name="' . $this->name . '" value="' . esc_attr($value) . '" ';
+				$r = '<input type="text" id="' . $this->id . '" name="' . $this->name . '" value="' . esc_attr(wp_unslash($value)) . '" ';
 				if(!empty($this->size))
 					$r .= 'size="' . $this->size . '" ';
 				if(!empty($this->class))
@@ -314,7 +314,7 @@
 			}
 			elseif($this->type == "password")
 			{
-				$r = '<input type="password" id="' . $this->id . '" name="' . $this->name . '" value="' . esc_attr($value) . '" ';
+				$r = '<input type="password" id="' . $this->id . '" name="' . $this->name . '" value="' . esc_attr(wp_unslash($value)) . '" ';
 				if(!empty($this->size))
 					$r .= 'size="' . $this->size . '" ';
 				if(!empty($this->class))
@@ -347,7 +347,10 @@
 				$r .= ">\n";
 				foreach($this->options as $ovalue => $option)
 				{
-					$r .= '<option value="' . esc_attr($ovalue) . '" ';
+					$r .= '<option value="' . 
+						
+						
+						($ovalue) . '" ';
 					if(!empty($this->multiple) && in_array($ovalue, $value))
 						$r .= 'selected="selected" ';
 					elseif($ovalue == $value)
@@ -386,7 +389,15 @@
 					$value = array($value);
 					
 				//build multi select
-				$r = '<select id="' . $this->id . '" name="' . $this->name . '[]" multiple="multiple" placeholder='.__('"Choose one or more."', 'pmpro-register-helper');
+				$r = '<select id="' . $this->id . '" name="' . $this->name . '[]" multiple="multiple" ';
+				if(isset($this->placeholder)) {
+					$r .= 'placeholder="' . esc_attr($this->placeholder) . '" ';
+					if(empty($this->select2options)) {
+						$this->select2options = 'placeholder: "' . esc_attr($this->placeholder) . '"';
+					}
+				} else {
+					$r .= 'placeholder="' . __('Choose one or more.', 'pmpro-register-helper') . '" ';
+				}				
 				if(!empty($this->class))
 					$r .= 'class="' . $this->class . '" ';
 				if(!empty($this->readonly))
@@ -447,7 +458,7 @@
 				if(!is_array($value))
 					$value = array($value);
 
-				$r = sprintf( '<div class="pmprorh_grouped_checkboxes">' );
+				$r = sprintf( '<div class="pmprorh_grouped_checkboxes"><ul>' );
 				$counter = 1;
 				foreach($this->options as $ovalue => $option)
 				{
@@ -471,7 +482,7 @@
 					$r .= sprintf( '</span></li>' );
 				}
 				
-				$r .= sprintf( '</div>' );
+				$r .= sprintf( '</ul></div>' );
 				
 			}
 			
@@ -484,11 +495,11 @@
 					$r .= 'readonly="readonly" ';
 				if(!empty($this->html_attributes))
 					$r .= $this->getHTMLAttributes();
-				$r .= '>' . esc_textarea($value) . '</textarea>';				
+				$r .= '>' . esc_textarea(wp_unslash($value)) . '</textarea>';				
 			}
 			elseif($this->type == "hidden")
 			{
-				$r = '<input type="hidden" id="' . $this->id . '" name="' . $this->name . '" value="' . esc_attr($value) . '" ';
+				$r = '<input type="hidden" id="' . $this->id . '" name="' . $this->name . '" value="' . esc_attr(wp_unslash($value)) . '" ';
 				if(!empty($this->readonly))
 					$r .= 'readonly="readonly" ';
 				if(!empty($this->html_attributes))
@@ -581,7 +592,7 @@
                     if($i == $month)
                         $r .= 'selected="selected"';
 
-                    $r .= '>' . date("M", strtotime($i . "/1/" . $year, current_time("timestamp"))) . '</option>';
+                    $r .= '>' . date("M", strtotime($i . "/15/" . $year, current_time("timestamp"))) . '</option>';
                 }
 
                 $r .= '</select><input id="' . $this->id . '_d" name="' . $this->name . '[d]" type="text" size="2" value="' . $day . '" ';
@@ -653,7 +664,7 @@
 					{
 						$checks[] = "((jQuery('#" . $check['id']."')".".is(':checkbox')) "
 						 ."? jQuery('#" . $check['id'] . ":checked').length > 0"
-						 .":(jQuery('#" . $check['id'] . "').val() == " . json_encode($check['value']) . " || jQuery.inArray(" . json_encode($check['value']) . ", jQuery('#" . $check['id'] . "').val()) > -1)) ||"."(jQuery(\"input:radio[name='".$check['id']."']:checked\").val() == ".json_encode($check['value'])." || jQuery.inArray(".json_encode($check['value']).", jQuery(\"input:radio[name='".$check['id']."']:checked\").val()) > -1)";
+						 .":(jQuery('#" . $check['id'] . "').val() == " . json_encode($check['value']) . " || jQuery.inArray( jQuery('#" . $check['id'] . "').val(), " . json_encode($check['value']) . ") > -1)) ||"."(jQuery(\"input:radio[name='".$check['id']."']:checked\").val() == ".json_encode($check['value'])." || jQuery.inArray(".json_encode($check['value']).", jQuery(\"input:radio[name='".$check['id']."']:checked\").val()) > -1)";
 					
 						$binds[] = "#" . $check['id'].",input:radio[name=".$check['id']."]";
 					}				

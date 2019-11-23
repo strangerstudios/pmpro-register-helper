@@ -2,8 +2,8 @@
 Contributors: strangerstudios
 Tags: users, user meta, meta, memberships, registration
 Requires at least: 4.0
-Tested up to: 4.9.8
-Stable tag: 1.4
+Tested up to: 5.3
+Stable tag: 1.5
 
 Capture additional member information with custom fields at Membership Checkout with Paid Memberships Pro.
 
@@ -13,6 +13,10 @@ A robust add on to collect additional fields at membership signup. Fields can be
 You can also restrict membership registration for a list of approved email addresses.
 
 [Read the full documentation for the Register Helper Add On](https://www.paidmembershipspro.com/add-ons/pmpro-register-helper-add-checkout-and-profile-fields/)
+
+= Official Paid Memberships Pro Add On =
+
+This is an official Add On for [Paid Memberships Pro](https://www.paidmembershipspro.com), the most complete member management and membership subscriptions plugin for WordPress.
 
 = Supports Multiple Field Types =
 Using Register Helper, you can add a variety of field types to capture additional information about your members. Supported field types include:
@@ -26,7 +30,7 @@ Using Register Helper, you can add a variety of field types to capture additiona
 = Fields Per Levels and Conditional Fields =
 Fields can be added based on the member's selected level. This means that you can collect specific member information for one level and other unique member information for another level.
 
-Any registered field can be dynamically hidden or shown with JavaScript depending on another field’s value. To create a conditional field, pass an array of conditions as the depends option. 
+Any registered field can be dynamically hidden or shown with JavaScript depending on another field’s value. To create a conditional field, pass an array of conditions as the depends option.
 
 [Read the documentation on Adding Fields](https://www.paidmembershipspro.com/documentation/register-helper-documentation/adding-fields/)
 
@@ -50,17 +54,17 @@ Or, you can add a new box or section to the Membership Checkout form using the '
 1. Configure your fields using custom code. [View the full documentation on adding fields](https://www.paidmembershipspro.com/documentation/register-helper-documentation/adding-fields/)
 
 = Example Code for adding a Company field =
-Below is a sample code that adds a "Company" field. Custom code for your fields should be placed in your active theme's functions.php file or [a plugin for customizations](https://www.paidmembershipspro.com/create-a-plugin-for-pmpro-customizations/) (our recommended method). 
+Below is a sample code that adds a "Company" field. Custom code for your fields should be placed in your active theme's functions.php file or [a plugin for customizations](https://www.paidmembershipspro.com/create-a-plugin-for-pmpro-customizations/) (our recommended method).
 
 `function my_pmprorh_init( ) {
 	//don't break if Register Helper is not loaded
 	if( ! function_exists ( 'pmprorh_add_registration_field' ) ) {
 		return false;
 	}
-	
+
 	//define the fields
 	$fields = array();
-	
+
 	$fields[] = new PMProRH_Field (
 		'company',
 		'text',
@@ -68,7 +72,7 @@ Below is a sample code that adds a "Company" field. Custom code for your fields 
 			'label' => 'Company',
 			'profile' => true,
 	));
-	
+
 	//add the fields into a new checkout_boxes are of the checkout page
 	foreach( $fields as $field ) {
 		pmprorh_add_registration_field(
@@ -92,6 +96,15 @@ Please post it in the issues section of GitHub and we'll fix it as soon as we ca
 1. Using Register Helper fields in conjuction with the [Member Directory and Profile Pages Add On](https://www.paidmembershipspro.com/add-ons/pmpro-member-directory/).
 
 == Changelog ==
+= 1.5 - 2019-11-22 =
+* FEATURE: Added number fields. (Thanks, William Crandell)
+* BUG FIX: Avoiding warnings when using 2Checkout.
+* BUG FIX: Now properly wrapping checkoutbox list items in a ul tag.
+* ENHANCEMENT: Fixed integration with the GoURL Bitcoin Payment Gateway Add On
+* ENHANCEMENT: Fixed integration with the Payfast Payment Gateway Add On
+* ENHANCEMENT: Added support for Multiple Memberships per User. Fields with levels parameters will show at checkout if ANY of those levels are included at checkout.
+* ENHANCEMENT: Fixed placeholders when used in select2 elements.
+
 = 1.4 =
 * BUG FIX: Some required fields could be left empty at checkout.
 * BUG FIX: Required File Upload was not recognized. (Thanks, contemplate on GitHub)

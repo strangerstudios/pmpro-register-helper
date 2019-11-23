@@ -722,7 +722,7 @@ function pmprorh_rf_pmpro_paypalexpress_session_vars()
 	}
 }
 add_action("pmpro_paypalexpress_session_vars", "pmprorh_rf_pmpro_paypalexpress_session_vars");
-add_action("pmpro_before_send_to_twocheckout", "pmprorh_rf_pmpro_paypalexpress_session_vars");
+add_action("pmpro_before_send_to_twocheckout", "pmprorh_rf_pmpro_paypalexpress_session_vars", 10, 0);
 
 /*
 	Show profile fields.

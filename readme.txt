@@ -96,7 +96,7 @@ Please post it in the issues section of GitHub and we'll fix it as soon as we ca
 1. Using Register Helper fields in conjuction with the [Member Directory and Profile Pages Add On](https://www.paidmembershipspro.com/add-ons/pmpro-member-directory/).
 
 == Changelog ==
-= 1.5 - 2019-11-22 	=
+= 1.5 - 2019-11-22 =
 * FEATURE: Added number fields. (Thanks, William Crandell)
 * BUG FIX: Fixed issue where date fields could save values off by one month when using WP 5.3+.
 * BUG FIX: Avoiding warnings when using 2Checkout.

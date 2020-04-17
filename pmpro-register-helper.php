@@ -187,9 +187,8 @@ function pmprorh_sortByOrder($a, $b)
 */
 function pmprorh_scripts()
 {
-	global $pmpro_level;
-	if( !is_admin() && ( !empty( $_REQUEST['level'] ) || !empty( $pmpro_level ) ) )
-	{
+	global $pmpro_level, $pmpro_pages;
+	if( !is_admin() && ( !empty( $_REQUEST['level'] ) || !empty( $pmpro_level ) || is_page( $pmpro_pages['member_profile_edit'] ) ) ) {
 		if(!defined("PMPRO_VERSION"))
 		{
 			//load some styles that we need from PMPro (check child theme, then parent theme, then plugin folder)
@@ -212,7 +211,7 @@ function pmprorh_scripts()
 			wp_enqueue_style("pmprorh_frontend", PMPRORH_URL . "/css/pmprorh_frontend.css", NULL, "");
 	}
 }
-add_action("init", "pmprorh_scripts");
+add_action( 'wp_enqueue_scripts', 'pmprorh_scripts' );
 
 /*
 	Cycle through extra fields. Show them at checkout.
@@ -782,6 +781,60 @@ function pmprorh_rf_show_extra_profile_fields_withlocations($user)
 add_action( 'show_user_profile', 'pmprorh_rf_show_extra_profile_fields_withlocations' );
 add_action( 'edit_user_profile', 'pmprorh_rf_show_extra_profile_fields_withlocations' );
 
+/**
+ * Show Profile fields on the frontend "Member Profile Edit" page.
+ *
+ * @since 2.3
+ */
+function pmprorh_rf_show_extra_frontend_profile_fields( $user, $withlocations = false ) {
+	global $pmprorh_registration_fields;
+
+	//which fields are marked for the profile
+	$profile_fields = pmprorh_getProfileFields($user->ID, $withlocations);
+
+	//show the fields
+	if ( ! empty( $profile_fields ) && $withlocations ) {
+		foreach( $profile_fields as $where => $fields ) {
+			$box = pmprorh_getCheckoutBoxByName( $where );
+			?>
+
+			<div class="pmpro_checkout_box-<?php echo $where; ?>">
+				<?php if ( ! empty( $box->label ) ) { ?>
+					<h3><?php echo $box->label; ?></h3>
+				<?php } ?>
+
+				<div class="pmpro_member_profile_edit-fields">
+					<?php
+						 // Cycle through groups.
+						foreach( $fields as $field ) {
+							if ( is_a( $field, 'PMProRH_Field' ) ) {
+								$field->displayAtCheckout( $user->ID );
+							}
+						}
+					?>
+				</div> <!-- end pmpro_member_profile_edit-fields -->
+			</div> <!-- end pmpro_checkout_box_$where -->
+			<?php
+		}
+	} elseif ( ! empty( $profile_fields ) ) { ?>
+		<div class="pmpro_member_profile_edit-fields">
+			<?php
+				 // Cycle through groups.
+				foreach( $fields as $field ) {
+					if ( is_a( $field, 'PMProRH_Field' ) ) {
+						$field->displayAtCheckout( $user->ID );
+					}
+				}
+			?>
+		</div> <!-- end pmpro_member_profile_edit-fields -->
+		<?php
+	}
+}
+function pmprorh_rf_show_extra_frontend_profile_fields_withlocations( $user ) {
+	pmprorh_rf_show_extra_frontend_profile_fields($user, true);
+}
+add_action( 'pmpro_show_user_profile', 'pmprorh_rf_show_extra_frontend_profile_fields_withlocations' );
+
 /*
     Integrate with PMPro Add Member Admin addon
  */
@@ -1051,6 +1104,7 @@ function pmprorh_rf_save_extra_profile_fields( $user_id )
 }
 add_action( 'personal_options_update', 'pmprorh_rf_save_extra_profile_fields' );
 add_action( 'edit_user_profile_update', 'pmprorh_rf_save_extra_profile_fields' );
+add_action( 'pmpro_personal_options_update', 'pmprorh_rf_save_extra_profile_fields' );
 
 /*
 	This code can be used to restrict level signups by email address or username
@@ -1228,13 +1282,15 @@ function pmproh_pmpro_checkout_confirm_email($show)
 /*
 	Enqueue Select2 JS
 */
-function pmprorh_enqueue_select2($hook)
-{
+function pmprorh_enqueue_select2($hook) {
+	global $pmpro_pages;
+
 	// only include on front end and user profiles
 	if( ( !is_admin() && (
 			!empty( $_REQUEST['level'] ) ||
 			!empty( $pmpro_level ) ||
-			class_exists("Theme_My_Login") && method_exists('Theme_My_Login', 'is_tml_page') && Theme_My_Login::is_tml_page("profile") ) ) ||
+			class_exists("Theme_My_Login") && method_exists('Theme_My_Login', 'is_tml_page') && Theme_My_Login::is_tml_page("profile") ) ||
+		is_page( $pmpro_pages['member_profile_edit'] ) ) ||
 		$hook == 'profile.php' ||
 		$hook == 'user-edit.php' ) {
 		wp_enqueue_style('select2', plugins_url('css/select2.min.css', __FILE__), '', '4.0.3', 'screen');

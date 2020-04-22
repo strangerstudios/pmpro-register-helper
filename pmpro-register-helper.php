@@ -807,7 +807,7 @@ function pmprorh_rf_show_extra_frontend_profile_fields( $user, $withlocations = 
 					<?php
 						 // Cycle through groups.
 						foreach( $fields as $field ) {
-							if ( is_a( $field, 'PMProRH_Field' ) ) {
+							if ( is_a( $field, 'PMProRH_Field' ) && $field->profile !== 'only_admin' ) {
 								$field->displayAtCheckout( $user->ID );
 							}
 						}
@@ -821,7 +821,7 @@ function pmprorh_rf_show_extra_frontend_profile_fields( $user, $withlocations = 
 			<?php
 				 // Cycle through groups.
 				foreach( $fields as $field ) {
-					if ( is_a( $field, 'PMProRH_Field' ) ) {
+					if ( is_a( $field, 'PMProRH_Field' ) && $field->profile !== 'only_admin' ) {
 						$field->displayAtCheckout( $user->ID );
 					}
 				}

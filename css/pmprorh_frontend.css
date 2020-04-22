@@ -1,6 +1,37 @@
-form.pmpro_form .pmpro_checkout-fields div.pmpro_checkout-field-radio-item {display: inline-block; margin: 0 1em 0 0; }
-form.pmpro_form .pmpro_checkout-field-radio-item label {display: inline-block; cursor: pointer; width: auto; }
-form.pmpro_form input[type=checkbox] {cursor: pointer;}
-form.pmpro_form input[readonly], form.pmpro_form select[readonly], form.pmpro_form textarea[readonly] {opacity:0.5; filter:alpha(opacity=50);}
-form.pmpro_form .select2-container {min-width: 240px;}
-form.pmpro_form .pmpro_checkout-fields div.pmprorh_grouped_checkboxes ul {padding: 0; list-style-type: none; }
+form.pmpro_form .pmpro_checkout-fields div.pmpro_checkout-field-radio-item,
+form.pmpro_form .pmpro_member_profile_edit-fields div.pmpro_checkout-field-radio-item {
+	display: inline-block;
+	margin: 0 1em 0 0;
+}
+form.pmpro_form .pmpro_checkout-field-radio-item label,
+form.pmpro_form .pmpro_member_profile_edit-fields .pmpro_checkout-field-radio-item label {
+	display: inline-block;
+	cursor: pointer;
+	width: auto;
+}
+form.pmpro_form input[type=checkbox] {
+	cursor: pointer;
+}
+form.pmpro_form input[readonly],
+form.pmpro_form select[readonly],
+form.pmpro_form textarea[readonly] {
+	opacity:0.5;
+	filter:alpha(opacity=50);
+}
+form.pmpro_form .select2-container {
+	min-width: 240px;
+}
+form.pmpro_form .pmpro_checkout-fields div.pmprorh_grouped_checkboxes ul,
+form.pmpro_form .pmpro_member_profile_edit-fields div.pmprorh_grouped_checkboxes ul {
+	padding: 0;
+	list-style-type: none;
+}
+form.pmpro_form .pmpro_checkout-fields div.pmpro_checkout-field-file small.lite,
+form.pmpro_form .pmpro_member_profile_edit-fields div.pmpro_checkout-field-file small.lite {
+	display: block;
+	margin-top: 1em;
+}
+form.pmpro_form .pmpro_member_profile_edit-fields div.pmpro_checkout-field-select2 select {
+	min-height: 80px;
+	min-width: 200px;
+}

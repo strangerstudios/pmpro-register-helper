@@ -426,7 +426,7 @@
 				$r = '<input name="'.$this->name.'"' .' type="checkbox" value="1"'.' id="'.$this->id.'"';
 				$r.=checked( $value, 1,false);		
 				if(!empty($this->readonly))
-					$r .= 'readonly="readonly" ';
+					$r .= 'disabled="disabled" ';
 				if(!empty($this->html_attributes))
 					$r .= $this->getHTMLAttributes();		
 				$r .= ' /> ';

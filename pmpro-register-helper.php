@@ -796,6 +796,19 @@ function pmprorh_rf_show_extra_frontend_profile_fields( $user, $withlocations = 
 	if ( ! empty( $profile_fields ) && $withlocations ) {
 		foreach( $profile_fields as $where => $fields ) {
 			$box = pmprorh_getCheckoutBoxByName( $where );
+
+			// Only show on front-end if there are fields to be shown.
+			$show_fields = false;
+			foreach( $fields as $key => $field ) {
+				if ( $field->profile !== 'only_admin' ) {
+					$show_fields = true;
+				}
+			}
+
+			// Bail if there are no fields to show on the front-end profile.
+			if ( ! $show_fields ) {
+				return;
+			}
 			?>
 
 			<div class="pmpro_checkout_box-<?php echo $where; ?>">

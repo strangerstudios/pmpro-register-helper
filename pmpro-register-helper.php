@@ -652,11 +652,13 @@ function pmprorh_rf_pmpro_registration_checks($okay)
 		global $pmpro_error_fields;
 		$pmpro_error_fields = array_merge((array)$pmpro_error_fields, $required);
 
-		if(count($required) == 1)
-			$pmpro_msg = "The " . implode(", ", $required_labels) . " field is required.";
-		else
-			$pmpro_msg = "The " . implode(", ", $required_labels) . " fields are required.";
-		$pmpro_msgt = "pmpro_error";
+		if( count( $required ) == 1 ) {
+			$pmpro_msg = sprintf( __( 'The %s field is required.', 'pmpro-register-helper' ),  implode(", ", $required_labels) );
+			$pmpro_msgt = 'pmpro_error';
+		} else {
+			$pmpro_msg = sprintf( __( 'The %s fields are required.', 'pmpro-register-helper' ),  implode(", ", $required_labels) );
+			$pmpro_msgt = 'pmpro_error';
+		}
 
 		if($okay)
 			pmpro_setMessage($pmpro_msg, $pmpro_msgt);

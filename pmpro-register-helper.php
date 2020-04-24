@@ -2,8 +2,8 @@
 /*
 Plugin Name: Paid Memberships Pro - Register Helper Add On
 Plugin URI: https://www.paidmembershipspro.com/add-ons/pmpro-register-helper-add-checkout-and-profile-fields/
-Description: Capture additional member information with custom fields at Membership Checkout with Paid Memberships Pro.
-Version: 1.5
+Description: Add custom form fields to membership checkout and user profiles with Paid Memberships Pro.
+Version: 1.6
 Author: Paid Memberships Pro
 Author URI: https://www.paidmembershipspro.com
 Text Domain: pmpro-register-helper
@@ -11,7 +11,7 @@ Text Domain: pmpro-register-helper
 
 define('PMPRORH_DIR', dirname(__FILE__) );
 define('PMPRORH_URL', WP_PLUGIN_URL . "/pmpro-register-helper");
-define('PMPRORH_VERSION', '1.5');
+define('PMPRORH_VERSION', '1.6');
 
 /*
 	Load plugin textdomain.
@@ -187,9 +187,8 @@ function pmprorh_sortByOrder($a, $b)
 */
 function pmprorh_scripts()
 {
-	global $pmpro_level;
-	if( !is_admin() && ( !empty( $_REQUEST['level'] ) || !empty( $pmpro_level ) ) )
-	{
+	global $pmpro_level, $pmpro_pages;
+	if( !is_admin() && ( !empty( $_REQUEST['level'] ) || !empty( $pmpro_level ) || is_page( $pmpro_pages['member_profile_edit'] ) ) ) {
 		if(!defined("PMPRO_VERSION"))
 		{
 			//load some styles that we need from PMPro (check child theme, then parent theme, then plugin folder)
@@ -212,7 +211,7 @@ function pmprorh_scripts()
 			wp_enqueue_style("pmprorh_frontend", PMPRORH_URL . "/css/pmprorh_frontend.css", NULL, "");
 	}
 }
-add_action("init", "pmprorh_scripts");
+add_action( 'wp_enqueue_scripts', 'pmprorh_scripts' );
 
 /*
 	Cycle through extra fields. Show them at checkout.
@@ -226,7 +225,7 @@ function pmprorh_default_register_form()
 	{
 		foreach($pmprorh_registration_fields["register_form"] as $field)
 		{
-			if( is_a($field, 'PMProRH_Field') && pmprorh_checkFieldForLevel($field) && ( !isset( $field->profile ) || $field->profile !== "only" && $field->profile !== "only_admin" && $field->profile_only != true ) ) {
+			if( is_a($field, 'PMProRH_Field') && pmprorh_checkFieldForLevel($field) && ( !isset( $field->profile ) || $field->profile !== "only" && $field->profile !== "only_admin" ) ) {
 				$field->displayAtCheckout();
 			}
 		}
@@ -653,11 +652,13 @@ function pmprorh_rf_pmpro_registration_checks($okay)
 		global $pmpro_error_fields;
 		$pmpro_error_fields = array_merge((array)$pmpro_error_fields, $required);
 
-		if(count($required) == 1)
-			$pmpro_msg = "The " . implode(", ", $required_labels) . " field is required.";
-		else
-			$pmpro_msg = "The " . implode(", ", $required_labels) . " fields are required.";
-		$pmpro_msgt = "pmpro_error";
+		if( count( $required ) == 1 ) {
+			$pmpro_msg = sprintf( __( 'The %s field is required.', 'pmpro-register-helper' ),  implode(", ", $required_labels) );
+			$pmpro_msgt = 'pmpro_error';
+		} else {
+			$pmpro_msg = sprintf( __( 'The %s fields are required.', 'pmpro-register-helper' ),  implode(", ", $required_labels) );
+			$pmpro_msgt = 'pmpro_error';
+		}
 
 		if($okay)
 			pmpro_setMessage($pmpro_msg, $pmpro_msgt);
@@ -781,6 +782,73 @@ function pmprorh_rf_show_extra_profile_fields_withlocations($user)
 }
 add_action( 'show_user_profile', 'pmprorh_rf_show_extra_profile_fields_withlocations' );
 add_action( 'edit_user_profile', 'pmprorh_rf_show_extra_profile_fields_withlocations' );
+
+/**
+ * Show Profile fields on the frontend "Member Profile Edit" page.
+ *
+ * @since 2.3
+ */
+function pmprorh_rf_show_extra_frontend_profile_fields( $user, $withlocations = false ) {
+	global $pmprorh_registration_fields;
+
+	//which fields are marked for the profile
+	$profile_fields = pmprorh_getProfileFields($user->ID, $withlocations);
+
+	//show the fields
+	if ( ! empty( $profile_fields ) && $withlocations ) {
+		foreach( $profile_fields as $where => $fields ) {
+			$box = pmprorh_getCheckoutBoxByName( $where );
+
+			// Only show on front-end if there are fields to be shown.
+			$show_fields = false;
+			foreach( $fields as $key => $field ) {
+				if ( $field->profile !== 'only_admin' ) {
+					$show_fields = true;
+				}
+			}
+
+			// Bail if there are no fields to show on the front-end profile.
+			if ( ! $show_fields ) {
+				return;
+			}
+			?>
+
+			<div class="pmpro_checkout_box-<?php echo $where; ?>">
+				<?php if ( ! empty( $box->label ) ) { ?>
+					<h3><?php echo $box->label; ?></h3>
+				<?php } ?>
+
+				<div class="pmpro_member_profile_edit-fields">
+					<?php
+						 // Cycle through groups.
+						foreach( $fields as $field ) {
+							if ( is_a( $field, 'PMProRH_Field' ) && $field->profile !== 'only_admin' ) {
+								$field->displayAtCheckout( $user->ID );
+							}
+						}
+					?>
+				</div> <!-- end pmpro_member_profile_edit-fields -->
+			</div> <!-- end pmpro_checkout_box_$where -->
+			<?php
+		}
+	} elseif ( ! empty( $profile_fields ) ) { ?>
+		<div class="pmpro_member_profile_edit-fields">
+			<?php
+				 // Cycle through groups.
+				foreach( $fields as $field ) {
+					if ( is_a( $field, 'PMProRH_Field' ) && $field->profile !== 'only_admin' ) {
+						$field->displayAtCheckout( $user->ID );
+					}
+				}
+			?>
+		</div> <!-- end pmpro_member_profile_edit-fields -->
+		<?php
+	}
+}
+function pmprorh_rf_show_extra_frontend_profile_fields_withlocations( $user ) {
+	pmprorh_rf_show_extra_frontend_profile_fields($user, true);
+}
+add_action( 'pmpro_show_user_profile', 'pmprorh_rf_show_extra_frontend_profile_fields_withlocations' );
 
 /*
     Integrate with PMPro Add Member Admin addon
@@ -1051,6 +1119,7 @@ function pmprorh_rf_save_extra_profile_fields( $user_id )
 }
 add_action( 'personal_options_update', 'pmprorh_rf_save_extra_profile_fields' );
 add_action( 'edit_user_profile_update', 'pmprorh_rf_save_extra_profile_fields' );
+add_action( 'pmpro_personal_options_update', 'pmprorh_rf_save_extra_profile_fields' );
 
 /*
 	This code can be used to restrict level signups by email address or username
@@ -1228,13 +1297,15 @@ function pmproh_pmpro_checkout_confirm_email($show)
 /*
 	Enqueue Select2 JS
 */
-function pmprorh_enqueue_select2($hook)
-{
+function pmprorh_enqueue_select2($hook) {
+	global $pmpro_pages;
+
 	// only include on front end and user profiles
 	if( ( !is_admin() && (
 			!empty( $_REQUEST['level'] ) ||
 			!empty( $pmpro_level ) ||
-			class_exists("Theme_My_Login") && method_exists('Theme_My_Login', 'is_tml_page') && Theme_My_Login::is_tml_page("profile") ) ) ||
+			class_exists("Theme_My_Login") && method_exists('Theme_My_Login', 'is_tml_page') && Theme_My_Login::is_tml_page("profile") ) ||
+		is_page( $pmpro_pages['member_profile_edit'] ) ) ||
 		$hook == 'profile.php' ||
 		$hook == 'user-edit.php' ) {
 		wp_enqueue_style('select2', plugins_url('css/select2.min.css', __FILE__), '', '4.0.3', 'screen');

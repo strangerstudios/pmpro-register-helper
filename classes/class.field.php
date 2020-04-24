@@ -430,6 +430,8 @@
 					$r .= '<input type="radio" id="pmprorh_field_' . $this->name . $count . '" name="' . $this->name . '" value="' . esc_attr($ovalue) . '" ';
 					if(!empty($ovalue) && $ovalue == $value)
 						$r .= 'checked="checked"';
+					if(!empty($this->class))
+					$r .= 'class="' . $this->class . '" ';
 					if(!empty($this->readonly))
 						$r .= 'disabled="disabled" ';
 					if(!empty($this->html_attributes))
@@ -442,9 +444,11 @@
 			elseif($this->type == "checkbox")
 			{
 				$r = '<input name="'.$this->name.'"' .' type="checkbox" value="1"'.' id="'.$this->id.'"';
-				$r.=checked( $value, 1,false);		
+				$r.=checked( $value, 1,false);
+				if(!empty($this->class))
+					$r .= 'class="' . $this->class . '" ';		
 				if(!empty($this->readonly))
-					$r .= 'readonly="readonly" ';
+					$r .= 'disabled="disabled" ';
 				if(!empty($this->html_attributes))
 					$r .= $this->getHTMLAttributes();		
 				$r .= ' /> ';
@@ -462,14 +466,17 @@
 				$counter = 1;
 				foreach($this->options as $ovalue => $option)
 				{
-				 
+					if ( ! empty( $this->class ) ) {
+						$class = $this->class;
+					}
+
 				    $r .= sprintf( '<li style="list-style: none;"><span class="pmprorh_checkbox_span">' );
 					$r .= sprintf(
                         '<input name="%1$s[]" type="checkbox" value="%2$s" id="%3$s" class="%4$s" %5$s %6$s %7$s />',
                          $this->name,
                         $ovalue,
 						"{$this->id}_{$counter}",
-                        $this->id,
+                        $this->id . ' ' . $class,
                         ( in_array($ovalue, $value) ? 'checked="checked"' : null ),
                         ( !empty( $this->readonly ) ? 'readonly="readonly"' : null ),
                         $this->getHTMLAttributes()
@@ -500,6 +507,8 @@
 			elseif($this->type == "hidden")
 			{
 				$r = '<input type="hidden" id="' . $this->id . '" name="' . $this->name . '" value="' . esc_attr(wp_unslash($value)) . '" ';
+				if(!empty($this->class))
+					$r .= 'class="' . $this->class . '" ';
 				if(!empty($this->readonly))
 					$r .= 'readonly="readonly" ';
 				if(!empty($this->html_attributes))
@@ -763,6 +772,12 @@
 
 			//update class value for div and field element
 			$this->class .= " " . pmpro_getClassForField($this->name);
+			
+			// add default pmpro-required class to field.
+			if ( ! empty( $this->required ) ) {
+				$this->class .= " pmpro-required";
+			}
+			
 			$this->divclass .= " pmpro_checkout-field-" . $this->type;
 			?>
 			<div id="<?php echo $this->id;?>_div" class="pmpro_checkout-field<?php if(!empty($this->divclass)) echo ' ' . $this->divclass; ?>">

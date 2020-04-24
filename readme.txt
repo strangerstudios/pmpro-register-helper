@@ -3,7 +3,7 @@ Contributors: strangerstudios
 Tags: fields, memberships, user meta, user profile, users
 Requires at least: 4.0
 Tested up to: 5.4
-Stable tag: 1.5
+Stable tag: 1.6
 
 Add custom form fields to membership checkout and user profiles with Paid Memberships Pro.
 
@@ -104,6 +104,18 @@ Please post it in the issues section of GitHub and we'll fix it as soon as we ca
 1. Using Register Helper fields in conjuction with the [Member Directory and Profile Pages Add On](https://www.paidmembershipspro.com/add-ons/pmpro-member-directory/).
 
 == Changelog ==
+= 1.6 - 2020-04-27 =
+* BUG FIX: Fixed issue with checkbox fields readonly attribute.
+* BUG FIX: Adjusted images to ensure their encoding is correct.
+* BUG FIX/ENHANCEMENT: Improved CSS for custom fields at checkout.
+* ENHANCEMENT: Removed "profile_only" legacy conditional check. (Thanks, @wiethkaty)
+* ENHANCEMENT: Support Paid Memberships Pro v2.3+ front-end profile edit page.
+* ENHANCEMENT: Update select2.js to latest distributed version. Improves integration with other plugins/themes that may also include select2.js
+* ENHANCEMENT: Removed unused assets.
+* ENHANCEMENT: Added classes to radio buttons, grouped check boxes and hidden fields. These now support "class" => "my-class" attribute when creating these fields.
+* ENHANCEMENT: Make "The X field is required" error message translatable.
+* ENHANCEMENT: Added 'pmpro-required' class to custom fields, this improves error handling and will highlight fields when there is a problem with them at checkout.
+
 = 1.5 - 2019-11-22 =
 * FEATURE: Added number fields. (Thanks, William Crandell)
 * BUG FIX: Fixed issue where date fields could save values off by one month when using WP 5.3+.

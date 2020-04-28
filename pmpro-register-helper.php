@@ -1305,7 +1305,7 @@ function pmprorh_enqueue_select2($hook) {
 			!empty( $_REQUEST['level'] ) ||
 			!empty( $pmpro_level ) ||
 			class_exists("Theme_My_Login") && method_exists('Theme_My_Login', 'is_tml_page') && Theme_My_Login::is_tml_page("profile") ) ||
-		is_page( $pmpro_pages['member_profile_edit'] ) ) ||
+		( isset( $pmpro_pages['member_profile_edit'] ) && is_page( $pmpro_pages['member_profile_edit'] ) ) ) ||
 		$hook == 'profile.php' ||
 		$hook == 'user-edit.php' ) {
 		wp_enqueue_style('select2', plugins_url('css/select2.min.css', __FILE__), '', '4.0.3', 'screen');

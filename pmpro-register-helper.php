@@ -188,7 +188,7 @@ function pmprorh_sortByOrder($a, $b)
 function pmprorh_scripts()
 {
 	global $pmpro_level, $pmpro_pages;
-	if( !is_admin() && ( !empty( $_REQUEST['level'] ) || !empty( $pmpro_level ) || is_page( $pmpro_pages['member_profile_edit'] ) ) ) {
+	if( !is_admin() && ( !empty( $_REQUEST['level'] ) || !empty( $pmpro_level ) || ( isset( $pmpro_pages['member_profile_edit'] ) && is_page( $pmpro_pages['member_profile_edit'] ) ) ) ) {
 		if(!defined("PMPRO_VERSION"))
 		{
 			//load some styles that we need from PMPro (check child theme, then parent theme, then plugin folder)

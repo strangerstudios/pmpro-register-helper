@@ -3,7 +3,7 @@ Contributors: strangerstudios
 Tags: fields, memberships, user meta, user profile, users
 Requires at least: 4.0
 Tested up to: 5.4
-Stable tag: 1.6
+Stable tag: 1.6.1
 
 Add custom form fields to membership checkout and user profiles with Paid Memberships Pro.
 
@@ -104,6 +104,9 @@ Please post it in the issues section of GitHub and we'll fix it as soon as we ca
 1. Using Register Helper fields in conjuction with the [Member Directory and Profile Pages Add On](https://www.paidmembershipspro.com/add-ons/pmpro-member-directory/).
 
 == Changelog ==
+= 1.6.1 - 2020-04-30 =
+* BUG FIX: Fixed warning shown for PMPro versions < 2.3
+
 = 1.6 - 2020-04-27 =
 * BUG FIX: Fixed issue with checkbox fields readonly attribute.
 * BUG FIX: Adjusted images to ensure their encoding is correct.

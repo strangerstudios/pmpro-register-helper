@@ -818,11 +818,11 @@ function pmprorh_rf_show_extra_frontend_profile_fields( $user, $withlocations = 
 					<h3><?php echo $box->label; ?></h3>
 				<?php } ?>
 
-				<?php if ( ! empty( $box->description ) ) { ?>
-					<div class="pmpro_checkout_decription"><?php echo $box->description; ?></div>
-				<?php } ?>
-
 				<div class="pmpro_member_profile_edit-fields">
+					<?php if ( ! empty( $box->description ) ) { ?>
+						<div class="pmpro_checkout_description"><?php echo $box->description; ?></div>
+					<?php } ?>
+
 					<?php
 						 // Cycle through groups.
 						foreach( $fields as $field ) {

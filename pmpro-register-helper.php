@@ -1174,7 +1174,10 @@ function pmprorh_pmpro_registration_checks($okay)
 			else
 				$needle = strtolower($_REQUEST['bemail']);
 			$haystack = explode("\n", $restrict_emails);
-			array_walk($haystack, create_function('&$val', '$val = trim($val);'));
+			array_walk( $haystack, function( &$val ) { 
+				$val = trim($val);
+				return $val;
+			});
 			if(!in_array($needle, $haystack))
 			{
 				global $pmpro_msg, $pmpro_msgt;
@@ -1198,8 +1201,10 @@ function pmprorh_pmpro_registration_checks($okay)
 			else
 				$needle = strtolower($_REQUEST['username']);
 			$haystack = explode("\n", $restrict_usernames);
-
-			array_walk($haystack, create_function('&$val', '$val = trim($val);'));
+			array_walk( $haystack, function( &$val ) { 
+				$val = trim($val);
+				return $val;
+			});
 			if(!in_array($needle, $haystack))
 			{
 				global $pmpro_msg, $pmpro_msgt;

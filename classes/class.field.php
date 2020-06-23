@@ -776,6 +776,7 @@
 			// add default pmpro-required class to field.
 			if ( ! empty( $this->required ) ) {
 				$this->class .= " pmpro-required";
+				$this->divclass .= " pmpro-required";
 			}
 			
 			$this->divclass .= " pmpro_checkout-field-" . $this->type;

@@ -1091,8 +1091,7 @@ function pmprorh_rf_save_extra_profile_fields( $user_id )
 
 			if(isset($_POST[$field->name]) || isset($_FILES[$field->name]))
 			{
-				if ( isset( $field->sanitize ) && true === $field->sanitize ) {
-
+				if ( isset( $_POST[ $field->name ] ) && isset( $field->sanitize ) && true === $field->sanitize ) {
 					$value = pmprorh_sanitize( $_POST[ $field->name ] );
 				} elseif( isset($_POST[$field->name]) ) {
 				    $value = $_POST[ $field->name ];

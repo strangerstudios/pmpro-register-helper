@@ -330,11 +330,11 @@
 				//if multiple is set, value must be an array
 				if(!empty($this->multiple) && !is_array($value))				
 					$value = array($value);
-								
+
 				if(!empty($this->multiple))
-					$r = '<select id="' . $this->id . '" name="' . $this->name . '[]" ';	//multiselect
+					$r .= '<select id="' . $this->id . '" name="' . $this->name . '[]" ';	//multiselect
 				else
-					$r = '<select id="' . $this->id . '" name="' . $this->name . '" ';		//regular
+					$r .= '<select id="' . $this->id . '" name="' . $this->name . '" ';		//regular
 					
 				if(!empty($this->class))
 					$r .= 'class="' . $this->class . '" ';
@@ -364,8 +364,9 @@
 				//value must be an array
 				if(!is_array($value))
 					$value = array($value);
-				
-				$r = '<select id="' . $this->id . '" name="' . $this->name . '[]" multiple="multiple" ';
+				$r = sprintf('<input type="hidden" name="%s[]" value=""/>', $this->name);
+
+				$r .= '<select id="' . $this->id . '" name="' . $this->name . '[]" multiple="multiple" ';
 				if(!empty($this->class))
 					$r .= 'class="' . $this->class . '" ';
 				if(!empty($this->readonly))
@@ -387,9 +388,9 @@
 				//value must be an array
 				if(!is_array($value))
 					$value = array($value);
-					
+				$r = sprintf('<input type="hidden" name="%s[]" value=""/>', $this->name);
 				//build multi select
-				$r = '<select id="' . $this->id . '" name="' . $this->name . '[]" multiple="multiple" ';
+				$r .= '<select id="' . $this->id . '" name="' . $this->name . '[]" multiple="multiple" ';
 				if(isset($this->placeholder)) {
 					$r .= 'placeholder="' . esc_attr($this->placeholder) . '" ';
 					if(empty($this->select2options)) {
@@ -463,6 +464,7 @@
 					$value = array($value);
 
 				$r = sprintf( '<div class="pmprorh_grouped_checkboxes"><ul>' );
+				$r .= sprintf('<input type="hidden" name="%s[]" value=""/>', $this->name);
 				$counter = 1;
 				foreach($this->options as $ovalue => $option)
 				{

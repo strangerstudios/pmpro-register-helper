@@ -92,6 +92,13 @@
 			if(in_array($this->name, $public_query_vars))
 				$this->name = "pmprorhprefix_" . $this->name;
 
+			// Save wp_users table fields to the WP_User, not usermeta.
+			$user_table_fields = apply_filters( 'pmprorh_user_table_fields', array( 'user_url' ) );
+			if ( in_array( $this->name, $user_table_fields ) ) {
+				//use the save date function
+				$this->save_function = array( $this, 'saveUsersTable' );
+			}
+
 			//default fields						
 			if($this->type == "text")
 			{
@@ -147,7 +154,21 @@
 			
 			return true;
 		}
-		
+
+		// Save function for users table field.
+		function saveUsersTable( $user_id, $name, $value ) {
+			// Special sanitization needed for certain user fields.
+			if ( $name === 'user_url' ) {
+				$value = esc_url_raw( $value );
+			}
+			if ( $name === 'user_nicename' ) {
+				$value = sanitize_title( $value );
+			}
+
+			// Save updated profile fields.
+			wp_update_user( array( 'ID' => $user_id, $name => $value ) );
+		}
+
 		//save function for files
 		function saveFile($user_id, $name, $value)
 		{			
@@ -764,6 +785,13 @@
 				}
 				else
 					$value = $meta;									
+			} elseif ( ! empty( $current_user->ID ) ) {
+				$userdata = get_userdata( $current_user->ID );
+				if ( ! empty( $userdata->{$this->name} ) ) {
+					$value = $userdata->{$this->name};
+				} else {
+					$value = '';
+				}
 			}
 			elseif(!empty($this->value))
 				$value = $this->value;

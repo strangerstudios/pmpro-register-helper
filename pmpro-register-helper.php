@@ -1095,8 +1095,7 @@ function pmprorh_rf_save_extra_profile_fields( $user_id )
 
 			if(isset($_POST[$field->name]) || isset($_FILES[$field->name]))
 			{
-				if ( isset( $field->sanitize ) && true === $field->sanitize ) {
-
+				if ( isset( $_POST[ $field->name ] ) && isset( $field->sanitize ) && true === $field->sanitize ) {
 					$value = pmprorh_sanitize( $_POST[ $field->name ] );
 				} elseif( isset($_POST[$field->name]) ) {
 				    $value = $_POST[ $field->name ];
@@ -1178,7 +1177,10 @@ function pmprorh_pmpro_registration_checks($okay)
 			else
 				$needle = strtolower($_REQUEST['bemail']);
 			$haystack = explode("\n", $restrict_emails);
-			array_walk($haystack, create_function('&$val', '$val = trim($val);'));
+			array_walk( $haystack, function( &$val ) { 
+				$val = trim($val);
+				return $val;
+			});
 			if(!in_array($needle, $haystack))
 			{
 				global $pmpro_msg, $pmpro_msgt;
@@ -1202,8 +1204,10 @@ function pmprorh_pmpro_registration_checks($okay)
 			else
 				$needle = strtolower($_REQUEST['username']);
 			$haystack = explode("\n", $restrict_usernames);
-
-			array_walk($haystack, create_function('&$val', '$val = trim($val);'));
+			array_walk( $haystack, function( &$val ) { 
+				$val = trim($val);
+				return $val;
+			});
 			if(!in_array($needle, $haystack))
 			{
 				global $pmpro_msg, $pmpro_msgt;

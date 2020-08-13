@@ -213,6 +213,14 @@ function pmprorh_scripts()
 }
 add_action( 'wp_enqueue_scripts', 'pmprorh_scripts' );
 
+/**
+ * Enqueue admin CSS
+ */
+function pmprorh_admin_enqueue_scripts() {
+	wp_enqueue_style('pmprorh_admin', PMPRORH_URL . '/css/pmprorh_admin.css', array(), PMPRORH_VERSION, "screen");
+}
+add_action( 'admin_enqueue_scripts', 'pmprorh_admin_enqueue_scripts' );
+
 /*
 	Cycle through extra fields. Show them at checkout.
 */

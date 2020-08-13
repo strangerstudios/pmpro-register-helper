@@ -35,3 +35,27 @@ form.pmpro_form .pmpro_member_profile_edit-fields div.pmpro_checkout-field-selec
 	min-height: 80px;
 	min-width: 200px;
 }
+form.pmpro_form .pmpro_member_profile_edit-fields div.pmprorh_file_preview {
+	display: block;
+	margin: 1em 0 0 0;
+}
+div.pmprorh_file_preview img {
+	max-height: 150px;
+	max-width: 150px;
+}
+button.pmprorh_delete_restore_file,
+button.pmprorh_delete_restore_file:hover {
+	margin: 0;
+	padding: 0;
+	box-shadow: initial;
+	border: initial;
+	border-radius: initial;
+	background: initial;
+	font-size: initial;
+	transform: initial;
+	cursor: initial;
+	text-align: initial;
+	color: initial;
+	text-decoration: underline;
+}
+

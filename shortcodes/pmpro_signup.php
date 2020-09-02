@@ -46,6 +46,14 @@ function pmprorh_signup_shortcode($atts, $content=null, $code="")
 	if($intro === "0" || $intro === "false" || $intro === "no")
 		$intro = false;
 
+	// treat this page load as a checkout
+	add_filter( 'pmpro_is_checkout', '__return_true' );
+	
+	// load recaptcha if needed
+	if ( ! function_exists( 'pmpro_recaptcha_get_html' ) ) {
+		pmpro_init_recaptcha();
+	}
+
 	global $current_user, $membership_levels;	
 	
 	ob_start();

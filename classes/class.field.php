@@ -786,9 +786,10 @@
 			//update class value for div and field element
 			$this->class .= " " . pmpro_getClassForField($this->name);
 			
-			// add default pmpro-required class to field.
+			// add default pmpro_required class to field.
 			if ( ! empty( $this->required ) ) {
-				$this->class .= " pmpro-required";
+				$this->class .= " pmpro_required pmpro-required"; // pmpro-required was in a previous version. Keeping it in case someone is using it.
+				$this->divclass .= " pmpro_checkout-field-required";
 			}
 			
 			$this->divclass .= " pmpro_checkout-field-" . $this->type;

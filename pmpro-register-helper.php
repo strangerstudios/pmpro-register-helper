@@ -635,8 +635,7 @@ function pmprorh_rf_pmpro_registration_checks($okay)
 				else
 					$value = false;
 
-				if(!empty($field->required) && empty( $_REQUEST[$field->name] ) && empty( $_FILES[$field->name]['name'] ) && empty( $_REQUEST[$field->name.'_old'] ) )
-				{
+				if( ! $field->was_filled_if_needed() ) {
 					$required[] = $field->name;
                     $required_labels[] = $field->label;
 				}

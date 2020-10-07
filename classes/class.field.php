@@ -662,6 +662,7 @@
 		
 		function getDependenciesJS()
 		{
+			global $pmprorh_registration_fields;
 			//dependencies
 			if(!empty($this->depends))
 			{					
@@ -671,11 +672,23 @@
 				{
 					if(!empty($check['id']))
 					{
-						$checks[] = "((jQuery('#" . $check['id']."')".".is(':checkbox')) "
-						 ."? jQuery('#" . $check['id'] . ":checked').length > 0"
-						 .":(jQuery('#" . $check['id'] . "').val() == " . json_encode($check['value']) . " || jQuery.inArray( jQuery('#" . $check['id'] . "').val(), " . json_encode($check['value']) . ") > -1)) ||"."(jQuery(\"input:radio[name='".$check['id']."']:checked\").val() == ".json_encode($check['value'])." || jQuery.inArray(".json_encode($check['value']).", jQuery(\"input:radio[name='".$check['id']."']:checked\").val()) > -1)";
+						// If checking grouped_checkbox, need to update the $check['id'] with index of option.
+						$field_id = $check['id'];
+						$depends_checkout_box = PMProRH_Field::get_checkout_box_name_for_field( $field_id );
+						if ( empty( $depends_checkout_box ) ) {
+							continue;
+						}
+						foreach ( $pmprorh_registration_fields[ $depends_checkout_box ] as $field ) {
+							if ( $field->type === 'checkbox_grouped' && $field->name === $field_id && ! empty( $field->options ) ) {
+								$field_id = $field_id . '_' . intval( array_search( $check['value'], array_keys( $field->options ) )+1 );
+							}
+						}
+
+						$checks[] = "((jQuery('#" . $field_id ."')".".is(':checkbox')) "
+						 ."? jQuery('#" . $field_id . ":checked').length > 0"
+						 .":(jQuery('#" . $field_id . "').val() == " . json_encode($check['value']) . " || jQuery.inArray( jQuery('#" . $field_id . "').val(), " . json_encode($check['value']) . ") > -1)) ||"."(jQuery(\"input:radio[name='".$check['id']."']:checked\").val() == ".json_encode($check['value'])." || jQuery.inArray(".json_encode($check['value']).", jQuery(\"input:radio[name='".$field_id."']:checked\").val()) > -1)";
 					
-						$binds[] = "#" . $check['id'].",input:radio[name=".$check['id']."]";
+						$binds[] = "#" . $field_id .",input:radio[name=". $field_id ."]";
 					}				
 				}
 								
@@ -871,11 +884,11 @@
 			return (bool)count(array_filter(array_keys($array), 'is_string'));
 		}
 
-		function get_checkout_box_name() {
+		static function get_checkout_box_name_for_field( $field_name ) {
 			global $pmprorh_registration_fields;
 			foreach( $pmprorh_registration_fields as $checkout_box_name => $fields ) {
 				foreach($fields as $field) {
-					if( $field->name == $this->name ) {
+					if( $field->name == $field_name ) {
 						return $checkout_box_name;
 					}
 				}
@@ -885,7 +898,7 @@
 
 		function was_present_on_checkout_page() {
 			// Check if checkout box that field is in is on page.
-			$checkout_box = $this->get_checkout_box_name();
+			$checkout_box = PMProRH_Field::get_checkout_box_name_for_field( $this->name );
 			if ( empty( $checkout_box ) ) {
 				// Checkout box does not exist.
 				return false;

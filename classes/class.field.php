@@ -924,7 +924,9 @@
 								}
 							} else {
 								// Single checkbox that is unchecked. Set to show field only if checkbox is checked.
-								return empty( $check['value'] );
+								if ( ! empty( $check['value'] ) ) {
+									return false;
+								}
 							}
 						} elseif ( isset( $_REQUEST[ $check['id'] ] ) && $check['value'] != $_REQUEST[ $check['id'] ] ) {
 							// This fields depends on another field type.

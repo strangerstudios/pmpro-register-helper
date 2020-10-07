@@ -264,7 +264,7 @@
         {
 	        if ( isset( $this->sanitize ) && true === $this->sanitize ) {
 
-		        $value = pmprorh_sanitize( $value );
+		        $value = pmprorh_sanitize( $value, $this );
 	        }
 
         	$meta_key = str_replace("pmprorhprefix_", "", $name);

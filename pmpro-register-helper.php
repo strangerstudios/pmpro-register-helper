@@ -515,7 +515,7 @@ function pmprorh_pmpro_after_checkout($user_id)
 				if(isset($value))
 				{
 					if ( isset( $field->sanitize ) && true === $field->sanitize ) {
-						$value = pmprorh_sanitize( $value );
+						$value = pmprorh_sanitize( $value, $field );
                     }
 
 					//callback?
@@ -541,7 +541,7 @@ add_action('pmpro_before_send_to_payfast', 'pmprorh_pmpro_after_checkout', 20);	
  *
  * @return array|int|string|object     Sanitized value
  */
-function pmprorh_sanitize( $value ) {
+function pmprorh_sanitize( $value, $field = null ) {
 
 	if ( is_array( $value ) ) {
 
@@ -557,7 +557,9 @@ function pmprorh_sanitize( $value ) {
 		}
 	}
 
-	if ( ( ! is_array( $value ) ) && ctype_alpha( $value ) ||
+	if ( ! empty( $field ) && ! empty( $field->type ) && $field->type === 'textarea' ) {
+		$value = sanitize_textarea_field( $value );
+	} elseif ( ( ! is_array( $value ) ) && ctype_alpha( $value ) ||
 	     ( ( ! is_array( $value ) ) && strtotime( $value ) ) ||
 	     ( ( ! is_array( $value ) ) && is_string( $value ) ) ||
 	     ( ( ! is_array( $value ) ) && is_numeric( $value) )
@@ -961,7 +963,7 @@ function pmprorh_pmpro_add_member_added( $uid = null, $user = null )
             {
 	            if ( isset( $field->sanitize ) && true === $field->sanitize ) {
 
-		            $value = pmprorh_sanitize( $_POST[ $field->name ] );
+		            $value = pmprorh_sanitize( $_POST[ $field->name ], $field );
 	            } elseif( isset($_POST[$field->name]) ) {
 	                $value = $_POST[ $field->name ];
                 } else {
@@ -1091,7 +1093,7 @@ function pmprorh_rf_save_extra_profile_fields( $user_id )
 			if(isset($_POST[$field->name]) || isset($_FILES[$field->name]))
 			{
 				if ( isset( $_POST[ $field->name ] ) && isset( $field->sanitize ) && true === $field->sanitize ) {
-					$value = pmprorh_sanitize( $_POST[ $field->name ] );
+					$value = pmprorh_sanitize( $_POST[ $field->name ], $field );
 				} elseif( isset($_POST[$field->name]) ) {
 				    $value = $_POST[ $field->name ];
                 } else {

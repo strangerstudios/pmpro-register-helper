@@ -870,4 +870,81 @@
 		function is_assoc($array) {			
 			return (bool)count(array_filter(array_keys($array), 'is_string'));
 		}
+
+		function get_checkout_box_name() {
+			global $pmprorh_registration_fields;
+			foreach( $pmprorh_registration_fields as $checkout_box_name => $fields ) {
+				foreach($fields as $field) {
+					if( $field->name == $this->name ) {
+						return $checkout_box_name;
+					}
+				}
+			}
+			return '';
+		}
+
+		function was_present_on_checkout_page() {
+			// Check if checkout box that field is in is on page.
+			$checkout_box = $this->get_checkout_box_name();
+			if ( empty( $checkout_box ) ) {
+				// Checkout box does not exist.
+				return false;
+			}
+
+			$user_fields_locations = array(
+				'after_username',
+				'after_password',
+				'after_email',
+				'after_captcha',
+			);
+			if ( is_user_logged_in() && in_array( $checkout_box, $user_fields_locations ) ) {
+				// User is logged in and field is only for new users.
+				return false;
+			}
+			
+			// Check if field is hidden because of "depends" option.
+			if ( ! empty( $this->depends ) ) {					
+				//build the checks
+				$checks = array();
+				foreach($this->depends as $check) {
+					if( ! empty( $check['id'] ) && isset( $check['value'] ) ) {
+						// We have a valid depends statement.
+						if ( isset( $_REQUEST[ $check['id'] . '_checkbox' ] ) ) {
+							// This fields depends on a checkbox or checkbox_grouped input.
+							if ( isset( $_REQUEST[ $check['id'] ] ) && is_array( $_REQUEST[ $check['id'] ] ) ) {
+								// checkbox_grouped input.
+								if ( ! in_array( $check['value'], $_REQUEST[ $check['id'] ] ) ) {
+									return false;
+								}
+							} elseif ( isset( $_REQUEST[ $check['id'] ] ) && '1' === $_REQUEST[ $check['id'] ] ) {
+								// Single checkbox that is checked.
+								if ( empty( $check['value'] ) ) {
+									// Set to show field only if checkbox is unchecked.
+									return false;
+								}
+							} else {
+								// Single checkbox that is unchecked. Set to show field only if checkbox is checked.
+								return empty( $check['value'] );
+							}
+						} elseif ( isset( $_REQUEST[ $check['id'] ] ) && $check['value'] != $_REQUEST[ $check['id'] ] ) {
+							// This fields depends on another field type.
+							return false;
+						}
+					}				
+				}
+			}
+
+			// Field should have been showed at checkout.
+			return true;
+		}
+
+		function was_filled_if_needed() {
+			// If field is never required or is not present on checkout page, return true.
+			if ( ! $this->required || ! $this->was_present_on_checkout_page() ) {
+				return true;
+			}
+
+			// Return whether the field is filled.
+			return  ! ( empty( $_REQUEST[$this->name] ) && empty( $_FILES[$this->name]['name'] ) && empty( $_REQUEST[$this->name.'_old'] ) );
+		}
 	}

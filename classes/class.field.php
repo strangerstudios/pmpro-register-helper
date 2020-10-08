@@ -141,7 +141,7 @@
 				}
 				// Default to allow file delete if full source known.
 				if ( ! isset( $this->allow_delete ) ) {
-					$this->allow_delete = true;
+					$this->allow_delete = 'only_admin';
 				}
 				//use the file save function
 				$this->save_function = array($this, "saveFile");
@@ -197,7 +197,9 @@
 						$old_file_meta['filename'] ==  $delete_old_file_name
 					) {				
 						unlink( $old_file_meta['fullpath'] );
-						unlink( $old_file_meta['previewpath'] );
+						if ( ! empty( $old_file_meta['previewpath'] ) ) {
+							unlink( $old_file_meta['previewpath'] );
+						}
 						delete_user_meta( $user->ID, $meta_key );
 					}
 				}
@@ -621,7 +623,7 @@
 				}
 
 				// Show a preview of existing file if image type.
-				if ( ( ! isset( $this->preview ) || ! empty( $this->preview ) ) && ! empty( $value ) && ! empty( $this->file['previewurl'] ) ) {
+				if ( ( ! empty( $this->preview ) ) && ! empty( $value ) && ! empty( $this->file['previewurl'] ) ) {
 					$filetype = wp_check_filetype( basename( $this->file['previewurl'] ), null );
 					if ( $filetype && 0 === strpos( $filetype['type'], 'image/' ) ) {
 						$r_end .= '<div class="pmprorh_file_preview"><img src="' . $this->file['previewurl'] . '" alt="' . basename($value) . '" /></div>';
@@ -632,15 +634,20 @@
 				if(!empty($value))
 				{
 					if(!empty($this->file['fullurl']))
-						$r_end .= '<span class="pmprorh_file_' . $this->name . '_name">Current File: <a target="_blank" href="' . $this->file['fullurl'] . '">' . basename($value) . '</a></span>';
+						$r_end .= '<span class="pmprorh_file_' . $this->name . '_name">' . sprintf(__('Current File: %s', 'pmpro-register-helper' ), '<a target="_blank" href="' . $this->file['fullurl'] . '">' . basename($value) . '</a>' ) . '</span>';
 					else
-						$r_end .= 'Current File: ' . basename($value);
+						$r_end .= sprintf(__('Current File: %s', 'pmpro-register-helper' ), basename($value) );
 
 					// Allow user to delete the uploaded file if we know the full location. 
-					if ( ( ! isset( $this->allow_delete ) || ! empty( $this->allow_delete ) ) && ! empty( $this->file['fullurl'] ) ) {
-						$r_end .= '&nbsp;&nbsp;<button class="pmprorh_delete_restore_file" id="pmprorh_delete_file_' . $this->name . '_button" onclick="return false;">' . __( '[delete]', 'pmpro-register-helper' ) . '</button>';
+					if ( ( ! empty( $this->allow_delete ) ) && ! empty( $this->file['fullurl'] ) ) {
+						// Check whether the current user can delete the uploaded file based on the field attribute 'allow_delete'.
+						if ( $this->allow_delete === true || 
+							( $this->allow_delete === 'admins' || $this->allow_delete === 'only_admin' && current_user_can( 'manage_options', $current_user->ID ) )
+						) {
+ 						$r_end .= '&nbsp;&nbsp;<button class="pmprorh_delete_restore_file" id="pmprorh_delete_file_' . $this->name . '_button" onclick="return false;">' . __( '[delete]', 'pmpro-register-helper' ) . '</button>';
 						$r_end .= '<button class="pmprorh_delete_restore_file" id="pmprorh_cancel_delete_file_' . $this->name . '_button" style="display: none;" onclick="return false;">' . __( '[restore]', 'pmpro-register-helper' ) . '</button>';
 						$r_end .= '<input id="pmprorh_delete_file_' . $this->name . '_field" name="pmprorh_delete_file_' . $this->name . '_field" type="hidden" value="0" />';
+						}
 					}
 				}
 				

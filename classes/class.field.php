@@ -961,6 +961,15 @@
 			}
 
 			// Return whether the field is filled.
-			return  ! ( empty( $_REQUEST[$this->name] ) && empty( $_FILES[$this->name]['name'] ) && empty( $_REQUEST[$this->name.'_old'] ) );
+			switch ( $this->type ) {
+				case 'text':
+				case 'textarea':
+				case 'number':
+					$filled = ( isset( $_REQUEST[$this->name] ) && '' !== trim( $_REQUEST[$this->name] ) );
+					break;
+				default:
+					$filled = ! ( empty( $_REQUEST[$this->name] ) && empty( $_FILES[$this->name]['name'] ) && empty( $_REQUEST[$this->name.'_old'] ) );
+			}
+			return $filled;
 		}
 	}

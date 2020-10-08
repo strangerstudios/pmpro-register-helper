@@ -413,6 +413,7 @@
 					$r .= '>' . $option . '</option>';
 				}
 				$r .= '</select>';
+				$r .= '<input type="hidden" name="'.$this->name.'_checkbox" value="1" />';	// Extra field so we can track unchecked boxes. Naming just for consistency.
 				
 				if(!empty($this->select2options))
 					$r .= '<script>jQuery(document).ready(function($){ $("#' . $this->id . '").select2({' . $this->select2options . '}); });</script>';

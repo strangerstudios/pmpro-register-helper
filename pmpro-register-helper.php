@@ -485,6 +485,11 @@ function pmprorh_pmpro_after_checkout($user_id)
 					//unchecked checkbox
 					$value = 0;
 				}
+				elseif(!empty($_POST[$field->name . "_checkbox"]) && in_array( $field->type, array( 'checkbox', 'checkbox_grouped', 'select2' ) ) )	//handle unchecked checkboxes
+				{
+					//unchecked checkbox
+					$value = array();
+				}
 				elseif(isset($_SESSION[$field->name]))
 				{
 					//file or value?
@@ -983,7 +988,15 @@ function pmprorh_pmpro_add_member_added( $uid = null, $user = null )
                     call_user_func($field->save_function, $user_id, $field->name, 0);
                 else
                     update_user_meta($user_id, $field->meta_key, 0);
-            }
+			}
+			elseif(!empty($_POST[$field->name . "_checkbox"]) && in_array( $field->type, array( 'checkbox', 'checkbox_grouped', 'select2' ) ) )	//handle unchecked checkboxes
+			{
+				//callback?
+				if(!empty($field->save_function))
+					call_user_func($field->save_function, $user_id, $field->name, array());
+				else
+					update_user_meta($user_id, $field->meta_key, array());
+			}
         }
     }
 
@@ -1113,6 +1126,14 @@ function pmprorh_rf_save_extra_profile_fields( $user_id )
 					call_user_func($field->save_function, $user_id, $field->name, 0);
 				else
 					update_user_meta($user_id, $field->meta_key, 0);
+			}
+			elseif(!empty($_POST[$field->name . "_checkbox"]) && in_array( $field->type, array( 'checkbox', 'checkbox_grouped', 'select2' ) ) )	//handle unchecked checkboxes
+			{
+				//callback?
+				if(!empty($field->save_function))
+					call_user_func($field->save_function, $user_id, $field->name, array());
+				else
+					update_user_meta($user_id, $field->meta_key, array());
 			}
 		}
 	}

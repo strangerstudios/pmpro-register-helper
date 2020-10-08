@@ -477,12 +477,11 @@
                          $this->name,
                         $ovalue,
 						"{$this->id}_{$counter}",
-                        $this->id . ' ' . $class,
+                        $this->id . ' ' . str_replace( 'pmpro_required pmpro-required', '', $class ), // Don't show every option as required.
                         ( in_array($ovalue, $value) ? 'checked="checked"' : null ),
                         ( !empty( $this->readonly ) ? 'readonly="readonly"' : null ),
                         $this->getHTMLAttributes()
-                    );
-     
+					);     
 					
 					$r .= sprintf( ' <label class="pmprorh_checkbox_label pmpro_label-inline pmpro_clickable" for="%1$s">%2$s</label>', "{$this->id}_{$counter}",$option );
 					$r .= sprintf( '<input type="hidden" name="%1$s_checkbox[]" value="%2$s" />', $this->name, $ovalue );	//extra field so we can track unchecked boxes

@@ -1040,7 +1040,7 @@ function pmprorh_getProfileFields($user_id, $withlocations = false)
 
 				if(!empty($field->profile) && ($field->profile === "admins" || $field->profile === "admin" || $field->profile === "only_admin"))
 				{
-					if(current_user_can("manage_options", $user_id))
+					if( current_user_can( 'manage_options' ) || current_user_can( 'pmpro_membership_manager' ) )
 					{
 						if($withlocations)
 							$profile_fields[$where][] = $field;

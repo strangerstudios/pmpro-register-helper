@@ -633,12 +633,8 @@
 			if(defined('IS_PROFILE_PAGE') && IS_PROFILE_PAGE && !apply_filters('pmprorh_show_required_on_profile', false, $this))
 				$this->showrequired = false;
 
-			if(!empty($this->required) && !empty($this->showrequired) && $this->showrequired !== 'label')
-			{
-				if(is_string($this->showrequired))
+			if ( ! empty( $this->required ) && ! empty( $this->showrequired ) && is_string( $this->showrequired ) && $this->showrequired !== 'label' ) {
 					$r .= $this->showrequired;
-				else
-					$r .= '<span class="pmpro_asterisk"> <abbr title="Required Field">*</abbr></span>';
 			}
 
 			//anything meant to be added to the beginning or end?
@@ -791,6 +787,10 @@
 				$this->class .= " pmpro_required pmpro-required"; // pmpro-required was in a previous version. Keeping it in case someone is using it.
 				$this->divclass .= " pmpro_checkout-field-required";
 			}
+
+			if ( empty( $this->showrequired ) || is_string( $this->showrequired ) ) {
+				$this->divclass .= " pmpro_checkout-field-hide-required";
+			}
 			
 			$this->divclass .= " pmpro_checkout-field-" . $this->type;
 			?>
@@ -800,7 +800,7 @@
 					<?php 
 						if(!empty($this->required) && !empty($this->showrequired) && $this->showrequired === 'label')
 						{
-						?><span class="pmpro_asterisk"> *</span><?php
+						?><span class="pmprorh_asterisk"> <abbr title="Required Field">*</abbr></span><?php
 						}
 					?>
 					<?php $this->display($value); ?>

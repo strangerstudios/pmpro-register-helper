@@ -35,6 +35,13 @@ form.pmpro_form .pmpro_member_profile_edit-fields div.pmpro_checkout-field-selec
 	min-height: 80px;
 	min-width: 200px;
 }
+form.pmpro_form .pmprorh_asterisk abbr {
+	border: none;
+	text-decoration: none;
+}
+form.pmpro_form .pmpro_checkout-field-hide-required .pmpro_asterisk {
+	display: none;
+}
 form.pmpro_form .pmpro_member_profile_edit-fields div.pmprorh_file_preview {
 	display: block;
 	margin: 1em 0 0 0;
@@ -58,4 +65,3 @@ button.pmprorh_delete_restore_file:hover {
 	color: initial;
 	text-decoration: underline;
 }
-

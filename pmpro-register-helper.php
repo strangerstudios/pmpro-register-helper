@@ -213,6 +213,14 @@ function pmprorh_scripts()
 }
 add_action( 'wp_enqueue_scripts', 'pmprorh_scripts' );
 
+/**
+ * Enqueue admin CSS
+ */
+function pmprorh_admin_enqueue_scripts() {
+	wp_enqueue_style('pmprorh_admin', PMPRORH_URL . '/css/pmprorh_admin.css', array(), PMPRORH_VERSION, "screen");
+}
+add_action( 'admin_enqueue_scripts', 'pmprorh_admin_enqueue_scripts' );
+
 /*
 	Cycle through extra fields. Show them at checkout.
 */
@@ -825,6 +833,10 @@ function pmprorh_rf_show_extra_frontend_profile_fields( $user, $withlocations = 
 				<?php } ?>
 
 				<div class="pmpro_member_profile_edit-fields">
+					<?php if ( ! empty( $box->description ) ) { ?>
+						<div class="pmpro_checkout_description"><?php echo $box->description; ?></div>
+					<?php } ?>
+
 					<?php
 						 // Cycle through groups.
 						foreach( $fields as $field ) {

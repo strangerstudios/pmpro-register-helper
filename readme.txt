@@ -2,8 +2,8 @@
 Contributors: strangerstudios
 Tags: fields, memberships, user meta, user profile, users
 Requires at least: 4.0
-Tested up to: 5.4
-Stable tag: 1.6.1
+Tested up to: 5.5
+Stable tag: 1.7
 
 Add custom form fields to membership checkout and user profiles with Paid Memberships Pro.
 
@@ -104,6 +104,20 @@ Please post it in the issues section of GitHub and we'll fix it as soon as we ca
 1. Using Register Helper fields in conjuction with the [Member Directory and Profile Pages Add On](https://www.paidmembershipspro.com/add-ons/pmpro-member-directory/).
 
 == Changelog ==
+= 1.7 - 2020-10-14 =
+* ENHANCEMENT: Files can now be deleted by setting the "allow_delete" field attribute.
+* ENHANCEMENT: Images submitted through the "file" field can now be previewed.
+* ENHANCEMENT: Added function to collect information saved in the "wp_users" table.
+* ENHANCEMENT: Membership managers can now see admin only fields.
+* BUG FIX/ENHANCEMENT: Class "pmpro_required" now being added to required fields.
+* BUG FIX/ENHANCEMENT: "Required" asterisks are now being added by the core PMPro plugin.
+* BUG FIX/ENHANCEMENT: Checkout box descriptions are now being shown on frontend profile.
+* BUG FIX: Fixed issue where fields would be required even if they are not visible on checkout page.
+* BUG FIX: select2 and checkbox_grouped fields will now successfully save when empty.
+* BUG FIX: Fields depending on checkbox_grouped value will now show/hide as expected.
+* BUG FIX: Line breaks will now be preserved in textareas.
+* BUG FIX: Fixed issue where "0" in text field would not pass required check.
+
 = 1.6.1 - 2020-04-30 =
 * BUG FIX: Fixed warning shown for PMPro versions < 2.3
 

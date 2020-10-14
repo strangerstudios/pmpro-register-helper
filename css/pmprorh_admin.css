@@ -1,0 +1,9 @@
+/* Admin CSS for Register Helper */
+div.pmprorh_file_preview {
+	display: block;
+	margin: 1em 0 0 0;
+}
+div.pmprorh_file_preview img {
+	max-height: 150px;
+	max-width: 150px;
+}

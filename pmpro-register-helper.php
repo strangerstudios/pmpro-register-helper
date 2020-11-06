@@ -632,7 +632,7 @@ function pmprorh_rf_pmpro_registration_checks($okay)
 						if((!$filetype['type'] || !$filetype['ext'] ) && !current_user_can( 'unfiltered_upload' ))
 						{
 							if($okay)	//only want to update message if there is no previous error
-								pmpro_setMessage(sprintf(__("Sorry, the file type for %s is not permitted for security reasons.", "pmprorh"), $_FILES[$field->name]['name']), "pmpro_error");
+								pmpro_setMessage(sprintf(__("Sorry, the file type for %s is not permitted for security reasons.", "pmpro-register-helper"), $_FILES[$field->name]['name']), "pmpro_error");
 							return false;
 						}
 						else
@@ -641,7 +641,7 @@ function pmprorh_rf_pmpro_registration_checks($okay)
 							if(!empty($field->ext) && !in_array($filetype['ext'], $field->ext))
 							{
 								if($okay)	//only want to update message if there is no previous error
-									pmpro_setMessage(sprintf(__("Sorry, the file type for %s is not permitted for security reasons.", "pmprorh"), $_FILES[$field->name]['name']), "pmpro_error");
+									pmpro_setMessage(sprintf(__("Sorry, the file type for %s is not permitted for security reasons.", "pmpro-register-helper"), $_FILES[$field->name]['name']), "pmpro_error");
 								return false;
 							}
 						}
@@ -945,7 +945,7 @@ function pmprorh_pmpro_add_member_added( $uid = null, $user = null )
 		global $pmpro_msgt;
 		global $pmpro_msg;
 
-		$pmpro_msg = __("Unable to add/update PMPro Register Helper registration fields for this member", "pmprorh");
+		$pmpro_msg = __("Unable to add/update PMPro Register Helper registration fields for this member", "pmpro-register-helper");
 		$pmpro_msgt = "pmpro_error";
 
 		return false;
@@ -1214,7 +1214,7 @@ function pmprorh_pmpro_registration_checks($okay)
 			if(!in_array($needle, $haystack))
 			{
 				global $pmpro_msg, $pmpro_msgt;
-				$pmpro_msg = "This membership level is restricted to certain users only. Make sure you've entered your email address correctly.";
+				$pmpro_msg = __("This membership level is restricted to certain users only. Make sure you've entered your email address correctly.", "pmpro-register-helper");
 				$pmpro_msgt = "pmpro_error";
 				$okay = false;
 
@@ -1241,7 +1241,7 @@ function pmprorh_pmpro_registration_checks($okay)
 			if(!in_array($needle, $haystack))
 			{
 				global $pmpro_msg, $pmpro_msgt;
-				$pmpro_msg = "This membership level is restricted to certain users only. Make sure you are logged into your existing account and using the proper username.";
+				$pmpro_msg = __("This membership level is restricted to certain users only. Make sure you are logged into your existing account and using the proper username.", "pmpro-register-helper");
 				$pmpro_msgt = "pmpro_error";
 				$okay = false;
 			}

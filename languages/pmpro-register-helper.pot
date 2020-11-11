@@ -1,0 +1,106 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Paid Memberships Pro - Register Helper Add On\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-11-11 15:19+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: \n"
+"Language: \n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/\n"
+"X-Loco-Version: 2.4.4; wp-5.5.3"
+
+#: classes/class.field.php:647
+msgid "[delete]"
+msgstr ""
+
+#: classes/class.field.php:648
+msgid "[restore]"
+msgstr ""
+
+#. Description of the plugin
+msgid ""
+"Add custom form fields to membership checkout and user profiles with Paid "
+"Memberships Pro."
+msgstr ""
+
+#: classes/class.field.php:473
+msgid "Choose one or more."
+msgstr ""
+
+#: classes/class.field.php:637 classes/class.field.php:639
+#, php-format
+msgid "Current File: %s"
+msgstr ""
+
+#: pmpro-register-helper.php:1505
+msgid "Docs"
+msgstr ""
+
+#: modules/register-form.php:202
+msgid "Full Name"
+msgstr ""
+
+#. Author URI of the plugin
+msgid "https://www.paidmembershipspro.com"
+msgstr ""
+
+#. URI of the plugin
+msgid ""
+"https://www.paidmembershipspro.com/add-ons/pmpro-register-helper-add-"
+"checkout-and-profile-fields/"
+msgstr ""
+
+#: modules/register-form.php:203
+msgid "LEAVE THIS BLANK"
+msgstr ""
+
+#: shortcodes/pmpro_signup.php:139
+msgid "Log In"
+msgstr ""
+
+#: pmpro-register-helper.php:94
+msgid "More Information"
+msgstr ""
+
+#. Author of the plugin
+msgid "Paid Memberships Pro"
+msgstr ""
+
+#. Name of the plugin
+msgid "Paid Memberships Pro - Register Helper Add On"
+msgstr ""
+
+#: pmpro-register-helper.php:1506
+msgid "Support"
+msgstr ""
+
+#: pmpro-register-helper.php:670
+#, php-format
+msgid "The %s field is required."
+msgstr ""
+
+#: pmpro-register-helper.php:673
+#, php-format
+msgid "The %s fields are required."
+msgstr ""
+
+#: pmpro-register-helper.php:1505
+msgid "View Documentation"
+msgstr ""
+
+#: pmpro-register-helper.php:1506
+msgid "Visit Customer Support Forum"
+msgstr ""
+
+#: shortcodes/pmpro_signup.php:76
+#, php-format
+msgid ""
+"You are logged in as <strong>%s</strong>. If you would like to use a "
+"different account for this membership, <a href=\"%s\">log out now</a>."
+msgstr ""

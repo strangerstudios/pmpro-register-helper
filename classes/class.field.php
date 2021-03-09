@@ -21,6 +21,7 @@
 			$this->memberslistcsv = false;
 			$this->readonly = false;
 			$this->depends = array();
+			$this->dependsOr = false;
 			$this->showrequired = true;
 			$this->showmainlabel = true;
 			$this->divclass = null;
@@ -803,7 +804,7 @@
 					function pmprorh_<?php echo $this->id;?>_hideshow()
 					{						
 						if(
-							<?php echo implode(" && ", $checks); ?>
+							<?php echo implode(($this->dependsOr ? " || " : " && "), $checks); ?>
 						)
 						{
 							jQuery('#<?php echo $this->id;?>_tr').show();

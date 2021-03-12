@@ -2,7 +2,7 @@
 Contributors: strangerstudios
 Tags: fields, memberships, user meta, user profile, users
 Requires at least: 4.0
-Tested up to: 5.5
+Tested up to: 5.7
 Stable tag: 1.7
 
 Add custom form fields to membership checkout and user profiles with Paid Memberships Pro.

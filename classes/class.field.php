@@ -317,7 +317,7 @@
 			}
 
 			// Our folder in the uploads directory that we want to save files to.
-			$upload_dir  = '/pmpro-register-helper/' . $user->user_login . '/';
+			$upload_dir = '/pmpro-register-helper/' . $user->user_login . '/';
 
 			// If multisite, prefix the directory with the current blog ID specific folder.
 			if ( is_multisite() ) {

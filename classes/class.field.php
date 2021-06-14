@@ -326,6 +326,7 @@
 
 			// Get the full uploads directory URL we want to save files to.
 			$upload_path = content_url( '/uploads' . $upload_dir );
+
 			$file_meta_value_array = array(
 				'original_filename'	=> $file['name'],
 				'filename'			=> $filename,

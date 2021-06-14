@@ -644,7 +644,7 @@
 				//show name of existing file
 				if(!empty($value))
 				{
-					if(!empty($this->file['fullurl'])){
+					if ( ! empty( $this->file['fullurl'] ) ) {
 						$r_end .= '<span class="pmprorh_file_' . $this->name . '_name">' . sprintf(__('Current File: %s', 'pmpro-register-helper' ), '<a target="_blank" href="' . $this->file['fullurl'] . '">' . basename($value) . '</a>' ) . '</span>';
 					} else {
 						$r_end .= sprintf(__('Current File: %s', 'pmpro-register-helper' ), basename($value) );

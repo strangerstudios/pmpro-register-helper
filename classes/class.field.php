@@ -316,17 +316,18 @@
 				}
 			}
 
+			$upload_path = is_multisite() ? content_url('/uploads/sites/' . get_current_blog_id() . '/pmpro-register-helper/' . $user->user_login . '/') : content_url( '/uploads/pmpro-register-helper/' . $user->user_login . '/' );
 			$file_meta_value_array = array(
 				'original_filename'	=> $file['name'],
 				'filename'			=> $filename,
 				'fullpath'			=> $pmprorh_dir . $filename,
-				'fullurl'			=> content_url('/uploads/pmpro-register-helper/' . $user->user_login . '/' . $filename),
+				'fullurl'			=> $upload_path . $filename,
 				'size'				=> $file['size'],
 			);
 
 			if ( ! empty( $preview_file ) && ! is_wp_error( $preview_file ) ) {
 				$file_meta_value_array['previewpath'] = $preview_file['path'];
-				$file_meta_value_array['previewurl'] = content_url('/uploads/pmpro-register-helper/' . $user->user_login . '/' . $preview_file['file'] );
+				$file_meta_value_array['previewurl'] = $upload_path . $preview_file['file'];
 			}
 
 			//save filename in usermeta
@@ -613,6 +614,7 @@
 					$r .= 'disabled="disabled" ';
 				$r .= 'name="' . $this->name . '" />';
 
+
 				//old value
 				if(is_user_logged_in())
 				{
@@ -633,10 +635,11 @@
 				//show name of existing file
 				if(!empty($value))
 				{
-					if(!empty($this->file['fullurl']))
+					if(!empty($this->file['fullurl'])){
 						$r_end .= '<span class="pmprorh_file_' . $this->name . '_name">' . sprintf(__('Current File: %s', 'pmpro-register-helper' ), '<a target="_blank" href="' . $this->file['fullurl'] . '">' . basename($value) . '</a>' ) . '</span>';
-					else
+					} else {
 						$r_end .= sprintf(__('Current File: %s', 'pmpro-register-helper' ), basename($value) );
+					}
 
 					// Allow user to delete the uploaded file if we know the full location. 
 					if ( ( ! empty( $this->allow_delete ) ) && ! empty( $this->file['fullurl'] ) ) {

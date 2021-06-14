@@ -316,7 +316,16 @@
 				}
 			}
 
-			$upload_path = is_multisite() ? content_url('/uploads/sites/' . get_current_blog_id() . '/pmpro-register-helper/' . $user->user_login . '/') : content_url( '/uploads/pmpro-register-helper/' . $user->user_login . '/' );
+			// Our folder in the uploads directory that we want to save files to.
+			$upload_dir  = '/pmpro-register-helper/' . $user->user_login . '/';
+
+			// If multisite, prefix the directory with the current blog ID specific folder.
+			if ( is_multisite() ) {
+				$upload_dir = '/sites/' . get_current_blog_id() . $upload_dir;
+			}
+
+			// Get the full uploads directory URL we want to save files to.
+			$upload_path = content_url( '/uploads' . $upload_dir );
 			$file_meta_value_array = array(
 				'original_filename'	=> $file['name'],
 				'filename'			=> $filename,

@@ -277,7 +277,7 @@
 			}
 			
 			//figure out new filename
-			$filename = $file['name'];
+			$filename = sanitize_file_name($file['name']);
 			$count = 0;
 						
 			while(file_exists($pmprorh_dir . $filename))

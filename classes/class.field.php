@@ -99,6 +99,22 @@
 				$this->save_function = array( $this, 'saveUsersTable' );
 			}
 
+			// Save user taxonomy fields to wp_term_relationships, not usermeta.
+			if ( ! empty( $this->taxonomy ) ) {
+				// Use the save taxonomy function.
+				$this->save_function = array( $this, 'saveTermRelationshipsTable' );
+
+				// Populate terms from the taxonomy if options are empty.
+				if ( empty( $this->options ) ) {
+					$terms = get_terms( $this->taxonomy, array( 'hide_empty' => false ) );
+					$terms_options = array();
+					foreach ( $terms as $term ) {
+						$terms_options[ $term->term_id ] = $term->name;
+					}
+					$this->options = $terms_options;
+				}
+			}
+
 			//default fields						
 			if($this->type == "text")
 			{
@@ -175,6 +191,24 @@
 
 			// Save updated profile fields.
 			wp_update_user( array( 'ID' => $user_id, $name => $value ) );
+		}
+
+		// Save function for user taxonomy field.
+		function saveTermRelationshipsTable( $user_id, $name, $value ) {
+			// Get the taxonomy to save for.
+			if ( isset( $this->taxonomy ) ) {
+				$taxonomy = $this->taxonomy;
+			}
+
+			// Sets the terms for the user.
+			wp_set_object_terms( $user_id, $value, $taxonomy, false );
+
+			// Remove the user taxonomy relationship to terms from the cache.
+			clean_object_term_cache( $user_id, $taxonomy );
+
+			// Save terms to usermeta.
+			$meta_key = str_replace( 'pmprorhprefix_', '', $name );
+			update_user_meta( $user_id, $meta_key, $value );
 		}
 
 		//save function for files

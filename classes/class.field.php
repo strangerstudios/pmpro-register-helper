@@ -107,11 +107,15 @@
 				// Populate terms from the taxonomy if options are empty.
 				if ( empty( $this->options ) ) {
 					$terms = get_terms( $this->taxonomy, array( 'hide_empty' => false ) );
-					$terms_options = array();
-					foreach ( $terms as $term ) {
-						$terms_options[ $term->term_id ] = $term->name;
+					if ( isset( $terms->errors ) ) {
+						$this->options = array();
+					} else {
+						$terms_options = array();
+						foreach ( $terms as $term ) {
+							$terms_options[ $term->term_id ] = $term->name;
+						}
+						$this->options = $terms_options;
 					}
-					$this->options = $terms_options;
 				}
 			}
 
@@ -200,8 +204,22 @@
 				$taxonomy = $this->taxonomy;
 			}
 
+			// Convert all terms in the value submitted to slugs.
+			$new_values = array();
+			if ( ! is_array( $value ) ) {
+				$value = explode( '', $value );
+			}
+			foreach ( $value as $term ) {
+				if ( is_numeric( $term ) ) {
+					$term_object = get_term_by( 'ID', $term, $taxonomy );
+					$new_values[] = $term_object->name;
+				} else {
+					$new_values[] = $term;
+				}
+			}
+
 			// Sets the terms for the user.
-			wp_set_object_terms( $user_id, $value, $taxonomy, false );
+			wp_set_object_terms( $user_id, $new_values, $taxonomy, false );
 
 			// Remove the user taxonomy relationship to terms from the cache.
 			clean_object_term_cache( $user_id, $taxonomy );

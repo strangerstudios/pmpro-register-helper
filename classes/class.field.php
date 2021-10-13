@@ -110,7 +110,7 @@
 					if ( isset( $terms->errors ) ) {
 						$this->options = array();
 					} else {
-						$terms_options = array();
+						$terms_options = array('');
 						foreach ( $terms as $term ) {
 							$terms_options[ $term->term_id ] = $term->name;
 						}

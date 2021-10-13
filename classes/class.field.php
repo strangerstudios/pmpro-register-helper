@@ -207,7 +207,7 @@
 			// Convert all terms in the value submitted to slugs.
 			$new_values = array();
 			if ( ! is_array( $value ) ) {
-				$value = explode( '', $value );
+				$value = array( $value );
 			}
 			foreach ( $value as $term ) {
 				if ( is_numeric( $term ) ) {

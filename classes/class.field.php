@@ -38,6 +38,7 @@
 			$this->just_profile = false;
 			$this->class = null;
 			$this->sanitize = true;
+			$this->taxonomy = false;
 		}
 
 		/*
@@ -110,12 +111,17 @@
 					if ( isset( $terms->errors ) ) {
 						$this->options = array();
 					} else {
-						$terms_options = array('');
-						foreach ( $terms as $term ) {
-							$terms_options[ $term->term_id ] = $term->name;
+						// Note: wp_list_pluck was causing issues here.
+						$this->options = array();
+						foreach( $terms as $term ) {
+							$this->options[$term->term_id] = $term->name;
 						}
-						$this->options = $terms_options;
 					}
+				}
+				
+				// If select, let's add an empty option to the top.
+				if ( $this->type == "select" ) {
+					$this->options = array('') + $this->options;
 				}
 			}
 
@@ -137,8 +143,8 @@
 					$this->options = array("", "- choose one -");
 				
 				//is a non associative array is passed, set values to labels
-				$repair_non_associative_options = apply_filters("pmprorh_repair_non_associative_options", true);			
-				if($repair_non_associative_options && !$this->is_assoc($this->options))
+				$repair_non_associative_options = apply_filters("pmprorh_repair_non_associative_options", true );				
+				if($repair_non_associative_options && ! $this->is_assoc( $this->options ) )
 				{
 					$newoptions = array();
 					foreach($this->options as $option)
@@ -199,30 +205,27 @@
 
 		// Save function for user taxonomy field.
 		function saveTermRelationshipsTable( $user_id, $name, $value ) {
-			// Get the taxonomy to save for.
-			if ( isset( $this->taxonomy ) ) {
-				$taxonomy = $this->taxonomy;
-			}
-
 			// Convert all terms in the value submitted to slugs.
 			$new_values = array();
 			if ( ! is_array( $value ) ) {
 				$value = array( $value );
 			}
-			foreach ( $value as $term ) {
-				if ( is_numeric( $term ) ) {
-					$term_object = get_term_by( 'ID', $term, $taxonomy );
-					$new_values[] = $term_object->name;
+
+			foreach ( $value as $term_id ) {
+				if ( is_numeric( $term_id ) ) {					
+					$new_values[] = intval( $term_id );
 				} else {
-					$new_values[] = $term;
+					// Assume slug passed for some reason.
+					$term_object = get_term_by( 'slug', $term_id, $this->taxonomy );
+					$new_values[] = intval( $term->term_id );
 				}
 			}
 
-			// Sets the terms for the user.
-			wp_set_object_terms( $user_id, $new_values, $taxonomy, false );
+			// Sets the terms for the user.			
+			wp_set_object_terms( $user_id, $new_values, $this->taxonomy, false );
 
 			// Remove the user taxonomy relationship to terms from the cache.
-			clean_object_term_cache( $user_id, $taxonomy );			
+			clean_object_term_cache( $user_id, $this->taxonomy );			
 		}
 
 		//save function for files
@@ -995,8 +998,16 @@
 		function displayInProfile($user_id, $edit = NULL)
 		{
 			global $current_user;
-			if(metadata_exists("user", $user_id, $this->meta_key))
-			{
+			if ( ! empty( $this->taxonomy ) ) {
+				$terms = wp_get_object_terms( $user_id, $this->taxonomy );
+				if ( empty( $terms ) ) {
+					$value = "";
+				} elseif ( count( $terms ) == 1 ) {
+					$value = $terms[0]->term_id;
+				} else {
+					$value = wp_list_pluck( $terms, 'term_id' );
+				}				
+			} elseif ( metadata_exists( 'user', $user_id, $this->meta_key ) ) {
 				$meta = get_user_meta($user_id, $this->name, true);				
 				if(is_array($meta) && !empty($meta['filename']))
 				{
@@ -1055,9 +1066,20 @@
 				echo $value;
 		}
 		
-		//from: http://stackoverflow.com/questions/173400/php-arrays-a-good-way-to-check-if-an-array-is-associative-or-numeric/4254008#4254008
+		/**
+		 * Check if an array is associative or not.
+		 * @param array The arary to check.
+		 * @return bool
+		 */
 		function is_assoc($array) {			
-			return (bool)count(array_filter(array_keys($array), 'is_string'));
+			// Taxonomies use the term_id as keys.
+			if ( ! empty( $this->taxonomy ) ) {
+				return true;
+			}
+			
+			// Check for string keys.
+			// from: http://stackoverflow.com/questions/173400/#4254008
+			return (bool)count(array_filter(array_keys($array), 'is_string'));			
 		}
 
 		static function get_checkout_box_name_for_field( $field_name ) {

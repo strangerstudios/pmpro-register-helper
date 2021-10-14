@@ -908,7 +908,16 @@
 			global $current_user;
 			
 			//value passed yet?
-			if($this->type == "date") {
+			if ( ! empty( $this->taxonomy ) ) {
+				$terms = wp_get_object_terms( $current_user->ID, $this->taxonomy );
+				if ( empty( $terms ) ) {
+					$value = "";
+				} elseif ( count( $terms ) == 1 ) {
+					$value = $terms[0]->term_id;
+				} else {
+					$value = wp_list_pluck( $terms, 'term_id' );
+				}				
+			} elseif($this->type == "date") {
 				if(isset($_REQUEST[$this->name])) {
 					$tempstr = intval($_REQUEST[$this->name]["m"])."/";
 					$tempstr .= intval($_REQUEST[$this->name]["d"])."/";

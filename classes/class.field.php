@@ -222,11 +222,7 @@
 			wp_set_object_terms( $user_id, $new_values, $taxonomy, false );
 
 			// Remove the user taxonomy relationship to terms from the cache.
-			clean_object_term_cache( $user_id, $taxonomy );
-
-			// Save terms to usermeta.
-			$meta_key = str_replace( 'pmprorhprefix_', '', $name );
-			update_user_meta( $user_id, $meta_key, $value );
+			clean_object_term_cache( $user_id, $taxonomy );			
 		}
 
 		//save function for files

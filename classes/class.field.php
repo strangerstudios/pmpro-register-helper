@@ -204,13 +204,14 @@
 		}
 
 		// Save function for user taxonomy field.
-		function saveTermRelationshipsTable( $user_id, $name, $value ) {
-			// Convert all terms in the value submitted to slugs.
-			$new_values = array();
+		function saveTermRelationshipsTable( $user_id, $name, $value ) {			
+			// We expect an array below.
 			if ( ! is_array( $value ) ) {
 				$value = array( $value );
 			}
-
+			
+			// Get term ids if slugs were passed in.
+			$new_values = array();
 			foreach ( $value as $term_id ) {
 				if ( is_numeric( $term_id ) ) {					
 					$new_values[] = intval( $term_id );
@@ -220,6 +221,11 @@
 					$new_values[] = intval( $term->term_id );
 				}
 			}
+			
+			// Make sure term ids are already terms for this taxonomy.
+			$valid_terms = get_terms( $this->taxonomy, array( 'hide_empty' => false ) );
+			$valid_term_ids = wp_list_pluck( $valid_terms, 'term_id' );			
+			$new_values = array_intersect( $valid_term_ids, $new_values );
 
 			// Sets the terms for the user.			
 			wp_set_object_terms( $user_id, $new_values, $this->taxonomy, false );

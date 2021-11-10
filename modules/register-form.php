@@ -8,7 +8,13 @@ function pmprorh_register_form_handler()
 		if(!empty($current_user->ID))
 		{
 			//now redirect them
-			wp_redirect($pmprorh_options['register_redirect_url']);
+			if ( ! empty( $pmprorh_options['register_redirect_url'] ) ) {
+				wp_redirect($pmprorh_options['register_redirect_url']);
+			} elseif ( ! is_home() ) {
+				wp_redirect( home_url() );
+			} else {
+				wp_redirect( get_edit_profile_url() );
+			}
 			exit;
 		}
 		
@@ -127,7 +133,13 @@ function pmprorh_register_form_handler()
 								$user = wp_signon( $creds, false );		
 
 								//now redirect them
-								wp_redirect($pmprorh_options['register_redirect_url']);
+								if ( ! empty( $pmprorh_options['register_redirect_url'] ) ) {
+									wp_redirect($pmprorh_options['register_redirect_url']);
+								} elseif ( ! is_home() ) {
+									wp_redirect( home_url() );
+								} else {
+									wp_redirect( get_edit_profile_url() );
+								}
 								exit;
 							}
 						}						

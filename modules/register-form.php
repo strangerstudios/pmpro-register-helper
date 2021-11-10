@@ -111,7 +111,7 @@ function pmprorh_register_form_handler()
 							} else {
 
 								//check pmpro_wp_new_user_notification filter before sending the default WP email
-								if(apply_filters("pmpro_wp_new_user_notification", true, $user_id, $pmpro_level->id))
+								if(apply_filters("pmpro_wp_new_user_notification", true, $user_id, 0))
 									wp_new_user_notification($user_id, $pass1);								
 
 								$wpuser = new WP_User(0, $user_login);

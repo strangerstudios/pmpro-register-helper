@@ -99,8 +99,7 @@ function pmprorh_register_form_handler()
 						//no errors yet
 						if($pmpro_msgt != "pmpro_error")
 						{
-							// create user
-							require_once( ABSPATH . WPINC . '/registration.php');
+							// create user							
 							$user_id = wp_insert_user(array(
 											"user_login" => $user_login,							
 											"user_pass" => $pass1,

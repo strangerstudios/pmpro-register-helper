@@ -386,6 +386,9 @@
 			}
 			elseif($this->type == "number")
 			{
+				if ( strlen($value) === 0 && isset( $this->value ) && strlen($this->value) > 0 && is_numeric( $this->value ) ) {
+					$value = esc_attr( $this->value );
+				}
 				$r = '<input type="number"  min="0" step="1" pattern="\d+" id="' . $this->id . '" name="' . $this->name . '" value="' . esc_attr($value) . '" ';
 				if(!empty($this->size))
 					$r .= 'size="' . $this->size . '" ';

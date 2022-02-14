@@ -457,7 +457,7 @@ add_action("pmpro_checkout_before_submit_button", "pmprorh_pmpro_checkout_before
 /*
 	Update the fields at checkout.
 */
-function pmprorh_pmpro_after_checkout($user_id)
+function pmprorh_pmpro_after_checkout( $user_id, $morder )
 {
 	global $pmprorh_registration_fields;
 
@@ -533,7 +533,7 @@ function pmprorh_pmpro_after_checkout($user_id)
 
 					//callback?
 					if(!empty($field->save_function))
-						call_user_func($field->save_function, $user_id, $field->name, $value);
+						call_user_func( $field->save_function, $user_id, $field->name, $value, $morder );
 					else
 						update_user_meta($user_id, $field->meta_key, $value);
 				}
@@ -541,7 +541,7 @@ function pmprorh_pmpro_after_checkout($user_id)
 		}
 	}
 }
-add_action('pmpro_after_checkout', 'pmprorh_pmpro_after_checkout');
+add_action( 'pmpro_after_checkout', 'pmprorh_pmpro_after_checkout', 10, 2 );
 add_action('pmpro_before_send_to_paypal_standard', 'pmprorh_pmpro_after_checkout');	//for paypal standard we need to do this just before sending the user to paypal
 add_action('pmpro_before_send_to_twocheckout', 'pmprorh_pmpro_after_checkout', 20);	//for 2checkout we need to do this just before sending the user to 2checkout
 add_action('pmpro_before_send_to_gourl', 'pmprorh_pmpro_after_checkout', 20);	//for the GoURL Bitcoin Gateway Add On

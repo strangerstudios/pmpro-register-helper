@@ -1,25 +1,32 @@
-=== Paid Memberships Pro - Register Helper Add On ===
-Contributors: strangerstudios
-Tags: fields, memberships, user meta, user profile, users
-Requires at least: 4.0
+=== Custom User Profile Fields for User Registration & Member Frontend Profiles with Paid Memberships Pro ===
+Contributors: strangerstudios, paidmembershipspro
+Tags: user profile, user fields, memberships, user meta, user profile, users
+Requires at least: 5.2
 Tested up to: 5.7
+Requires PHP: 5.6
 Stable tag: 1.7
 
-Add custom form fields to membership checkout and user profiles with Paid Memberships Pro.
+Create custom user profile fields collected at registration or membership checkout for your WordPress users, members, and site admins.
 
 == Description ==
-Collect custom form fields at membership checkout and on the user profile. User fields can be added to the membership checkout page or captured on the user's frontend profile or "Edit Profile" screen in the WordPress admin.
+
+### The most popular WordPress plugin for custom user fields and member profiles.
+
+Create custom user profile fields and collect additional user information at registration or membership checkout for your WordPress users, members, and site admins.
+
+User fields can be added in many locations including:
+
+* The membership checkout page in Paid Memberships Pro
+* Captured on the user's frontend profile page.
+* Managed in the WordPress admina area on the "Your Profile" screen (for users).
+* Edited by site admins only on the "Edit User Profile" screen in the WordPress admin.
 
 This plugin also allows you to restrict membership registration for a list of approved email addresses or usernames.
 
-[Read the full documentation for the Register Helper Add On](https://www.paidmembershipspro.com/add-ons/pmpro-register-helper-add-checkout-and-profile-fields/)
+[Learn more about custom user profile fields and member registration fields in our documentation site](https://www.paidmembershipspro.com/add-ons/pmpro-register-helper-add-checkout-and-profile-fields/?utm_source=wordpress-org&utm_medium=readme&utm_campaign=pmpro-regiser-helper).
 
-= Official Paid Memberships Pro Add On =
-
-This is an official Add On for [Paid Memberships Pro](https://www.paidmembershipspro.com), the most complete member management and membership subscriptions plugin for WordPress.
-
-= Supports Multiple Field Types =
-Using Register Helper, you can add a variety of field types to capture additional information about your members. Fields can be customized by the member's selected or active membership level. Supported field types include:
+### Supports Multiple Field Types
+Choose from a variety of popular user field types to capture additional information about your members. Fields can be customized by the member's selected or active membership level. The most popular field types include:
 
 * Text and Textarea
 * Select and Select2 (multi-select)
@@ -30,9 +37,64 @@ Using Register Helper, you can add a variety of field types to capture additiona
 * HTML (generates any desired HTML)
 * Hidden
 
+= Adding Fields For Specific Membership Levels =
+This plugin is built for Paid Memberships Pro, the top WordPress membership plugin that's 100% free. You can add your fields for all members, or choose to show a field for specific members only. For example, allow your Premium level members to add a full length bio and upload a resume, while your Starter members can only add a brief bio and no file upload.
+
+Custom user fields are a way to gather more information about your members and create a more tailored, premium experience.
+
+= Conditional User Field Logic =
 Any registered field can be a conditional field. These fields use JavaScript to dynamically hide or show based on another field's value.
 
-[Read the documentation on Adding Fields](https://www.paidmembershipspro.com/documentation/register-helper-documentation/adding-fields/)
+= Restrict Membership Checkout by Email Address or Username =
+Add your list of custom "approved" email addresses or usernames to the "Restrict by Email" or "Restrict by Username" field on the Memberships > Settings > Membership Levels > Edit Level admin page.
+
+https://www.youtube.com/watch?v=VVTHYPQpfZ4
+
+### About Paid Memberships Pro
+
+[Paid Memberships Pro is a WordPress membership plugin](https://www.paidmembershipspro.com/?utm_source=wordpress-org&utm_medium=readme&utm_campaign=pmpro-register-helper) that puts you in control. Create what you want and release in whatever format works best for your business.
+
+* Courses & E-Learning
+* Private podcasts
+* Premium Newsletters
+* Private Communities
+* Sell physical & digital goods
+
+Paid Memberships Pro allows anyone to build a membership site—for free. Restrict content, accept payment, and manage subscriptions right from your WordPress admin.
+
+Paid Memberships Pro is built "the WordPress way" with a lean core plugin and over 75 Add Ons to enhance every aspect of your membership site. Each business is different and we encourage customization. For our members we have a library of 300+ recipes to personalize your membership site.
+
+Paid Memberships Pro is the flagship product of Stranger Studios. We are a bootstrapped company which grows when membership sites like yours grow. That means we focus our entire company towards helping you succeed.
+
+[Try Paid Memberships Pro entirely for free on WordPress.org](https://wordpress.org/plugins/paid-memberships-pro/) and see why 100,000+ sites trust us to help them #GetPaid.
+
+### Read More
+
+Want more information on private forums, premium discussion boards, and WordPress membership sites? Have a look at:
+
+* The [Paid Memberships Pro](https://www.paidmembershipspro.com/?utm_source=wordpress-org&utm_medium=readme&utm_campaign=pmpro-register-helper) official homepage.
+* The [Custom Fields Register Helper for PMPro documentation page](https://www.paidmembershipspro.com/add-ons/pmpro-register-helper-add-checkout-and-profile-fields/?utm_source=wordpress-org&utm_medium=readme&utm_campaign=pmpro-register-helper).
+* Also follow PMPro on [Twitter](https://twitter.com/pmproplugin), [YouTube](https://www.youtube.com/channel/UCFtMIeYJ4_YVidi1aq9kl5g) & [Facebook](https://www.facebook.com/PaidMembershipsPro/).
+
+== Installation ==
+
+Note: This plugin doesn't require [Paid Memberships Pro](https://wordpress.org/plugins/paid-memberships-pro/), but it is strongly recommended for sites that want to build a membership site and capture user profile information as part of free or paid member registration.
+
+### Install PMPro Register Helper from within WordPress
+
+1. Visit the plugins page within your dashboard and select "Add New"
+1. Search for "PMPro Register Helper"
+1. Locate this plugin and click "Install"
+1. Activate "Paid Memberships Pro - Register Helper Add On" through the "Plugins" menu in WordPress
+1. Go to "after activation" below.
+
+### Install PMPro Register Helper Manually
+
+1. Upload the `pmpro-register-helper` folder to the `/wp-content/plugins/` directory
+1. Activate "Paid Memberships Pro - Register Helper" through the "Plugins" menu in WordPress
+1. Go to "after activation" below.
+
+### After Activation: Set Up Your Custom Fields
 
 = Adding Fields to Membership Checkout =
 Register Helper allows you to add fields to a variety of places within the Membership Checkout page using Paid Memberships Pro. Fields can be added to existing locations including:
@@ -46,50 +108,17 @@ Register Helper allows you to add fields to a variety of places within the Membe
 
 If you would like to add fields to the profile only, specify the 'just_profile' location.
 
-= Adding New Sections to Membership Checkout =
-You can add a new box or 'section' to the Membership Checkout form using the 'checkout_boxes' feature. Your newly created box includes a title, description and specified location.
+Fields must be configured using custom code. We offer support for creating up to 5 fields as part of your [premium membership](https://www.paidmembershipspro.com/pricing/?utm_source=wordpress-org&utm_medium=readme&utm_campaign=pmpro-register-helper).
 
-[Read the documentation on Checkout Boxes](https://www.paidmembershipspro.com/documentation/register-helper-documentation/adding-fields/#checkout-boxes)
+[View the full documentation on adding fields](https://www.paidmembershipspro.com/documentation/register-helper-documentation/adding-fields/?utm_source=wordpress-org&utm_medium=readme&utm_campaign=pmpro-register-helper) and [check out this video demo on Register Helper set up](https://www.youtube.com/watch?v=VVTHYPQpfZ4).
+
+= Adding New Sections to Membership Checkout =
+You can add a new box or 'section' to the Membership Checkout form using the 'checkout_boxes' feature. Your newly created box includes a title, description, and loads in the specified location.
+
+[Read the documentation on Custom Checkout Boxes](https://www.paidmembershipspro.com/documentation/register-helper-documentation/adding-fields/#checkout-boxes?utm_source=wordpress-org&utm_medium=readme&utm_campaign=pmpro-register-helper)
 
 = Restrict Membership Checkout by Email Address or Username =
 Add your list of custom "approved" email addresses or usernames to the "Restrict by Email" or "Restrict by Username" field on the Memberships > Settings > Membership Levels > Edit Level admin page.
-
-== Installation ==
-
-1. Upload the `pmpro-register-helper` directory to the `/wp-content/plugins/` directory of your site.
-1. Activate the plugin through the 'Plugins' menu in WordPress.
-1. Configure your fields using custom code. [View the full documentation on adding fields](https://www.paidmembershipspro.com/documentation/register-helper-documentation/adding-fields/) and [check out this video demo on Register Helper set up](https://www.youtube.com/watch?v=VVTHYPQpfZ4).
-
-
-= Example Code for adding a Company field =
-Below is a sample code that adds a "Company" field. You can add custom field code to your site by creating a custom plugin or using the Code Snippets plugin available for free in the WordPress repository. [Read this companion article for step-by-step directions on either method](https://www.paidmembershipspro.com/create-a-plugin-for-pmpro-customizations/).
-
-`function my_pmprorh_init( ) {
-	// Don't break if Register Helper is not loaded.
-	if( ! function_exists ( 'pmprorh_add_registration_field' ) ) {
-		return false;
-	}
-
-	//define the fields
-	$fields = array();
-
-	$fields[] = new PMProRH_Field (
-		'company',
-		'text',
-		array(
-			'label' => 'Company',
-			'profile' => true,
-	));
-
-	// Add the fields into a new checkout_boxes are of the checkout page.
-	foreach ( $fields as $field ) {
-		pmprorh_add_registration_field(
-			'checkout_boxes', // location on checkout page
-			$field            // PMProRH_Field object
-		);
-	}
-}
-add_action( 'init', 'my_pmprorh_init' );`
 
 == Frequently Asked Questions ==
 
@@ -104,6 +133,7 @@ Please post it in the issues section of GitHub and we'll fix it as soon as we ca
 1. Using Register Helper fields in conjuction with the [Member Directory and Profile Pages Add On](https://www.paidmembershipspro.com/add-ons/pmpro-member-directory/).
 
 == Changelog ==
+
 = 1.7 - 2020-10-14 =
 * ENHANCEMENT: Files can now be deleted by setting the "allow_delete" field attribute.
 * ENHANCEMENT: Images submitted through the "file" field can now be previewed.

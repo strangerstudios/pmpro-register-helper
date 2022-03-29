@@ -18,7 +18,7 @@ User fields can be added in many locations including:
 
 * The membership checkout page in Paid Memberships Pro
 * Captured on the user's frontend profile page.
-* Managed in the WordPress admina area on the "Your Profile" screen (for users).
+* Managed in the WordPress admin area on the "Your Profile" screen (for users).
 * Edited by site admins only on the "Edit User Profile" screen in the WordPress admin.
 
 This plugin also allows you to restrict membership registration for a list of approved email addresses or usernames.
@@ -44,6 +44,9 @@ Custom user fields are a way to gather more information about your members and c
 
 = Conditional User Field Logic =
 Any registered field can be a conditional field. These fields use JavaScript to dynamically hide or show based on another field's value.
+
+= Create a Public or Private Member Directory =
+Many sites use these custom fields to build a member directory for site visitors or members. You can customize which fields are displayed based on membership level. Read the [Member Directory and Profiles for PMPro](https://www.paidmembershipspro.com/add-ons/member-directory/?utm_source=wordpress-org&utm_medium=readme&utm_campaign=pmpro-register-helper) documentation page for more information on this feature.
 
 = Restrict Membership Checkout by Email Address or Username =
 Add your list of custom "approved" email addresses or usernames to the "Restrict by Email" or "Restrict by Username" field on the Memberships > Settings > Membership Levels > Edit Level admin page.
@@ -130,7 +133,7 @@ Please post it in the issues section of GitHub and we'll fix it as soon as we ca
 
 1. A simple example of collecting text and textarea fields at membership checkout.
 1. An example of using a new Checkout Box with conditional fields based on dropdown selection.
-1. Using Register Helper fields in conjuction with the [Member Directory and Profile Pages Add On](https://www.paidmembershipspro.com/add-ons/pmpro-member-directory/).
+1. Using Register Helper fields in conjunction with the [Member Directory and Profile Pages Add On](https://www.paidmembershipspro.com/add-ons/pmpro-member-directory/).
 
 == Changelog ==
 

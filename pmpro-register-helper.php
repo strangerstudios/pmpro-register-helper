@@ -437,6 +437,20 @@ function pmprorh_pmpro_checkout_after_billing_fields()
 }
 add_action("pmpro_checkout_after_billing_fields", "pmprorh_pmpro_checkout_after_billing_fields");
 
+// after tos fields
+function pmprorh_pmpro_checkout_after_tos_fields() {
+	global $pmprorh_registration_fields;
+
+	if ( ! empty( $pmprorh_registration_fields['after_tos_fields'] ) ) {
+		foreach ( $pmprorh_registration_fields['after_tos_fields'] as $field ) {
+			if ( is_a( $field, 'PMProRH_Field' ) && pmprorh_checkFieldForLevel( $field ) && ( ! isset( $field->profile ) || $field->profile !== 'only' && $field->profile !== 'only_admin' ) ) {
+				$field->displayAtCheckout();
+			}
+		}
+	}
+}
+add_action( 'pmpro_checkout_after_tos_fields', 'pmprorh_pmpro_checkout_after_tos_fields' );
+
 //before submit button
 function pmprorh_pmpro_checkout_before_submit_button()
 {

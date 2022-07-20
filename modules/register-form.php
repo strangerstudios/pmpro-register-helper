@@ -8,7 +8,13 @@ function pmprorh_register_form_handler()
 		if(!empty($current_user->ID))
 		{
 			//now redirect them
-			wp_redirect($pmprorh_options['register_redirect_url']);
+			if ( ! empty( $pmprorh_options['register_redirect_url'] ) ) {
+				wp_redirect($pmprorh_options['register_redirect_url']);
+			} elseif ( ! is_home() ) {
+				wp_redirect( home_url() );
+			} else {
+				wp_redirect( get_edit_profile_url() );
+			}
 			exit;
 		}
 		
@@ -99,8 +105,7 @@ function pmprorh_register_form_handler()
 						//no errors yet
 						if($pmpro_msgt != "pmpro_error")
 						{
-							// create user
-							require_once( ABSPATH . WPINC . '/registration.php');
+							// create user							
 							$user_id = wp_insert_user(array(
 											"user_login" => $user_login,							
 											"user_pass" => $pass1,
@@ -112,7 +117,7 @@ function pmprorh_register_form_handler()
 							} else {
 
 								//check pmpro_wp_new_user_notification filter before sending the default WP email
-								if(apply_filters("pmpro_wp_new_user_notification", true, $user_id, $pmpro_level->id))
+								if(apply_filters("pmpro_wp_new_user_notification", true, $user_id, 0))
 									wp_new_user_notification($user_id, $pass1);								
 
 								$wpuser = new WP_User(0, $user_login);
@@ -128,7 +133,13 @@ function pmprorh_register_form_handler()
 								$user = wp_signon( $creds, false );		
 
 								//now redirect them
-								wp_redirect($pmprorh_options['register_redirect_url']);
+								if ( ! empty( $pmprorh_options['register_redirect_url'] ) ) {
+									wp_redirect($pmprorh_options['register_redirect_url']);
+								} elseif ( ! is_home() ) {
+									wp_redirect( home_url() );
+								} else {
+									wp_redirect( get_edit_profile_url() );
+								}
 								exit;
 							}
 						}						

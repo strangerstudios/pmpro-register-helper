@@ -1,4 +1,5 @@
 <?php
+if ( ! class_exists( 'PMProRH_Field' ) ) {
 	class PMProRH_Field
 	{
 		function __construct($name = NULL, $type = NULL, $attr = NULL)
@@ -1100,3 +1101,4 @@
 			return $filled;
 		}
 	}
+}

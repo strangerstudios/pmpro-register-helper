@@ -100,79 +100,84 @@ $text = new PMProRH_Field("company", "text", array("size"=>40, "class"=>"company
 pmprorh_add_registration_field("after_billing_fields", $text);
 */
 
-/*
-	Add a field to the PMProRH regisration fields global
+if ( ! function_exists( 'pmprorh_add_registration_field' ) ) {
+    /*
+    	Add a field to the PMProRH regisration fields global
 
-	$where refers to various hooks in the PMPro checkout page and can be:
-	- after_username
-	- after_password
-	- after_email
-	- after_captcha
-	- checkout_boxes
-	- after_billing_fields
-	- before_submit_button
-	- just_profile (make sure you set the profile attr of the field to true or admins)
-*/
-function pmprorh_add_registration_field($where, $field)
-{
-	global $pmprorh_registration_fields;
-	if(empty($pmprorh_registration_fields[$where])) {
-		$pmprorh_registration_fields[$where] = array();
-	}
-	if ( !empty($field) && is_a( $field, 'PMProRH_Field') ) {
-		$pmprorh_registration_fields[$where][] = $field;
-		return true;
-	}
+    	$where refers to various hooks in the PMPro checkout page and can be:
+    	- after_username
+    	- after_password
+    	- after_email
+    	- after_captcha
+    	- checkout_boxes
+    	- after_billing_fields
+    	- before_submit_button
+    	- just_profile (make sure you set the profile attr of the field to true or admins)
+    */
+    function pmprorh_add_registration_field($where, $field) {
+    	global $pmprorh_registration_fields;
+    	if(empty($pmprorh_registration_fields[$where])) {
+    		$pmprorh_registration_fields[$where] = array();
+    	}
+    	if ( !empty($field) && is_a( $field, 'PMProRH_Field') ) {
+    		$pmprorh_registration_fields[$where][] = $field;
+    		return true;
+    	}
 
-	return false;
+    	return false;
+    }
 }
 
-/*
-	Add a new checkout box to the checkout_boxes section. You can then use this as the $where parameter to pmprorh_add_registration_field.
+if ( ! function_exists( 'pmprorh_add_checkout_box' ) ) {
+    /*
+    	Add a new checkout box to the checkout_boxes section. You can then use this as the $where parameter to pmprorh_add_registration_field.
+    
+    	Name must contain no spaces or special characters.
+    */
+    function pmprorh_add_checkout_box($name, $label = NULL, $description = "", $order = NULL) {
+    	global $pmprorh_checkout_boxes;
 
-	Name must contain no spaces or special characters.
-*/
-function pmprorh_add_checkout_box($name, $label = NULL, $description = "", $order = NULL)
-{
-	global $pmprorh_checkout_boxes;
+    	$temp = new stdClass();
+    	$temp->name = $name;
+    	$temp->label = $label;
+    	$temp->description = $description;
+    	$temp->order = $order;
 
-	$temp = new stdClass();
-	$temp->name = $name;
-	$temp->label = $label;
-	$temp->description = $description;
-	$temp->order = $order;
+    	//defaults
+    	if(empty($temp->label))
+    		$temp->label = ucwords($temp->name);
+    	if(!isset($order))
+    	{
+    		$lastbox = pmprorh_end($pmprorh_checkout_boxes);
+    		$temp->order = $lastbox->order + 1;
+    	}
 
-	//defaults
-	if(empty($temp->label))
-		$temp->label = ucwords($temp->name);
-	if(!isset($order))
-	{
-		$lastbox = pmprorh_end($pmprorh_checkout_boxes);
-		$temp->order = $lastbox->order + 1;
-	}
+    	$pmprorh_checkout_boxes[$name] = $temp;
+    	usort($pmprorh_checkout_boxes, "pmprorh_sortByOrder");
 
-	$pmprorh_checkout_boxes[$name] = $temp;
-	usort($pmprorh_checkout_boxes, "pmprorh_sortByOrder");
-
-	return true;
+    	return true;
+    }
 }
 
-function pmprorh_getCheckoutBoxByName($name)
-{
-	global $pmprorh_checkout_boxes;
-	if(!empty($pmprorh_checkout_boxes))
-	{
-		foreach($pmprorh_checkout_boxes as $box)
-		{
-			if($box->name == $name)
-				return $box;
-		}
-	}
-	return false;
+if ( ! function_exists( 'pmprorh_getCheckoutBoxByName' ) ) {
+    function pmprorh_getCheckoutBoxByName($name) {
+    	global $pmprorh_checkout_boxes;
+    	if(!empty($pmprorh_checkout_boxes))
+    	{
+    		foreach($pmprorh_checkout_boxes as $box)
+    		{
+    			if($box->name == $name)
+    				return $box;
+    		}
+    	}
+    	return false;
+    }
 }
 
-//from: http://www.php.net/manual/en/function.end.php#107733
-function pmprorh_end($array) { return end($array); }
+if ( ! function_exists( 'pmprorh_end' ) ) {
+    //from: http://www.php.net/manual/en/function.end.php#107733
+    function pmprorh_end($array) { return end($array); }
+}
 
 function pmprorh_sortByOrder($a, $b)
 {
@@ -1015,76 +1020,78 @@ function pmprorh_pmpro_add_member_added( $uid = null, $user = null )
 }
 add_action( 'pmpro_add_member_added', 'pmprorh_pmpro_add_member_added', 10, 2 );
 
-/*
-	Get RH fields which are set to showup in the Members List CSV Export.
-*/
-function pmprorh_getCSVFields()
-{
-	global $pmprorh_registration_fields;
+if ( ! function_exists( 'pmprorh_getCSVFields' ) ) {
+    /*
+    	Get RH fields which are set to showup in the Members List CSV Export.
+    */
+    function pmprorh_getCSVFields() {
+    	global $pmprorh_registration_fields;
 
-	$csv_fields = array();
-	if(!empty($pmprorh_registration_fields))
-	{
-		//cycle through groups
-		foreach($pmprorh_registration_fields as $where => $fields)
-		{
-			//cycle through fields
-			foreach($fields as $field)
-			{
-				if(is_a($field, 'PMProRH_Field') && !empty($field->memberslistcsv) && ($field->memberslistcsv == "true"))
-				{
-					$csv_fields[] = $field;
-				}
+    	$csv_fields = array();
+    	if(!empty($pmprorh_registration_fields))
+    	{
+    		//cycle through groups
+    		foreach($pmprorh_registration_fields as $where => $fields)
+    		{
+    			//cycle through fields
+    			foreach($fields as $field)
+    			{
+    				if(is_a($field, 'PMProRH_Field') && !empty($field->memberslistcsv) && ($field->memberslistcsv == "true"))
+    				{
+    					$csv_fields[] = $field;
+    				}
 
-			}
-		}
-	}
+    			}
+    		}
+    	}
 
-	return $csv_fields;
+    	return $csv_fields;
+    }
 }
 
-/*
-	Get the RH fields which are marked to show in the profile.
-	If a $user_id is passed in, get fields based on the user's level.
-*/
-function pmprorh_getProfileFields($user_id, $withlocations = false)
-{
-	global $pmprorh_registration_fields;
+if ( ! function_exists( 'pmprorh_getProfileFields' ) ) {
+    /*
+    	Get the RH fields which are marked to show in the profile.
+    	If a $user_id is passed in, get fields based on the user's level.
+    */
+    function pmprorh_getProfileFields($user_id, $withlocations = false) {
+    	global $pmprorh_registration_fields;
 
-	$profile_fields = array();
-	if(!empty($pmprorh_registration_fields))
-	{
-		//cycle through groups
-		foreach($pmprorh_registration_fields as $where => $fields)
-		{
-			//cycle through fields
-			foreach($fields as $field)
-			{
-				if(!is_a($field, 'PMProRH_Field') || !pmprorh_checkFieldForLevel($field, "profile", $user_id))
-					continue;
+    	$profile_fields = array();
+    	if(!empty($pmprorh_registration_fields))
+    	{
+    		//cycle through groups
+    		foreach($pmprorh_registration_fields as $where => $fields)
+    		{
+    			//cycle through fields
+    			foreach($fields as $field)
+    			{
+    				if(!is_a($field, 'PMProRH_Field') || !pmprorh_checkFieldForLevel($field, "profile", $user_id))
+    					continue;
 
-				if(!empty($field->profile) && ($field->profile === "admins" || $field->profile === "admin" || $field->profile === "only_admin"))
-				{
-					if( current_user_can( 'manage_options' ) || current_user_can( 'pmpro_membership_manager' ) )
-					{
-						if($withlocations)
-							$profile_fields[$where][] = $field;
-						else
-							$profile_fields[] = $field;
-					}
-				}
-				elseif(!empty($field->profile))
-				{
-					if($withlocations)
-						$profile_fields[$where][] = $field;
-					else
-						$profile_fields[] = $field;
-				}
-			}
-		}
-	}
+    				if(!empty($field->profile) && ($field->profile === "admins" || $field->profile === "admin" || $field->profile === "only_admin"))
+    				{
+    					if( current_user_can( 'manage_options' ) || current_user_can( 'pmpro_membership_manager' ) )
+    					{
+    						if($withlocations)
+    							$profile_fields[$where][] = $field;
+    						else
+    							$profile_fields[] = $field;
+    					}
+    				}
+    				elseif(!empty($field->profile))
+    				{
+    					if($withlocations)
+    						$profile_fields[$where][] = $field;
+    					else
+    						$profile_fields[] = $field;
+    				}
+    			}
+    		}
+    	}
 
-	return $profile_fields;
+    	return $profile_fields;
+    }
 }
 
 /*
@@ -1252,34 +1259,36 @@ function pmprorh_pmpro_registration_checks($okay)
 }
 add_filter("pmpro_registration_checks", "pmprorh_pmpro_registration_checks");
 
-function pmprorh_checkFieldForLevel( $field, $scope = 'default', $args = NULL ) {
-	global $pmpro_level, $pmpro_checkout_level_ids;
-	if ( ! empty( $field->levels ) ) {
-		if ( 'profile' === $scope ) {
-			// Expecting the args to be the user id.
-			if ( pmpro_hasMembershipLevel( $field->levels, $args ) ) {
-				return true;
-			} else {
-				return false;
-			}
-		} else {			
-			if ( empty( $pmpro_checkout_level_ids ) && ! empty( $pmpro_level ) && ! empty( $pmpro_level->id ) ) {
-				$pmpro_checkout_level_ids = array( $pmpro_level->id );
-			}
-			if ( ! is_array( $field->levels ) ) {
-				$field_levels = array( $field->levels );
-			} else {
-				$field_levels = $field->levels;
-			}
-			if ( ! empty( $pmpro_checkout_level_ids ) ) {
-				// Check against $_REQUEST.
-				return ( ! empty( array_intersect( $field_levels, $pmpro_checkout_level_ids ) ) );
-			}
-			return false;
-		}
-	}
+if ( ! function_exists( 'pmprorh_checkFieldForLevel' ) ) {
+    function pmprorh_checkFieldForLevel( $field, $scope = 'default', $args = NULL ) {
+    	global $pmpro_level, $pmpro_checkout_level_ids;
+    	if ( ! empty( $field->levels ) ) {
+    		if ( 'profile' === $scope ) {
+    			// Expecting the args to be the user id.
+    			if ( pmpro_hasMembershipLevel( $field->levels, $args ) ) {
+    				return true;
+    			} else {
+    				return false;
+    			}
+    		} else {			
+    			if ( empty( $pmpro_checkout_level_ids ) && ! empty( $pmpro_level ) && ! empty( $pmpro_level->id ) ) {
+    				$pmpro_checkout_level_ids = array( $pmpro_level->id );
+    			}
+    			if ( ! is_array( $field->levels ) ) {
+    				$field_levels = array( $field->levels );
+    			} else {
+    				$field_levels = $field->levels;
+    			}
+    			if ( ! empty( $pmpro_checkout_level_ids ) ) {
+    				// Check against $_REQUEST.
+    				return ( ! empty( array_intersect( $field_levels, $pmpro_checkout_level_ids ) ) );
+    			}
+    			return false;
+    		}
+    	}
 
-	return true;
+    	return true;
+    }
 }
 
 /*
@@ -1476,13 +1485,13 @@ function pmprorh_csv_columns($user, $column)
 	}
 }
 
-/*
-	Replace last occurence of a string.
-	From: http://stackoverflow.com/a/3835653/1154321
-*/
 if(!function_exists("str_lreplace"))
 {
-	function str_lreplace($search, $replace, $subject)
+    /*
+    	Replace last occurence of a string.
+    	From: http://stackoverflow.com/a/3835653/1154321
+    */
+    function str_lreplace($search, $replace, $subject)
 	{
 		$pos = strrpos($subject, $search);
 

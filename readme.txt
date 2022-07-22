@@ -16,13 +16,13 @@ Since PMPro version 2.9 was released on July 18, 2022, this plugin is no longer 
 
 *This plugin will no longer be maintained.*
 
-If you were using the member directory features, you should use the PMPro Member Directory plugin: https://www.paidmembershipspro.com/add-ons/member-directory/
+If you were using the member directory features, you should use the [PMPro Member Directory plugin](https://www.paidmembershipspro.com/add-ons/member-directory/).
 
-If you were using the Register Form module with PMPro, you should consider using the PMPro Sign Up Shortcode plugin: https://www.paidmembershipspro.com/add-ons/pmpro-signup-shortcode/
+If you were using the Register Form module with PMPro, you should consider using the [PMPro Sign Up Shortcode plugin](https://www.paidmembershipspro.com/add-ons/pmpro-signup-shortcode/)).
 
 If you were using the Register Form without PMPro, you can continue to use this plugin, but note that it will no longer be maintained.
 
-If you were using the Restrict by Email/Username feature, you should use this code snippet instead: https://github.com/strangerstudios/pmpro-snippets-library/blob/dev/checkout/restrict-checkout-by-email-or-username.php
+If you were using the Restrict by Email/Username feature, you should use [this code snippet instead](https://github.com/strangerstudios/pmpro-snippets-library/blob/dev/checkout/restrict-checkout-by-email-or-username.php).
 
 ### The most popular WordPress plugin for custom user fields and member profiles.
 

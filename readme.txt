@@ -1,14 +1,28 @@
 === Custom User Profile Fields for User Registration & Member Frontend Profiles with Paid Memberships Pro ===
 Contributors: strangerstudios, paidmembershipspro
 Tags: user profile, user fields, memberships, user meta, user profile, users
-Requires at least: 5.2
-Tested up to: 5.7
+Requires at least: 5.4
+Tested up to: 6.0.1
 Requires PHP: 5.6
-Stable tag: 1.7
+Stable tag: 1.8
 
 Create custom user profile fields collected at registration or membership checkout for your WordPress users, members, and site admins.
 
 == Description ==
+
+### IMPORTANT UPDATE
+
+Since PMPro version 2.9 was released on July 18, 2022, this plugin is no longer needed to manage user fields. With PMPro 2.9+, you can manage user fields from the Memberships > Settings > User Fields page in the WP admin dashboard. Any custom code written to work with Register Helper will still work as intended with only PMPro 2.9 installed.
+
+*This plugin will no longer be maintained.*
+
+If you were using the member directory features, you should use the PMPro Member Directory plugin: https://www.paidmembershipspro.com/add-ons/member-directory/
+
+If you were using the Register Form module with PMPro, you should consider using the PMPro Sign Up Shortcode plugin: https://www.paidmembershipspro.com/add-ons/pmpro-signup-shortcode/
+
+If you were using the Register Form without PMPro, you can continue to use this plugin, but note that it will no longer be maintained.
+
+If you were using the Restrict by Email/Username feature, you should use this code snippet instead: https://github.com/strangerstudios/pmpro-snippets-library/blob/dev/checkout/restrict-checkout-by-email-or-username.php
 
 ### The most popular WordPress plugin for custom user fields and member profiles.
 
@@ -136,6 +150,13 @@ Please post it in the issues section of GitHub and we'll fix it as soon as we ca
 1. Using Register Helper fields in conjunction with the [Member Directory and Profile Pages Add On](https://www.paidmembershipspro.com/add-ons/pmpro-member-directory/).
 
 == Changelog ==
+= 1.8 - 2022-07-22 =
+* FEATURE: Can set fields to be saved into a user taxonomy.
+* ENHANCEMENT/BUG FIX: Sanitizing the upload file name. (Thanks, @benholdmen)
+* ENHANCEMENT/BUG FIX: Removed unused select2 images.
+* BUG FIX: Fixed fatal error when activating RH with PMPro 2.9+ active.
+* BUG FIX: Fix mixed content errors in wp-admin when using HTTPS. (Thanks, @ZebulanStanphill)
+* BUG FIX: Fixed issue with file uploads on multisite.
 
 = 1.7 - 2020-10-14 =
 * ENHANCEMENT: Files can now be deleted by setting the "allow_delete" field attribute.

@@ -59,21 +59,21 @@ function pmprorh_signup_shortcode($atts, $content=null, $code="")
 	ob_start();
 	?>
 		<?php if(!empty($current_user->ID) && pmpro_hasMembershipLevel($level,$current_user->ID)) { ?>
-			<p>You are logged in as <?php echo $current_user->user_login; ?>.</p>
+			<p><?php printf( esc_html__( 'You are logged in as %s.', 'pmpro-register-helper' ), $current_user->user_login ); ?></p>
 		<?php } else { ?>
 		<form class="pmpro_form pmpro_signup_form" action="<?php echo pmpro_url("checkout"); ?>" method="post">
-			<h2><?php echo $title; ?></h2>
+			<h2><?php echo esc_html( $title ); ?></h2>
 			<?php
 				if(!empty($intro))
-					echo wpautop($intro);
+					echo wp_kses_post( wpautop($intro) );
 			?>
-			<input type="hidden" id="level" name="level" value="<?php echo $level; ?>" />
+			<input type="hidden" id="level" name="level" value="<?php echo esc_attr( $level ); ?>" />
 			<?php
 				if(!empty($current_user->ID))
 				{
 					?>
 					<p id="pmpro_account_loggedin">
-						<?php printf(__('You are logged in as <strong>%s</strong>. If you would like to use a different account for this membership, <a href="%s">log out now</a>.', 'pmpro-register-helper'), $current_user->user_login, wp_logout_url($_SERVER['REQUEST_URI'])); ?>
+						<?php printf(__('You are logged in as <strong>%s</strong>. If you would like to use a different account for this membership, <a href="%s">log out now</a>.', 'pmpro-register-helper'), esc_html( $current_user->user_login ), esc_url( wp_logout_url($_SERVER['REQUEST_URI']) ) ); ?>
 					</p>
 					<?php
 				}
@@ -81,39 +81,39 @@ function pmprorh_signup_shortcode($atts, $content=null, $code="")
 				{
 					?>
 					<div>
-						<label for="username">Username</label>
+						<label for="username"><?php esc_html_e( 'Username', 'pmpro-register-helper' ); ?></label>
 						<input id="username" name="username" type="text" class="input" size="30" value="" />
 					</div>
 					<?php do_action("pmpro_checkout_after_username");?>
 					<div>
-						<label for="password">Password</label>
+						<label for="password"><?php esc_html_e( 'Password', 'pmpro-register-helper' ); ?></label>
 						<input id="password" name="password" type="password" class="input" size="30" value="" />
 					</div>
 					<?php if($short) { ?>
 						<input type="hidden" name="password2_copy" value="1" />
 					<?php } else { ?>
 						<div>
-							<label for="password2">Confirm Password</label>
+							<label for="password2"><?php esc_html_e( 'Confirm Password', 'pmpro-register-helper' ); ?></label>
 							<input id="password2" name="password2" type="password" class="input" size="30" value="" />
 						</div>
 					<?php } ?>
 					<?php do_action("pmpro_checkout_after_password");?>
 					<div>
-						<label for="bemail">E-mail Address</label>
+						<label for="bemail"><?php esc_html_e( 'E-mail Address', 'pmpro-register-helper' ); ?></label>
 						<input id="bemail" name="bemail" type="email" class="input" size="30" value="" />
 					</div>
 					<?php if($short) { ?>
 						<input type="hidden" name="bconfirmemail_copy" value="1" />
 					<?php } else { ?>
 						<div>
-							<label for="bconfirmemail">Confirm E-mail</label>
+							<label for="bconfirmemail"><?php esc_html_e( 'Confirm E-mail', 'pmpro-register-helper' ); ?></label>
 							<input id="bconfirmemail" name="bconfirmemail" type="email" class="input" size="30" value="" />
 						</div>
 					<?php } ?>
 					<?php do_action("pmpro_checkout_after_email");?>
 					<div class="pmpro_hidden">
-						<label for="fullname">Full Name</label>
-						<input id="fullname" name="fullname" type="text" class="input" size="30" value="" /> <strong>LEAVE THIS BLANK</strong>
+						<label for="fullname"><?php esc_html_e( 'Full Name', 'pmpro-register-helper' ); ?></label>
+						<input id="fullname" name="fullname" type="text" class="input" size="30" value="" /> <strong><?php esc_html_e( 'LEAVE THIS BLANK', 'pmpro-register-helper' ); ?></strong>
 					</div>
 
 					<div class="pmpro_captcha">
@@ -131,12 +131,12 @@ function pmprorh_signup_shortcode($atts, $content=null, $code="")
 			<div>
 				<span id="pmpro_submit_span" >
 					<input type="hidden" name="submit-checkout" value="1" />
-					<input type="submit" class="pmpro_btn pmpro_btn-submit-checkout" value="<?php echo $button; ?>" />
+					<input type="submit" class="pmpro_btn pmpro_btn-submit-checkout" value="<?php echo esc_attr( $button ); ?>" />
 				</span>
 			</div>
 			<?php if(!empty($login) && empty($current_user->ID)) { ?>
 			<div style="text-align:center;">
-				<a href="<?php echo wp_login_url(get_permalink()); ?>"><?php _e('Log In','pmpro-register-helper'); ?></a>
+				<a href="<?php echo esc_url( wp_login_url(get_permalink() ) ); ?>"><?php esc_html_e('Log In','pmpro-register-helper'); ?></a>
 			</div>
 			<?php } ?>
 		</form>

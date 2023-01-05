@@ -73,7 +73,17 @@ function pmprorh_signup_shortcode($atts, $content=null, $code="")
 				{
 					?>
 					<p id="pmpro_account_loggedin">
-						<?php printf(__('You are logged in as <strong>%s</strong>. If you would like to use a different account for this membership, <a href="%s">log out now</a>.', 'pmpro-register-helper'), esc_html( $current_user->user_login ), esc_url( wp_logout_url($_SERVER['REQUEST_URI']) ) ); ?>
+						<?php
+						$allowed_html = array(
+							'a' => array(
+								'href' => array(),
+								'target' => array(),
+								'title' => array(),
+							),
+							'strong' => array(),
+						);
+						echo wp_kses( sprintf( __('You are logged in as <strong>%s</strong>. If you would like to use a different account for this membership, <a href="%s">log out now</a>.', 'pmpro-register-helper'), $current_user->user_login, esc_url( wp_logout_url( $_SERVER['REQUEST_URI'] ) ) ), $allowed_html );
+						?>
 					</p>
 					<?php
 				}

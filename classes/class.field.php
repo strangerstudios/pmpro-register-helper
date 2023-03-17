@@ -405,9 +405,9 @@ if ( ! class_exists( 'PMProRH_Field' ) ) {
         //fix date then update user meta
         function saveDate($user_id, $name, $value)
         {
-	        if ( isset( $this->sanitize ) && true === $this->sanitize ) {
+			if ( null !== ( new PMProRH_Field() )->sanitize && true === ( new PMProRH_Field() )->sanitize ) {
 
-		        $value = pmprorh_sanitize( $value, $this );
+		        $value = pmprorh_sanitize( $value, ( new PMProRH_Field() ) );
 	        }
 
         	$meta_key = str_replace("pmprorhprefix_", "", $name);

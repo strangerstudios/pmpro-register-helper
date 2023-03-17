@@ -191,7 +191,7 @@ if ( ! class_exists( 'PMProRH_Field' ) ) {
 		}
 
 		// Save function for users table field.
-		static function saveUsersTable( $user_id, $name, $value ) {
+		function saveUsersTable( $user_id, $name, $value ) {
 			// Special sanitization needed for certain user fields.
 			if ( $name === 'user_url' ) {
 				$value = esc_url_raw( $value );
@@ -205,7 +205,7 @@ if ( ! class_exists( 'PMProRH_Field' ) ) {
 		}
 
 		// Save function for user taxonomy field.
-		static function saveTermRelationshipsTable( $user_id, $name, $value ) {			
+		function saveTermRelationshipsTable( $user_id, $name, $value ) {			
 			// We expect an array below.
 			if ( ! is_array( $value ) ) {
 				$value = array( $value );
@@ -236,7 +236,7 @@ if ( ! class_exists( 'PMProRH_Field' ) ) {
 		}
 
 		//save function for files
-		static function saveFile($user_id, $name, $value)
+		function saveFile($user_id, $name, $value)
 		{			
 			//setup some vars
 			$file = $_FILES[$name];
@@ -403,7 +403,7 @@ if ( ! class_exists( 'PMProRH_Field' ) ) {
 		}
 
         //fix date then update user meta
-        static function saveDate($user_id, $name, $value)
+        function saveDate($user_id, $name, $value)
         {
 	        if ( isset( $this->sanitize ) && true === $this->sanitize ) {
 

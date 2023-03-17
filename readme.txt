@@ -4,7 +4,7 @@ Tags: user profile, user fields, memberships, user meta, user profile, users
 Requires at least: 5.4
 Tested up to: 6.2
 Requires PHP: 6.1.1
-Stable tag: 1.8.2
+Stable tag: 1.8.3
 
 Create custom user profile fields collected at registration or membership checkout for your WordPress users, members, and site admins.
 
@@ -150,6 +150,9 @@ Please post it in the issues section of GitHub and we'll fix it as soon as we ca
 1. Using Register Helper fields in conjunction with the [Member Directory and Profile Pages Add On](https://www.paidmembershipspro.com/add-ons/pmpro-member-directory/).
 
 == Changelog ==
+= 1.8.3 - 2023-03-17 =
+* BUG FIX: Reverting v1.8.2 changes which were not needed and potentially problematic.
+
 = 1.8.2 - 2023-03-15 =
 * BUG FIX: Resolved PHP 8+ compatibility issue by making some class methods static.
 

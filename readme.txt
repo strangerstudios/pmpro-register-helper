@@ -1,5 +1,5 @@
 === Custom User Profile Fields for User Registration & Member Frontend Profiles with Paid Memberships Pro ===
-Contributors: strangerstudios, paidmembershipspro
+Contributors: strangerstudios
 Tags: user profile, user fields, memberships, user meta, user profile, users
 Requires at least: 5.4
 Tested up to: 6.2
